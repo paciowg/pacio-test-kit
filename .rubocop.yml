@@ -1,0 +1,95 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.1
+  Exclude:
+    - 'Gemfile'
+
+Layout/LineLength:
+  Max: 120
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: 'indented'
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/OpenStructUse:
+  Exclude:
+    - 'spec/**/*'
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - 'Rakefile'
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'spec/**/*'
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - 'Rakefile'
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'spec/**/*'
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/FilePath:
+  CustomTransform:
+    PacioTestKit: pacio_test_kit
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/NotToNot:
+  EnforcedStyle: to_not
+
+RSpec/SpecFilePathFormat:
+  CustomTransform:
+    PacioTestKit: pacio_test_kit
+
+Gemspec/RequireMFA:
+  Enabled: false
