@@ -1,8 +1,8 @@
 module PacioTestKit
-  class PacioADIServerSuite < Inferno::TestSuite
-    id :pacio_adi_server
-    title 'PACIO ADI Server Test Suite'
-    description 'PACIO Advance Directives Server Test Suite'
+  class PacioPFEServerSuite < Inferno::TestSuite
+    id :pacio_pfe_server
+    title 'PACIO PFE Server Test Suite'
+    description 'PACIO Personal Functioning and Engagement Server Test Suite'
 
     input :url,
           title: 'FHIR Server Base URL'
@@ -12,7 +12,7 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs('igs/adi-package.tgz', 'hl7.fhir.us.core')
+      igs('igs/pfe-package.tgz', 'hl7.fhir.us.core')
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
