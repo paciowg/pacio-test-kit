@@ -1,3 +1,7 @@
+require_relative 'pfe/device_use_statement_group'
+require_relative 'pfe/diagnostic_report_group'
+require_relative 'pfe/observation_group'
+
 module PacioTestKit
   class PacioPFEServerSuite < Inferno::TestSuite
     id :pacio_pfe_server
@@ -18,5 +22,9 @@ module PacioTestKit
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
       end
     end
+
+    group from: :pacio_pfe_observation
+    group from: :pacio_pfe_diagnostic_report
+    group from: :pacio_pfe_device_use_statement
   end
 end
