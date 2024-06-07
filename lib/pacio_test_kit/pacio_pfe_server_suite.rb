@@ -1,6 +1,13 @@
+require_relative 'pfe/clinical_test_observation_group'
+require_relative 'pfe/collection_observation_group'
+require_relative 'pfe/condition_encounter_diagnosis_group'
+require_relative 'pfe/condition_problems_group'
 require_relative 'pfe/device_use_statement_group'
-require_relative 'pfe/diagnostic_report_group'
-require_relative 'pfe/observation_group'
+require_relative 'pfe/diagnostic_report_narrative_history_group'
+require_relative 'pfe/diagnostic_report_note_exchange_group'
+require_relative 'pfe/goal_group'
+require_relative 'pfe/service_request_group'
+require_relative 'pfe/single_observation_group'
 
 module PacioTestKit
   class PacioPFEServerSuite < Inferno::TestSuite
@@ -23,8 +30,15 @@ module PacioTestKit
       end
     end
 
-    group from: :pacio_pfe_observation
-    group from: :pacio_pfe_diagnostic_report
+    group from: :pacio_pfe_single_observation
+    group from: :pacio_pfe_clinical_test_observation
+    group from: :pacio_pfe_collection_observation
+    group from: :pacio_pfe_condition_encounter_diagnosis
+    group from: :pacio_pfe_condition_problems
+    group from: :pacio_pfe_diagnostic_report_narrative_history
+    group from: :pacio_pfe_diagnostic_report_note_exchange
     group from: :pacio_pfe_device_use_statement
+    group from: :pacio_pfe_goal
+    group from: :pacio_pfe_service_request
   end
 end
