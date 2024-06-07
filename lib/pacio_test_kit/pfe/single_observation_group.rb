@@ -1,3 +1,6 @@
+require_relative 'single_observation/single_observation_read_test'
+require_relative 'single_observation/single_observation_validation_test'
+
 module PacioTestKit
   module PFE
     class SingleObservationGroup < Inferno::TestGroup
@@ -8,6 +11,9 @@ module PacioTestKit
       )
       description 'TODO: Add description'
       run_as_group
+
+      test from: :pacio_pfe_single_observation_read
+      test from: :pacio_pfe_single_observation_validation
     end
   end
 end

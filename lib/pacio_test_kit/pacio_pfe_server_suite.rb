@@ -1,3 +1,4 @@
+require_relative 'pfe/capability_statement_group'
 require_relative 'pfe/clinical_test_observation_group'
 require_relative 'pfe/collection_observation_group'
 require_relative 'pfe/condition_encounter_diagnosis_group'
@@ -35,8 +36,8 @@ module PacioTestKit
       title 'PFE FHIR API'
 
       group from: :pacio_pfe_capability_statement
-      group from: :pacio_pfe_single_observation
       group from: :pacio_pfe_clinical_test_observation
+      group from: :pacio_pfe_single_observation
       group from: :pacio_pfe_collection_observation
       group from: :pacio_pfe_condition_encounter_diagnosis
       group from: :pacio_pfe_condition_problems
