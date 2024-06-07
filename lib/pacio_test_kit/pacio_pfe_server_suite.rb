@@ -5,6 +5,7 @@ require_relative 'pfe/condition_problems_group'
 require_relative 'pfe/device_use_statement_group'
 require_relative 'pfe/diagnostic_report_narrative_history_group'
 require_relative 'pfe/diagnostic_report_note_exchange_group'
+require_relative 'pfe/error_handling_group'
 require_relative 'pfe/goal_group'
 require_relative 'pfe/service_request_group'
 require_relative 'pfe/single_observation_group'
@@ -30,15 +31,21 @@ module PacioTestKit
       end
     end
 
-    group from: :pacio_pfe_single_observation
-    group from: :pacio_pfe_clinical_test_observation
-    group from: :pacio_pfe_collection_observation
-    group from: :pacio_pfe_condition_encounter_diagnosis
-    group from: :pacio_pfe_condition_problems
-    group from: :pacio_pfe_diagnostic_report_narrative_history
-    group from: :pacio_pfe_diagnostic_report_note_exchange
-    group from: :pacio_pfe_device_use_statement
-    group from: :pacio_pfe_goal
-    group from: :pacio_pfe_service_request
+    group do
+      title 'PFE FHIR API'
+
+      group from: :pacio_pfe_capability_statement
+      group from: :pacio_pfe_single_observation
+      group from: :pacio_pfe_clinical_test_observation
+      group from: :pacio_pfe_collection_observation
+      group from: :pacio_pfe_condition_encounter_diagnosis
+      group from: :pacio_pfe_condition_problems
+      group from: :pacio_pfe_diagnostic_report_narrative_history
+      group from: :pacio_pfe_diagnostic_report_note_exchange
+      group from: :pacio_pfe_device_use_statement
+      group from: :pacio_pfe_goal
+      group from: :pacio_pfe_service_request
+      group from: :pacio_pfe_error_handling
+    end
   end
 end
