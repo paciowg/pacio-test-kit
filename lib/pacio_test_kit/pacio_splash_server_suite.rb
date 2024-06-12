@@ -12,7 +12,7 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs('hl7.fhir.us.pacio-splasch', 'hl7.fhir.us.core')
+      igs 'igs/splash-package.tgz'
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
