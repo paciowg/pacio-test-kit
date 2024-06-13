@@ -1,7 +1,31 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
+    
+    def create_and_validate_resources(resource_list, tag = '')
+      # resource_list is list of objects (don't flatten)
+      resource_list.each_with_index do |resource, index|
+        req_num = index + 1
 
+        # make FHIR resource object
+        if (resource_type == "Observation")
+          new_resource = FHIR::Observation.new(resource)
+        if (resource_type == "DeviceUseStatement")
+          new_resource = FHIR::DeviceUseStatement.new(resource)
+        if (resource_type == "DiagnosticReport")
+          new_resource = FHIR::DiagnosticReport.new(resource)
+
+        # send object to create on server
+        fhir_create(new_resource)
+
+        # validate the response
+        status = request.response[:status]
+        next unless validate_status(status, req_num)
+
+        # check that resource was succesfully created with read request
+        read_and_validate_resources(request.result_id)
+    end
+    
     def read_and_validate_resources(resource_ids, tag = '')
       resource_ids = [resource_ids].flatten
       resource_ids.each_with_index do |id, index|
