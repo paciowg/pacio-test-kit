@@ -1,3 +1,5 @@
+require_relative '../common_tests/read_test'
+
 module PacioTestKit
   module PFE
     class DiagnosticReportNarrativeHistoryGroup < Inferno::TestGroup
@@ -8,7 +10,23 @@ module PacioTestKit
       )
       description 'TODO: Add description.'
       optional
+
+      config options: {
+        resource_type: 'DiagnosticReport',
+        profile: 'PFENarrativeHistoryOfStatus'
+      }
       run_as_group
+
+      test from: :pacio_resource_read,
+           title: 'Server returns correct DiagnosticReport resource from DiagnosticReport read interaction',
+           config: {
+             inputs: {
+               resource_ids: {
+                 name: :diagnostic_report_narrative_history_resource_ids,
+                 title: 'ID(s) for PFENarrativeHistoryOfStatus resources present on the server'
+               }
+             }
+           }
     end
   end
 end
