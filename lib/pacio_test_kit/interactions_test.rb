@@ -1,12 +1,6 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
-    
-    def create_and_validate_resources(resource_list, tag = '')
-      # resource_list is list of objects (don't flatten)
-      resource_list.each_with_index do |resource, index|
-        req_num = index + 1
-
     def create_and_validate_resources(resource_list, tag = '')
       # resource_list is list of objects (don't flatten)
       resource_list.each_with_index do |resource, index|
