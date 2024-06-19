@@ -7,6 +7,11 @@ module PacioTestKit
       resource_list.each_with_index do |resource, index|
         req_num = index + 1
 
+    def create_and_validate_resources(resource_list, tag = '')
+      # resource_list is list of objects (don't flatten)
+      resource_list.each_with_index do |resource, index|
+        req_num = index + 1
+
         # make FHIR resource object
         if (resource_type == "Observation")
           new_resource = FHIR::Observation.new(resource)
@@ -24,8 +29,9 @@ module PacioTestKit
 
         # check that resource was succesfully created with read request
         read_and_validate_resources(request.result_id)
+
     end
-    
+
     def read_and_validate_resources(resource_ids, tag = '')
       resource_ids = [resource_ids].flatten
       resource_ids.each_with_index do |id, index|

@@ -1,5 +1,5 @@
 require_relative '../common_tests/read_test'
-require_relative 'clinical_test_observation/clinical_test_observation_create_test'
+require_relative '../common_tests/create_test'
 require_relative 'clinical_test_observation/clinical_test_observation_update_test'
 require_relative 'clinical_test_observation/clinical_test_observation_validation_test'
 
@@ -20,7 +20,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
-      test from: :pacio_pfe_clinical_test_observation_create
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Observation resource from Observation create interaction',
+           config: {
+             inputs: {
+               resource_list: {
+                 name: :clinical_test_observation_resource_list,
+                 title: 'Resources(s) for PFEClinicalTestObservation resources created on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Observation resource from Observation read interaction',
            config: {
