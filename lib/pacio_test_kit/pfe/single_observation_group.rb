@@ -12,6 +12,15 @@ module PacioTestKit
       )
       description 'TODO: Add description'
 
+      let(:default_example_resource) do
+        example_files = ['Observation-1.json']
+
+        example_files.each_with_index do |file, index|
+          example_files[index] = JSON.parse(File.read(File.join(__dir__, '..', 'example_resources', 'pfe', 'single_observation_examples', file)))
+        
+        return example_files
+      end
+
       config options: {
         resource_type: 'Observation',
         profile: 'PFESingleObservation'
@@ -24,8 +33,8 @@ module PacioTestKit
            config: {
              inputs: {
                resource_list: {
-                 name: :single_observation_resource_list,
-                 title: 'Resources(s) for PFESingleObservation resources created on the server'
+                 name: :default_example_resource,
+                 title: 'Default resource(s) for PFESingleObservation to create on the server'
                }
              }
            }
