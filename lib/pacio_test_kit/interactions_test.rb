@@ -7,12 +7,15 @@ module PacioTestKit
         req_num = index + 1
 
         # make FHIR resource object
-        if (resource_type == "Observation")
+        if resource_type == 'Observation'
           new_resource = FHIR::Observation.new(resource)
-        if (resource_type == "DeviceUseStatement")
+        end
+        if resource_type == 'DeviceUseStatement'
           new_resource = FHIR::DeviceUseStatement.new(resource)
-        if (resource_type == "DiagnosticReport")
+        end
+        if resource_type == 'DiagnosticReport'
           new_resource = FHIR::DiagnosticReport.new(resource)
+        end
 
         # send object to create on server
         fhir_create(new_resource)
@@ -23,7 +26,7 @@ module PacioTestKit
 
         # check that resource was succesfully created with read request
         read_and_validate_resources(request.result_id)
-
+      end
     end
 
     def read_and_validate_resources(resource_ids, tag = '')
