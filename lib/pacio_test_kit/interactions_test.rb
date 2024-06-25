@@ -7,24 +7,30 @@ module PacioTestKit
         req_num = index + 1
 
         # make FHIR resource object
-        if resource_type == 'Observation'
+        case resource_type
+        when resource_type == 'Observation'
           new_resource = FHIR::Observation.new(resource)
-        end
-        if resource_type == 'DeviceUseStatement'
+        when resource_type == 'DeviceUseStatement'
           new_resource = FHIR::DeviceUseStatement.new(resource)
-        end
-        if resource_type == 'DiagnosticReport'
+        when resource_type == 'DiagnosticReport'
           new_resource = FHIR::DiagnosticReport.new(resource)
+        else
+          no_resource_created_message(resource_type, req_num)
         end
 
         # send object to create on server
         fhir_create(new_resource)
 
-        # validate the response
+        # check 1: validate the resource from the request.response itself
         status = request.response[:status]
         next unless validate_status(status, req_num)
+        next unless validate_json(request.response[:response_body], req_num)
+        next unless validate_resource_type(request, req_num)
+        # skip test checking id
+        next unless validate_resource_creation_time(request, req_num)
+        next unless validate_resource_body(request.response[:request_body], request.response[:response_body], req_num)
 
-        # check that resource was succesfully created with read request
+        # check 2: validate the resource was created by performing a read request
         read_and_validate_resources(request.result_id)
       end
     end
@@ -80,6 +86,18 @@ module PacioTestKit
       add_message('error', bad_resource_id_message(id, req_num))
     end
 
+    def validate_resource_creation_time(create_request, req_num)
+      return if create_request.response[:created_at].present?
+
+      add_message('error', no_time_created_message(create_request, req_num))
+    end
+
+    def validate_resource_body(create_request_body, create_response_body, req_num)
+      return if create_request_body == create_response_body
+
+      add_message('error', no_matching_json_message(create_request_body, create_response_body, req_num))
+    end
+
     def valid_json?(json)
       JSON.parse(json)
       true
@@ -98,8 +116,24 @@ module PacioTestKit
         "`#{resource.resourceType.inspect}`"
     end
 
+    def no_time_created_message(create_request, request_num = nil)
+      prefix = request_num.present? ? "Request-#{request_num}: " : ''
+      "#{prefix}Expected resource created to have creation time: `#{create_request.inspect}`"
+    end
+
+    def no_matching_json_message(create_request_body, create_response_body, request_num = nil)
+      prefix = request_num.present? ? "Request-#{request_num}: " : ''
+      "#{prefix}Expected resource to have request body: `#{create_request_body.inspect}`, but found " \
+        "`#{create_response_body.inspect}`"
+    end
+
     def no_error_validation(message)
       assert messages.none? { |msg| msg[:type] == 'error' }, message
+    end
+
+    def no_resource_created_message(received_resource_type, request_num = nil)
+      prefix = request_num.present? ? "Request-#{request_num}: " : ''
+      "#{prefix}Unable to create resource from unknown FHIR resource. Found type: `#{received_resource_type.inspect}`"
     end
   end
 end
