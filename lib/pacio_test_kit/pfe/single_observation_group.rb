@@ -17,7 +17,7 @@ module PacioTestKit
 
         example_files.each_with_index do |file, index|
           example_files[index] = JSON.parse(File.read(File.join(__dir__, '..', 'example_resources', 'pfe', 'single_observation_examples', file)))
-        
+        end
         return example_files
       end
 
