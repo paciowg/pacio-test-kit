@@ -8,18 +8,16 @@ module PacioTestKit
     id :pacio_resource_create
     description 'A server SHALL support the create interaction.'
 
-    input :resource_list,
-          title: "Default resource(s) for #{config.options[:profile]} created on the server",
-          description: 'A default reference value is provided.',
-          default: :default_example_resource,
-          locked: true
-
     def resource_type
       config.options[:resource_type]
     end
 
     def tag
       config.options[:profile]
+    end
+
+    def default_example_resource
+      config.options[:example_resource]
     end
 
     run do

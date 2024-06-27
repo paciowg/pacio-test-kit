@@ -12,32 +12,16 @@ module PacioTestKit
       )
       description 'TODO: Add description'
 
-      let(:default_example_resource) do
-        example_files = ['Observation-1.json']
-
-        example_files.each_with_index do |file, index|
-          example_files[index] = JSON.parse(File.read(File.join(__dir__, '..', 'example_resources', 'pfe', 'single_observation_examples', file)))
-        end
-        return example_files
-      end
-
       config options: {
         resource_type: 'Observation',
-        profile: 'PFESingleObservation'
+        profile: 'PFESingleObservation',
+        example_resource: JSON.parse(File.read(File.join(__dir__, '..', 'example_resources', 'pfe', 'single_observation_examples', 'Observation-1.json')))
       }
       run_as_group
       input_order :url
 
       test from: :pacio_resource_create,
-           title: 'Server creates correct Observation resource from Observation create interaction',
-           config: {
-             inputs: {
-               resource_list: {
-                 name: :default_example_resource,
-                 title: 'Default resource(s) for PFESingleObservation to create on the server'
-               }
-             }
-           }
+           title: 'Server creates correct Observation resource from Observation create interaction'
       test from: :pacio_resource_read,
            title: 'Server returns correct Observation resource from Observation read interaction',
            config: {
