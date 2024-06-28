@@ -15,7 +15,8 @@ module PacioTestKit
       config options: {
         resource_type: 'Observation',
         profile: 'PFESingleObservation',
-        example_resource: JSON.parse(File.read(File.join(__dir__, '..', 'example_resources', 'pfe', 'single_observation_examples', 'Observation-1.json')))
+        example_resource: JSON.parse(File.read(File.join(__dir__, '..', 'resources', 'pfe',
+                                                         'single_observation_resource.json')))
       }
       run_as_group
       input_order :url

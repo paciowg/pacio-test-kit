@@ -1,7 +1,7 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
-    def create_and_validate_resources(resource, tag = '')
+    def create_and_validate_resources(_resource, _tag = '')
 
       # make FHIR resource object
       new_resource = new Object.const_get(resource_type)
@@ -14,24 +14,24 @@ module PacioTestKit
       headers = request.response[:headers]
 
       # create SHALL return status and headers
-      validate_status("create", status, req_num)
+      validate_status('create', status, req_num)
       validate_headers(headers, req_num)
-      
     end
 
     def validate_headers(headers, req_num)
       headers.each_with_index do |id, index|
-        
-        if headers[i][:name] == "Location"
-          location_id = headers[i][:id]
-          location_vid =  headers[i][:id][:_history][:vid]
-        
-          # create response shall contain location header (id, vid)
-          return if location_id.present? && location_vid.present?
-          
-          status_error_msg = "Request-#{req_num}: Expected Location header: id or vid not found."
-          add_message('error', status_error_msg)
+        next unless headers[i][:name] == 'Location'
 
+        location_id = headers[i][:id]
+        location_vid = headers[i][:id][:_history][:vid]
+
+        # create response shall contain location header (id, vid)
+        next unless location_id.present? && location_vid.present?
+
+        status_error_msg = "Request-#{req_num}: Expected Location header: id or vid not found."
+        add_message('error', status_error_msg)
+      end
+    end
 
     def read_and_validate_resources(resource_ids, tag = '')
       resource_ids = [resource_ids].flatten
@@ -40,7 +40,7 @@ module PacioTestKit
         fhir_read(resource_type, id, tags: [tag])
 
         status = request.response[:status]
-        next unless validate_status("read", status, req_num)
+        next unless validate_status('read', status, req_num)
 
         next unless validate_json(request.response_body, req_num)
 
@@ -51,16 +51,17 @@ module PacioTestKit
     end
 
     def validate_status(method_type, status, req_num)
-
-      if method_type == "read"
+      if method_type == 'read'
         passing_num = 200
-      elsif method_type == "create"
+      elsif method_type == 'create'
         passing_num = 201
-      
+      end
+
       if status == passing_num
         true
       else
-        status_error_msg = "Request-#{req_num}: Unexpected response status:#{passing_num} expected, but received #{status}"
+        status_error_msg = "Request-#{req_num}: Unexpected response status:#{passing_num} expected, " \
+                           "but received #{status}"
         add_message('error', status_error_msg)
         false
       end
