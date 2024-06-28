@@ -2,7 +2,6 @@ module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
     def create_and_validate_resources(_resource, _tag = '')
-
       # make FHIR resource object
       new_resource = new Object.const_get(resource_type)
 
@@ -19,7 +18,7 @@ module PacioTestKit
     end
 
     def validate_headers(headers, req_num)
-      headers.each_with_index do |id, index|
+      headers.each_with_index do |_id, _index|
         next unless headers[i][:name] == 'Location'
 
         location_id = headers[i][:id]
