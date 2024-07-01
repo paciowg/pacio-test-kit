@@ -1,4 +1,5 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/create_test'
 require_relative 'collection_observation/collection_observation_validation_test'
 
 module PacioTestKit
@@ -17,6 +18,16 @@ module PacioTestKit
       }
       run_as_group
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Observation resource from Observation create interaction',
+           config: {
+             inputs: {
+               resource_inputs: {
+                 name: :collection_observation_resource_list,
+                 title: 'Resources(s) for PFECollection resources created on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Observation resource from Observation read interaction',
            config: {
