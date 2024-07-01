@@ -23,7 +23,7 @@ module PacioTestKit
            title: 'Server creates correct DeviceUseStatement resource from DeviceUseStatement create interaction',
            config: {
              inputs: {
-               resource_list: {
+               resource_inputs: {
                  name: :device_use_statement_resource_list,
                  title: 'Resources(s) for PFEUseOfDevice resources created on the server'
                }

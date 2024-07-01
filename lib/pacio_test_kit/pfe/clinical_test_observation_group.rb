@@ -24,7 +24,7 @@ module PacioTestKit
            title: 'Server creates correct Observation resource from Observation create interaction',
            config: {
              inputs: {
-               resource_list: {
+               resource_inputs: {
                  name: :clinical_test_observation_resource_list,
                  title: 'Resources(s) for PFEClinicalTestObservation resources created on the server'
                }

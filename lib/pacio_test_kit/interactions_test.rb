@@ -1,35 +1,48 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
-    def create_and_validate_resources(_resource, _tag = '')
-      # make FHIR resource object
-      new_resource = new Object.const_get(resource_type)
+    def create_and_validate_resources(resource_tocreate, _tag = '')
+      resource_list = [resource_tocreate]
+      [resource_list].each do
+        resource_tocreate = JSON.parse(resource_tocreate)
+        fhir_class_name = "FHIR::#{resource_type}"
+        fhir_class_object = Object.const_get(fhir_class_name)
+        fhir_resource = fhir_class_object.new(resource_tocreate)
 
-      # send object to create on server
-      fhir_create(new_resource)
+        fhir_create(fhir_resource)
 
-      # validate the resource from the request.response
-      status = request.response[:status]
-      headers = request.response[:headers]
+        next unless validate_status('create', request.response[:status])
 
-      # create SHALL return status and headers
-      validate_status('create', status, req_num)
-      validate_headers(headers, req_num)
+        next unless validate_json(request.response_body)
+
+        next unless validate_resource_type(resource)
+
+        next unless validate_headers(request.response[:headers])
+
+        validate_fields_updated(request.response)
+      end
     end
 
-    def validate_headers(headers, req_num)
-      headers.each_with_index do |_id, _index|
-        next unless headers[i][:name] == 'Location'
+    def validate_headers(headers, req_num = '')
+      return false unless headers.present?
 
-        location_id = headers[i][:id]
-        location_vid = headers[i][:id][:_history][:vid]
+      headers.each_with_index do |_id, index|
+        header = headers[index]
+        header_hash = header.to_hash
 
-        # create response shall contain location header (id, vid)
-        next unless location_id.present? && location_vid.present?
+        next unless header_hash[:name] == 'Location'
+        return true if !header_hash[:id].nil? && !header_hash[:id][:_history][:vid].nil?
 
-        status_error_msg = "Request-#{req_num}: Expected Location header: id or vid not found."
+        status_error_msg = "Request-#{req_num}: Received Location but required headers (id, vid) not found, " \
+                           "found #{header_hash}."
         add_message('error', status_error_msg)
+        return false
       end
+      status_error_msg = "Request-#{req_num}: Expected Location and required headers (id, vid) not found, " \
+                         "found #{headers}."
+      add_message('error', status_error_msg)
+
+      false
     end
 
     def read_and_validate_resources(resource_ids, tag = '')
@@ -49,7 +62,7 @@ module PacioTestKit
       end
     end
 
-    def validate_status(method_type, status, req_num)
+    def validate_status(method_type, status, req_num = '')
       if method_type == 'read'
         passing_num = 200
       elsif method_type == 'create'
@@ -59,14 +72,14 @@ module PacioTestKit
       if status == passing_num
         true
       else
-        status_error_msg = "Request-#{req_num}: Unexpected response status:#{passing_num} expected, " \
+        status_error_msg = "Request-#{req_num}: Unexpected response status: expected #{passing_num}, " \
                            "but received #{status}"
         add_message('error', status_error_msg)
         false
       end
     end
 
-    def validate_json(response_body, req_num)
+    def validate_json(response_body, req_num = '')
       if valid_json?(response_body)
         true
       else
@@ -75,7 +88,8 @@ module PacioTestKit
       end
     end
 
-    def validate_resource_type(resource, req_num)
+    def validate_resource_type(resource, req_num = '')
+      print('SHOULD BE HERE', resource)
       if resource.resourceType == resource_type
         true
       else
@@ -90,23 +104,27 @@ module PacioTestKit
       add_message('error', bad_resource_id_message(id, req_num))
     end
 
-    def validate_resource_creation_time(create_request, req_num)
-      return if create_request.response[:created_at].present?
-
-      add_message('error', no_time_created_message(create_request, req_num))
-    end
-
-    def validate_resource_body(create_request_body, create_response_body, req_num)
-      return if create_request_body == create_response_body
-
-      add_message('error', no_matching_json_message(create_request_body, create_response_body, req_num))
-    end
-
     def valid_json?(json)
       JSON.parse(json)
       true
     rescue JSON::ParserError
       false
+    end
+
+    def validate_fields_updated(response)
+      prepost_id = 'PFEIG-CSC-Hospital-MMSE-1-Ob-Question-31'
+      postpost_id = response[:id].present? ? response[:id] : ''
+      pre_versionid = ''
+      print('HERE IS THE RESPONSE IN VALIDATE FIELDS', response)
+      post_versionid = response[:meta].present? ? response[:meta].versionId : ''
+      pre_lastupdated = ''
+      post_lastupdated = response[:meta].present? ? response[:meta].lastUpdated : ''
+
+      if (prepost_id != postpost_id) && (pre_versionid != post_versionid) && (pre_lastupdated != post_lastupdated)
+        return true
+      end
+
+      missing_response_fields(postpost_id, post_versionid, post_lastupdated)
     end
 
     def bad_resource_id_message(expected_id, request_num = nil)
@@ -118,11 +136,6 @@ module PacioTestKit
       prefix = request_num.present? ? "Request-#{request_num}: " : ''
       "#{prefix}Expected resource type to be: `#{expected_resource_type.inspect}`, but found " \
         "`#{resource.resourceType.inspect}`"
-    end
-
-    def no_time_created_message(create_request, request_num = nil)
-      prefix = request_num.present? ? "Request-#{request_num}: " : ''
-      "#{prefix}Expected resource created to have creation time: `#{create_request.inspect}`"
     end
 
     def no_matching_json_message(create_request_body, create_response_body, request_num = nil)
@@ -138,6 +151,12 @@ module PacioTestKit
     def no_resource_created_message(received_resource_type, request_num = nil)
       prefix = request_num.present? ? "Request-#{request_num}: " : ''
       "#{prefix}Unable to create resource from unknown FHIR resource. Found type: `#{received_resource_type.inspect}`"
+    end
+
+    def missing_response_fields(response_id, meta_versionid, meta_lastupdated, request_num = nil)
+      prefix = request_num.present? ? "Request-#{request_num}: " : ''
+      "#{prefix}Expected resource to have id, meta.versionId, and meta.lastUpdated, but found `#{response_id}`, " \
+        "`#{meta_versionid}` and, `#{meta_lastupdated}`"
     end
   end
 end

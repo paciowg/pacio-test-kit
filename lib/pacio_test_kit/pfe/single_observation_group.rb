@@ -14,15 +14,21 @@ module PacioTestKit
 
       config options: {
         resource_type: 'Observation',
-        profile: 'PFESingleObservation',
-        example_resource: JSON.parse(File.read(File.join(__dir__, '..', 'resources', 'pfe',
-                                                         'single_observation_resource.json')))
+        profile: 'PFESingleObservation'
       }
       run_as_group
       input_order :url
 
       test from: :pacio_resource_create,
-           title: 'Server creates correct Observation resource from Observation create interaction'
+           title: 'Server creates correct Observation resource from Observation create interaction',
+           config: {
+             inputs: {
+               resource_inputs: {
+                 name: :single_observation_resource_list,
+                 title: 'Default resource for PFESingleObservation to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Observation resource from Observation read interaction',
            config: {
