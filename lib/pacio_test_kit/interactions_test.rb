@@ -89,7 +89,6 @@ module PacioTestKit
     end
 
     def validate_resource_type(resource, req_num = '')
-      print('SHOULD BE HERE', resource)
       if resource.resourceType == resource_type
         true
       else
@@ -115,7 +114,6 @@ module PacioTestKit
       prepost_id = 'PFEIG-CSC-Hospital-MMSE-1-Ob-Question-31'
       postpost_id = response[:id].present? ? response[:id] : ''
       pre_versionid = ''
-      print('HERE IS THE RESPONSE IN VALIDATE FIELDS', response)
       post_versionid = response[:meta].present? ? response[:meta].versionId : ''
       pre_lastupdated = ''
       post_lastupdated = response[:meta].present? ? response[:meta].lastUpdated : ''
