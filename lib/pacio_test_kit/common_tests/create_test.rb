@@ -8,6 +8,10 @@ module PacioTestKit
     id :pacio_resource_create
     description 'A server SHALL support the create interaction.'
 
+    input :resource_inputs,
+          title: 'Resource to create on the server',
+          description: 'Provide a json resource to create on the server.'
+
     def resource_type
       config.options[:resource_type]
     end
@@ -16,14 +20,9 @@ module PacioTestKit
       config.options[:profile]
     end
 
-    def default_example_resource
-      config.options[:example_resource]
-    end
-
     run do
-      create_and_validate_resources(default_example_resource, tag)
-
-      no_error_validation("Fail to read #{resource_type} resource(s). See error messages for details.")
+      create_and_validate_resources(resource_inputs, tag)
+      no_error_validation("Failed to create #{resource_type} resource(s). See error messages for details.")
     end
   end
 end
