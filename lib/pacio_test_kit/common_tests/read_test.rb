@@ -9,7 +9,7 @@ module PacioTestKit
     description 'A server SHALL support the read interaction.'
 
     input :resource_ids,
-          title: "ID(s) for #{config.options[:profile]} resources present on the server",
+          title: 'ID(s) for a given profile resources present on the server',
           description: 'If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3'
 
     def resource_type
