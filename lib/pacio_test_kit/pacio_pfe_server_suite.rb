@@ -8,6 +8,7 @@ require_relative 'pfe/diagnostic_report_narrative_history_group'
 require_relative 'pfe/diagnostic_report_note_exchange_group'
 require_relative 'pfe/error_handling_group'
 require_relative 'pfe/goal_group'
+require_relative 'pfe/nutrition_order_group'
 require_relative 'pfe/service_request_group'
 require_relative 'pfe/single_observation_group'
 
@@ -45,6 +46,7 @@ module PacioTestKit
       group from: :pacio_pfe_diagnostic_report_note_exchange
       group from: :pacio_pfe_device_use_statement
       group from: :pacio_pfe_goal
+      group from: :pacio_pfe_nutrition_order
       group from: :pacio_pfe_service_request
       group from: :pacio_pfe_error_handling
     end
