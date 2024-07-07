@@ -19,6 +19,7 @@ module PacioTestKit
 
       test from: :pacio_resource_read,
            title: 'Server returns correct Goal resource from Goal read interaction',
+           optional: true,
            config: {
              inputs: {
                resource_ids: {
