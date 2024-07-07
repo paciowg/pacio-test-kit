@@ -17,6 +17,7 @@ module PacioTestKit
         profile: 'PFEConditionProblemsHealthConcerns'
       }
       run_as_group
+      input_order :url
 
       test from: :pacio_resource_read,
            title: 'Server returns correct Condition resource from Condition read interaction',

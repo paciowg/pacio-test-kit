@@ -18,6 +18,7 @@ module PacioTestKit
         profile: 'PFEClinicalTestObservation'
       }
       run_as_group
+      input_order :url
 
       test from: :pacio_pfe_clinical_test_observation_create
       test from: :pacio_resource_read,

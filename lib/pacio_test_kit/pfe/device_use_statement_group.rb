@@ -16,6 +16,7 @@ module PacioTestKit
         profile: 'PFEUseOfDevice'
       }
       run_as_group
+      input_order :url
 
       test from: :pacio_resource_read,
            title: 'Server returns correct DeviceUseStatement resource from DeviceUseStatement read interaction',
