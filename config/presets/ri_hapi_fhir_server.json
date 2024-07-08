@@ -1,0 +1,90 @@
+{
+  "title": "HAPI FHIR Server RI",
+  "id": "hapi-fhir-server-ri",
+  "test_suite_id": "pacio_pfe_server",
+  "inputs": [
+    {
+      "name": "url",
+      "title": "FHIR Server Base URL",
+      "type": "text",
+      "value": "http://hapi.fhir.org/baseR4"
+    },
+    {
+      "name": "clinical_test_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEClinicalTestObservation resources present on the server",
+      "type": "text",
+      "value": "PFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250"
+    },
+    {
+      "name": "single_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFESingleObservation resources present on the server",
+      "type": "text",
+      "value": "PFEIG-CSC-SNF-BIMS-1-Ob-Question-3, PFEIG-CSC-SNF-BIMS-1-Ob-Question-4, PFEIG-CSC-SNF-BIMS-1-Ob-Question-5"
+    },
+    {
+      "name": "collection_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFECollection resources present on the server",
+      "type": "text",
+      "value": "PFEIG-CSC-Hospital-MMSE-1, PFEIG-CSC-SNF-BIMS-1, PFEIG-FSC-Hospital-Admission-Mobility-1"
+    },
+    {
+      "name": "condition_encounter_diagnosis_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEConditionEncounterDiagnosis resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Condition-Encounter-Diagnosis-1, PFEIG-Condition-Encounter-Diagnosis-2"
+    },
+    {
+      "name": "condition_problems_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEConditionProblemsHealthConcerns resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Condition-Problems-Health-Concerns-1, PFEIG-Condition-Problems-Health-Concerns-2"
+    },
+    {
+      "name": "diagnostic_report_narrative_history_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFENarrativeHistoryOfStatus resources present on the server",
+      "type": "text",
+      "value": " PFEIG-Narrative-History-Cognitive-Status-1, PFEIG-Narrative-History-Functional-Status-1"
+    },
+    {
+      "name": "diagnostic_report_note_exchange_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEDiagnosticReportNoteExchange resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Diagnostic-Report-Note-Exchange-1, PFEIG-Diagnostic-Report-Note-Exchange-2"
+    },
+    {
+      "name": "device_use_statement_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEUseOfDevice resources present on the server",
+      "type": "text",
+      "value": "PFEIG-FSC-Hospital-Discharge-Mobility-1-UseOfDevice-1, PFEIG-FSC-Hospital-Discharge-Mobility-1-UseOfDevice-2, PFEIG-FSC-Hospital-Discharge-Mobility-1-UseOfDevice-3"
+    },
+    {
+      "name": "goal_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEGoal resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Goal-1, PFEIG-Goal-2"
+    },
+    {
+      "name": "nutrition_order_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFENutritionOrder resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Nutrition-Order-1, PFEIG-Nutrition-Order-2"
+    },
+    {
+      "name": "service_request_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEServiceRequest resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Service-Request-1, PFEIG-Service-Request-2"
+    }
+  ]
+}
