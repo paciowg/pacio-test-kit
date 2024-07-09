@@ -1,48 +1,26 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
-    def create_and_validate_resources(resource_tocreate, _tag = '')
-      resource_list = [resource_tocreate]
-      [resource_list].each do
-        resource_tocreate = JSON.parse(resource_tocreate)
-        fhir_class_name = "FHIR::#{resource_type}"
-        fhir_class_object = Object.const_get(fhir_class_name)
-        fhir_resource = fhir_class_object.new(resource_tocreate)
+    def create_and_validate_resource(resource_to_create)
+      fhir_resource = FHIR.from_contents(resource_to_create.to_json)
+      assert(fhir_resource.present?, "The FHIR resource does not have a 'resourceType' field")
+      assert_resource_type(resource_type, resource: fhir_resource)
 
-        fhir_create(fhir_resource)
-
-        next unless validate_status('create', request.response[:status])
-
-        next unless validate_json(request.response_body)
-
-        next unless validate_resource_type(resource)
-
-        next unless validate_headers(request.response[:headers])
-
-        validate_fields_updated(request.response)
-      end
+      fhir_create(fhir_resource)
+      assert_response_status(201)
+      assert_valid_json(request.response_body, 'create response resource SHALL return a valid json')
+      assert_resource_type(resource_type)
+      validate_response_metadata(request.response_body, request.request_body, 'create')
+      validate_create_response_headers(request.headers, resource_type, request.resource)
     end
 
-    def validate_headers(headers, req_num = '')
-      return false unless headers.present?
+    def validate_create_response_headers(headers, resource_type, response_resource)
+      location_header = headers.find { |header| header.name.downcase == 'location' }
+      assert(location_header.present?, 'Server SHALL create a Location header for the newly created resource.')
 
-      headers.each_with_index do |_id, index|
-        header = headers[index]
-        header_hash = header.to_hash
-
-        next unless header_hash[:name] == 'Location'
-        return true if !header_hash[:id].nil? && !header_hash[:id][:_history][:vid].nil?
-
-        status_error_msg = "Request-#{req_num}: Received Location but required headers (id, vid) not found, " \
-                           "found #{header_hash}."
-        add_message('error', status_error_msg)
-        return false
-      end
-      status_error_msg = "Request-#{req_num}: Expected Location and required headers (id, vid) not found, " \
-                         "found #{headers}."
-      add_message('error', status_error_msg)
-
-      false
+      location_header_value = location_header.value
+      assert((location_header_value.include? resource_type) == true, 'Server SHALL create a location header with the resourceType of the newly created resource.')
+      assert((location_header_value.include? response_resource.id) == true, 'Server SHALL create a location header with the id of the newly created resource.')
     end
 
     def read_and_validate_resources(resource_ids, tag = '')
@@ -62,23 +40,6 @@ module PacioTestKit
       end
     end
 
-    def validate_status(method_type, status, req_num = '')
-      if method_type == 'read'
-        passing_num = 200
-      elsif method_type == 'create'
-        passing_num = 201
-      end
-
-      if status == passing_num
-        true
-      else
-        status_error_msg = "Request-#{req_num}: Unexpected response status: expected #{passing_num}, " \
-                           "but received #{status}"
-        add_message('error', status_error_msg)
-        false
-      end
-    end
-
     def validate_json(response_body, req_num = '')
       if valid_json?(response_body)
         true
@@ -92,7 +53,7 @@ module PacioTestKit
       if resource.resourceType == resource_type
         true
       else
-        add_message('error', bad_resource_type_message(resource_type, req_num))
+        add_message('error', wrong_resource_type_message(resource_type, req_num))
         false
       end
     end
@@ -110,19 +71,27 @@ module PacioTestKit
       false
     end
 
-    def validate_fields_updated(response)
-      prepost_id = 'PFEIG-CSC-Hospital-MMSE-1-Ob-Question-31'
-      postpost_id = response[:id].present? ? response[:id] : ''
-      pre_versionid = ''
-      post_versionid = response[:meta].present? ? response[:meta].versionId : ''
-      pre_lastupdated = ''
-      post_lastupdated = response[:meta].present? ? response[:meta].lastUpdated : ''
+    def validate_response_metadata(response_resource, submitted_resource, method_type)
+      if method_type == 'create'
+        response = JSON.parse(response_resource)
+        submitted = JSON.parse(submitted_resource)
 
-      if (prepost_id != postpost_id) && (pre_versionid != post_versionid) && (pre_lastupdated != post_lastupdated)
-        return true
+        assert((response['id']).present?, 'Server SHALL populate the id for the newly created resource.')
+        assert(response['id'] != submitted['id'], 'Server response resource and submitted resource SHALL have different ids for the newly created resource.')
+
+        # if both blank, throw error; if both not blank, check if equal
+        if response['meta']['versionId'].blank? && submitted['meta']['versionId'].blank?
+          assert(!response['meta']['versionId'].blank? && !submitted['meta']['versionId'].blank?, 'Server response resource and submitted resource SHALL have different versionId fields for the newly created resource.')
+        elsif !response['meta']['versionId'].blank? && !submitted['meta']['versionId'].blank?
+          assert((response['meta']['versionId'] != submitted['meta']['versionId']), 'Server response resource and submitted resource SHALL have different versionId fields for the newly created resource.')
+        end
+
+        if response['meta']['lastUpdated'].blank? && submitted['meta']['lastUpdated'].blank?
+          assert(!response['meta']['lastUpdated'].blank? && !submitted['meta']['lastUpdated'].blank?, 'Server response resource and submitted resource SHALL have different lastUpdated fields for the newly created resource.')
+        elsif !response['meta']['lastUpdated'].blank? && !submitted['meta']['lastUpdated'].blank?
+          assert(response['meta']['lastUpdated'] != submitted['meta']['lastUpdated'], 'Server response resource and submitted resource SHALL have different lastUpdated fields for the newly created resource.')
+        end
       end
-
-      missing_response_fields(postpost_id, post_versionid, post_lastupdated)
     end
 
     def bad_resource_id_message(expected_id, request_num = nil)
@@ -130,31 +99,14 @@ module PacioTestKit
       "#{prefix}Expected resource to have id `#{expected_id.inspect}`, but found `#{resource.id.inspect}`"
     end
 
-    def bad_resource_type_message(expected_resource_type, request_num = nil)
+    def wrong_resource_type_message(expected_resource_type, request_num = nil)
       prefix = request_num.present? ? "Request-#{request_num}: " : ''
       "#{prefix}Expected resource type to be: `#{expected_resource_type.inspect}`, but found " \
         "`#{resource.resourceType.inspect}`"
     end
 
-    def no_matching_json_message(create_request_body, create_response_body, request_num = nil)
-      prefix = request_num.present? ? "Request-#{request_num}: " : ''
-      "#{prefix}Expected resource to have request body: `#{create_request_body.inspect}`, but found " \
-        "`#{create_response_body.inspect}`"
-    end
-
     def no_error_validation(message)
       assert messages.none? { |msg| msg[:type] == 'error' }, message
-    end
-
-    def no_resource_created_message(received_resource_type, request_num = nil)
-      prefix = request_num.present? ? "Request-#{request_num}: " : ''
-      "#{prefix}Unable to create resource from unknown FHIR resource. Found type: `#{received_resource_type.inspect}`"
-    end
-
-    def missing_response_fields(response_id, meta_versionid, meta_lastupdated, request_num = nil)
-      prefix = request_num.present? ? "Request-#{request_num}: " : ''
-      "#{prefix}Expected resource to have id, meta.versionId, and meta.lastUpdated, but found `#{response_id}`, " \
-        "`#{meta_versionid}` and, `#{meta_lastupdated}`"
     end
   end
 end

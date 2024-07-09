@@ -26,8 +26,20 @@ RSpec.describe PacioTestKit::CreateTest do
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
     )
   end
-  # let(:resource_header) { Inferno::Entities::Header }
-  # let(:resource_header_params) {resource_header.id = 'example_id', resource_header.vid = 'example_vid', }
+  let(:observation_json_returned) do
+    JSON.parse(
+      File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation_response.json'))
+    )
+  end
+  let(:response_headers) do
+    { 'Location' => "#{url}/#{resource_type}/456" }
+  end
+  let(:wrong_resource_response_headers) do
+    { 'Location' => "#{url}/Encounter/456" }
+  end
+  let(:wrong_id_response_headers) do
+    { 'Location' => "#{url}/#{resource_type}/098" }
+  end
 
   def run(runnable, inputs = {})
     test_run_params = { test_session_id: test_session.id }.merge(runnable.reference_hash)
@@ -50,69 +62,124 @@ RSpec.describe PacioTestKit::CreateTest do
       .first
   end
 
-  it 'passes when request is successful and resource is created' do
+  it 'fails when the submitted resource is not a valid json' do
     stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: observation.to_json) # headers: resource_header
+      .to_return(status: 201, body: observation_json_returned.to_json, headers: response_headers)
 
-    result = run(runnable, resource_inputs: observation.to_json, url:)
+    result = run(runnable, resource_input: '[[', url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Invalid JSON./)
+  end
+
+  it 'fails when the submitted resource does not include the resourceType field' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: observation_json_returned.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: { 'id' => '123' }.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/The FHIR resource does not have a 'resourceType' field/)
+  end
+
+  it 'fails when the submitted resource type is not the expected resource type' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: {}.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: { resourceType: 'Encounter' }.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected resource type/)
+  end
+
+  it 'fails if the response status is not 201' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 500, body: observation_json_returned.to_json, headers: response_headers)
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+  end
+
+  it 'fails if the response body is not a valid json' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: '[[', headers: response_headers)
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+  end
+
+  it 'fails if the response resource type is not the expected type' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Encounter' }.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected resource type/)
+  end
+
+  it 'fails if the response resource id is missing' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server SHALL populate the id for the newly created resource./)
+  end
+
+  it 'fails if the response resource id is the same as the submitted resource id' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '123', meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server response resource and submitted resource SHALL have different ids for the newly created resource./)
+  end
+
+  it 'fails if the response resource meta.versionId is present and is the same as the submitted resource meta.versionId' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '567', meta: { lastUpdated: '', versionId: '' } }.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server response resource and submitted resource SHALL have different versionId fields for the newly created resource./)
+  end
+
+  it 'fails if the response resource meta.lastUpdated is present and is the same as the submitted resource meta.lastUpdated' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '567', meta: { lastUpdated: '', versionId: 'another' } }.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server response resource and submitted resource SHALL have different lastUpdated fields for the newly created resource./)
+  end
+
+  it 'fails if location header is not returned' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, headers: [])
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server SHALL create a Location header for the newly created resource/)
+  end
+
+  it 'fails if the location header value does not include the correct resource type' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, headers: wrong_resource_response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server SHALL create a location header with the resourceType of the newly created resource/)
+  end
+
+  it 'fails if the location header value does not include the correct resource id' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, headers: wrong_id_response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Server SHALL create a location header with the id of the newly created resource/)
+  end
+
+  it 'passes when resource is successfully created with the correct metadata and location header is returned' do
+    stub_request(:post, "#{url}/#{resource_type}")
+      .to_return(status: 201, body: { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, headers: response_headers)
+
+    result = run(runnable, resource_input: observation.to_json, url:)
     expect(result.result).to eq('pass')
-  end
-
-  it 'fails when response status is not 201' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 500, body: {}.to_json, headers: {}) # headers should not be checked if not 201 status
-
-    result = run(runnable, resource_inputs: observation.to_json, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/Unexpected response status: expected 201/)
-  end
-
-  it 'fails when request is successful but resource created has response body that is not a valid json' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: '[[') # headers:resource_header
-
-    result = run(runnable, resource_inputs: observation, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/not a valid JSON/)
-  end
-
-  it 'fails when request is successful but resource created has incorrect resource type' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Encounter' }.to_json) # headers:resource_header
-
-    result = run(runnable, resource_inputs: observation, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/Expected resource type to be: `"Observation"`/)
-  end
-
-  it 'fails when response is missing Location header with id, vid attributes' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 500, body: {}.to_json) # headers:resource_header
-
-    result = run(runnable, resource_inputs: observation.to_json, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/Expected Location and required headers (id, vid) not found/)
-  end
-
-  it 'fails when response Location header does not have both id, vid attributes' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 500, body: {}.to_json) # headers:resource_header
-
-    result = run(runnable, resource_inputs: observation.to_json, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/Received Location but required headers (id, vid) not found/)
-  end
-
-  it 'fails when response id, meta.versionId, and meta.lastUpdated fields do not update on create' do
-    altered_response = observation.to_json
-    altered_response['id'] = 'some_other_id_name'
-    altered_response['meta'] = { 'versionId' => '23', 'lastUpdated' => '06.30.2024' }
-
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 500, body: [altered_response]) # headers:resource_header
-
-    result = run(runnable, resource_inputs: observation.to_json, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/Expected resource to have id, meta.versionId, and meta.lastUpdated/)
   end
 end

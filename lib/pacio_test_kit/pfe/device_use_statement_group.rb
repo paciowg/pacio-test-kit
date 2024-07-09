@@ -1,5 +1,4 @@
 require_relative '../common_tests/read_test'
-require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module PFE
@@ -19,16 +18,6 @@ module PacioTestKit
       run_as_group
       input_order :url
 
-      test from: :pacio_resource_create,
-           title: 'Server creates correct DeviceUseStatement resource from DeviceUseStatement create interaction',
-           config: {
-             inputs: {
-               resource_inputs: {
-                 name: :device_use_statement_resource_list,
-                 title: 'Resources(s) for PFEUseOfDevice resources created on the server'
-               }
-             }
-           }
       test from: :pacio_resource_read,
            title: 'Server returns correct DeviceUseStatement resource from DeviceUseStatement read interaction',
            optional: true,

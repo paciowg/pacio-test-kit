@@ -23,9 +23,9 @@ module PacioTestKit
            title: 'Server creates correct DiagnosticReport resource from DiagnosticReport create interaction',
            config: {
              inputs: {
-               resource_inputs: {
-                 name: :narrative_history_diagnostic_report_resource_list,
-                 title: 'Resources(s) for PFENarrativeHistoryOfStatus resources created on the server'
+               resource_input: {
+                 name: :narrative_history_diagnostic_report_resource_input,
+                 title: 'PFENarrativeHistoryOfStatus resource to create on the server'
                }
              }
            }
