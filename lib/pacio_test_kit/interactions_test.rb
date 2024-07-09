@@ -40,6 +40,16 @@ module PacioTestKit
       end
     end
 
+    def validate_status(status, req_num)
+      if status == 200
+        true
+      else
+        status_error_msg = "Request-#{req_num}: Unexpected response status: expected 200, but received #{status}"
+        add_message('error', status_error_msg)
+        false
+      end
+    end
+
     def validate_json(response_body, req_num = '')
       if valid_json?(response_body)
         true
