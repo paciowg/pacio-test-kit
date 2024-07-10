@@ -38,7 +38,9 @@ RSpec.describe PacioTestKit::CreateTest do
     [
       { 'Location' => "#{url}/456/#{resource_type}" },
       { 'Location' => "#{url}/#{resource_type}" },
-      { 'Location' => "#{url}/456" }
+      { 'Location' => "#{url}/456" },
+      { 'Location' => url.to_s },
+      { 'Location' => '' }
     ]
   end
 
