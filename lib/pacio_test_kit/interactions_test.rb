@@ -41,7 +41,7 @@ module PacioTestKit
         fhir_read(resource_type, id, tags: [tag])
 
         status = request.response[:status]
-        next unless validate_status(status, req_num)
+        next unless validate_status(200, status, req_num)
 
         next unless validate_json(request.response_body, req_num)
 
@@ -51,11 +51,12 @@ module PacioTestKit
       end
     end
 
-    def validate_status(status, req_num)
-      if status == 200
+    def validate_status(expected_status, received_status, req_num)
+      if expected_status == received_status
         true
       else
-        status_error_msg = "Request-#{req_num}: Unexpected response status: expected 200, but received #{status}"
+        status_error_msg = "Request-#{req_num}: Unexpected response status: expected 200, " \
+                           "but received #{received_status}"
         add_message('error', status_error_msg)
         false
       end
