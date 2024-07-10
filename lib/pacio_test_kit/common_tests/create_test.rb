@@ -19,7 +19,7 @@ module PacioTestKit
     run do
       assert_valid_json(resource_input)
       create_and_validate_resource(JSON.parse(resource_input))
-      no_error_validation("Failed to create #{resource_type} resource(s). See error messages for details.")
+      no_error_validation("Failed to create #{resource_type} resource. See error messages for details.")
     end
   end
 end

@@ -2,25 +2,36 @@ module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
     def create_and_validate_resource(resource_to_create)
-      fhir_resource = FHIR.from_contents(resource_to_create.to_json)
-      assert(fhir_resource.present?, "The FHIR resource does not have a 'resourceType' field")
-      assert_resource_type(resource_type, resource: fhir_resource)
+      fhir_resource = validate_resource_input(resource_to_create)
 
-      fhir_create(fhir_resource)
+      fhir_create(fhir_resource.deep_dup)
+
       assert_response_status(201)
-      assert_valid_json(request.response_body, 'create response resource SHALL return a valid json')
+      assert_valid_json(request.response_body, 'create interaction response must be a valid JSON')
       assert_resource_type(resource_type)
-      validate_response_metadata(request.response_body, request.request_body, 'create')
-      validate_create_response_headers(request.headers, resource_type, request.resource)
+      validate_response_metadata(resource, fhir_resource, 'create')
+      validate_create_response_headers(request.headers, resource)
     end
 
-    def validate_create_response_headers(headers, resource_type, response_resource)
+    def validate_resource_input(resource_to_create)
+      fhir_resource = FHIR.from_contents(resource_to_create.to_json)
+      assert(fhir_resource.present?, "resource input submitted does not have a 'resourceType' field")
+      assert_resource_type(resource_type, resource: fhir_resource)
+      fhir_resource
+    end
+
+    def validate_create_response_headers(headers, response_resource)
       location_header = headers.find { |header| header.name.downcase == 'location' }
-      assert(location_header.present?, 'Server SHALL create a Location header for the newly created resource.')
+      assert(location_header.present?, 'Server SHALL return a Location header.')
+
+      relative_path = "#{response_resource.resourceType}/#{response_resource.id}"
 
       location_header_value = location_header.value
-      assert((location_header_value.include? resource_type) == true, 'Server SHALL create a location header with the resourceType of the newly created resource.')
-      assert((location_header_value.include? response_resource.id) == true, 'Server SHALL create a location header with the id of the newly created resource.')
+      error_message = 'The location header is incorrectly formatted. Expected patterns:' \
+                      'server_base_url/resource_type/resource_id/_history/version_id, resource_type/' \
+                      'resource_id/_history/version_id, or resource_type/resource_id.'
+      assert((location_header_value.include? relative_path),
+             error_message)
     end
 
     def read_and_validate_resources(resource_ids, tag = '')
@@ -30,7 +41,7 @@ module PacioTestKit
         fhir_read(resource_type, id, tags: [tag])
 
         status = request.response[:status]
-        next unless validate_status('read', status, req_num)
+        next unless validate_status(status, req_num)
 
         next unless validate_json(request.response_body, req_num)
 
@@ -82,25 +93,21 @@ module PacioTestKit
     end
 
     def validate_response_metadata(response_resource, submitted_resource, method_type)
-      if method_type == 'create'
-        response = JSON.parse(response_resource)
-        submitted = JSON.parse(submitted_resource)
+      if response_resource.id.present?
+        error_message = 'Server SHALL ignore `id` provided in the request body.'
+        add_message('error', error_message) if method_type == 'create' && response_resource.id == submitted_resource.id
+      else
+        add_message('error', 'Server SHALL populate the `id` for the newly created resource')
+      end
 
-        assert((response['id']).present?, 'Server SHALL populate the id for the newly created resource.')
-        assert(response['id'] != submitted['id'], 'Server response resource and submitted resource SHALL have different ids for the newly created resource.')
+      validate_meta_field(response_resource, submitted_resource, 'lastUpdated')
+      validate_meta_field(response_resource, submitted_resource, 'versionId')
+    end
 
-        # if both blank, throw error; if both not blank, check if equal
-        if response['meta']['versionId'].blank? && submitted['meta']['versionId'].blank?
-          assert(!response['meta']['versionId'].blank? && !submitted['meta']['versionId'].blank?, 'Server response resource and submitted resource SHALL have different versionId fields for the newly created resource.')
-        elsif !response['meta']['versionId'].blank? && !submitted['meta']['versionId'].blank?
-          assert((response['meta']['versionId'] != submitted['meta']['versionId']), 'Server response resource and submitted resource SHALL have different versionId fields for the newly created resource.')
-        end
-
-        if response['meta']['lastUpdated'].blank? && submitted['meta']['lastUpdated'].blank?
-          assert(!response['meta']['lastUpdated'].blank? && !submitted['meta']['lastUpdated'].blank?, 'Server response resource and submitted resource SHALL have different lastUpdated fields for the newly created resource.')
-        elsif !response['meta']['lastUpdated'].blank? && !submitted['meta']['lastUpdated'].blank?
-          assert(response['meta']['lastUpdated'] != submitted['meta']['lastUpdated'], 'Server response resource and submitted resource SHALL have different lastUpdated fields for the newly created resource.')
-        end
+    def validate_meta_field(response_resource, submitted_resource, field)
+      if response_resource.meta&.send(field).present? &&
+         response_resource.meta.send(field) == submitted_resource.meta&.send(field)
+        add_message('error', "Server SHALL ignore `meta.#{field}` provided in the request body.")
       end
     end
 
