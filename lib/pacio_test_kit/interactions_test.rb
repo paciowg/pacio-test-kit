@@ -31,8 +31,7 @@ module PacioTestKit
       error_message = 'The location header is incorrectly formatted. Expected patterns:' \
                       'server_base_url/resource_type/resource_id/_history/version_id, resource_type/' \
                       'resource_id/_history/version_id, or resource_type/resource_id.'
-      assert((location_header_value.include? relative_path),
-             error_message)
+      assert(location_header_value.include?(relative_path), error_message)
     end
 
     def read_and_validate_resources(resource_ids, tag = '')
