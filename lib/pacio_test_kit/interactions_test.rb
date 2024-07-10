@@ -51,11 +51,11 @@ module PacioTestKit
       end
     end
 
-    def validate_status(expected_status, received_status, req_num)
+    def validate_status(expected_status, received_status, req_num = '')
       if expected_status == received_status
         true
       else
-        status_error_msg = "Request-#{req_num}: Unexpected response status: expected 200, " \
+        status_error_msg = "Request-#{req_num}: Unexpected response status: expected #{expected_status}, " \
                            "but received #{received_status}"
         add_message('error', status_error_msg)
         false
