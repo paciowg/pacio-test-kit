@@ -35,7 +35,11 @@ RSpec.describe PacioTestKit::CreateTest do
     { 'Location' => "#{url}/#{resource_type}/456" }
   end
   let(:wrong_format_response_headers) do
-    { 'Location' => "#{url}/456/#{resource_type}" }
+    [
+      { 'Location' => "#{url}/456/#{resource_type}" },
+      { 'Location' => "#{url}/#{resource_type}" },
+      { 'Location' => "#{url}/456" }
+    ]
   end
 
   def run(runnable, inputs = {})
@@ -60,30 +64,21 @@ RSpec.describe PacioTestKit::CreateTest do
   end
 
   it 'fails when the submitted resource is not a valid json' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: observation_json_returned.to_json, headers: response_headers)
-
     result = run(runnable, resource_input: '[[', url:)
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Invalid JSON./)
   end
 
   it 'fails when the submitted resource does not include the resourceType field' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: observation_json_returned.to_json, headers: response_headers)
-
     result = run(runnable, resource_input: { 'id' => '123' }.to_json, url:)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/resource input submitted does not have a 'resourceType' field/)
+    expect(result.result_message).to match(/resource input submitted does not have a `resourceType` field/)
   end
 
   it 'fails when the submitted resource type is not the expected resource type' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: {}.to_json, headers: response_headers)
-
     result = run(runnable, resource_input: { resourceType: 'Encounter' }.to_json, url:)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/Unexpected resource type/)
+    expect(result.result_message).to match(/Unexpected resource type: expected #{resource_type}/)
   end
 
   it 'fails if the response status is not 201' do
@@ -150,19 +145,6 @@ RSpec.describe PacioTestKit::CreateTest do
     expect(entity_result_message.message).to match(/SHALL ignore `meta.lastUpdated` provided in the request body/)
   end
 
-  it 'fails if response resource meta.versionId is present and is the same as submitted resource meta.versionId' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation', id: '567',
-                                      meta: { lastUpdated: 'later', versionId: 'someVersionId' } }.to_json,
-                 headers: response_headers)
-
-    result = run(runnable,
-                 resource_input: { resourceType: 'Observation', id: '123',
-                                   meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json, url:)
-    expect(result.result).to eq('fail')
-    expect(entity_result_message.message).to match(/Server SHALL ignore `meta.versionId` provided in the request body/)
-  end
-
   it 'fails if location header is not returned' do
     stub_request(:post, "#{url}/#{resource_type}")
       .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
@@ -173,15 +155,17 @@ RSpec.describe PacioTestKit::CreateTest do
     expect(result.result_message).to match(/Server SHALL return a Location header/)
   end
 
-  it 'fails if the location header is not correctly formatted' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
-                                      meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json,
-                 headers: wrong_format_response_headers)
+ it 'fails if the location header is not correctly formatted' do
+    wrong_format_response_headers.each do |headers|
+      stub_request(:post, "#{url}/#{resource_type}")
+        .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
+                                        meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json,
+                   headers:)
 
-    result = run(runnable, resource_input: observation.to_json, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/location header is incorrectly formatted/)
+      result = run(runnable, resource_input: observation.to_json, url:)
+      expect(result.result).to eq('fail')
+      expect(result.result_message).to match(/location header is incorrectly formatted/)
+    end
   end
 
   it 'passes when resource is successfully created with the correct metadata and location header is returned' do

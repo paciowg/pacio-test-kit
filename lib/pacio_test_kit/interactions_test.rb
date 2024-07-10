@@ -103,7 +103,7 @@ module PacioTestKit
       end
 
       validate_meta_field(response_resource, submitted_resource, 'lastUpdated')
-      validate_meta_field(response_resource, submitted_resource, 'versionId')
+      validate_meta_field(response_resource, submitted_resource, 'versionId') if method_type != 'create'
     end
 
     def validate_meta_field(response_resource, submitted_resource, field)
