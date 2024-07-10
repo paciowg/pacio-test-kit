@@ -55,7 +55,7 @@ module PacioTestKit
       if expected_status == received_status
         true
       else
-         prefix = req_num.present? ? "Request-#{req_num}: " : ''
+        prefix = req_num.present? ? "Request-#{req_num}: " : ''
         status_error_msg = "#{prefix}Unexpected response status: expected #{expected_status}, " \
                            "but received #{received_status}"
         add_message('error', status_error_msg)

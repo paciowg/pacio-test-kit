@@ -155,7 +155,7 @@ RSpec.describe PacioTestKit::CreateTest do
     expect(result.result_message).to match(/Server SHALL return a Location header/)
   end
 
- it 'fails if the location header is not correctly formatted' do
+  it 'fails if the location header is not correctly formatted' do
     wrong_format_response_headers.each do |headers|
       stub_request(:post, "#{url}/#{resource_type}")
         .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
