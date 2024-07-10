@@ -15,9 +15,9 @@ module PacioTestKit
 
     def validate_resource_input(resource_to_create)
       fhir_resource = FHIR.from_contents(resource_to_create.to_json)
-      skip_if fhir_resource.blank?, "resource input submitted does not have a 'resourceType' field"
+      skip_if fhir_resource.blank?, 'resource input submitted does not have a `resourceType` field'
       skip_if resource_type != fhir_resource.resourceType, 'Unexpected resource type: expected ' \
-                                                           "#{fhir_resource.resourceType}, received #{resource_type}"
+                                                           "#{resource_type}, received #{fhir_resource.resourceType}"
       fhir_resource
     end
 
