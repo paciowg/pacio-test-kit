@@ -73,7 +73,7 @@ RSpec.describe PacioTestKit::CreateTest do
       .to_return(status: 201, body: observation_json_returned.to_json, headers: response_headers)
 
     result = run(runnable, resource_input: { 'id' => '123' }.to_json, url:)
-    expect(result.result).to eq('fail')
+    expect(result.result).to eq('skip')
     expect(result.result_message).to match(/resource input submitted does not have a 'resourceType' field/)
   end
 
@@ -82,7 +82,7 @@ RSpec.describe PacioTestKit::CreateTest do
       .to_return(status: 201, body: {}.to_json, headers: response_headers)
 
     result = run(runnable, resource_input: { resourceType: 'Encounter' }.to_json, url:)
-    expect(result.result).to eq('fail')
+    expect(result.result).to eq('skip')
     expect(result.result_message).to match(/Unexpected resource type/)
   end
 
