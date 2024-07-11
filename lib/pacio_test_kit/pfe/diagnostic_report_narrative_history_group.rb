@@ -1,4 +1,5 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module PFE
@@ -18,6 +19,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct DiagnosticReport resource from DiagnosticReport create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :narrative_history_diagnostic_report_resource_input,
+                 title: 'PFENarrativeHistoryOfStatus resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct DiagnosticReport resource from DiagnosticReport read interaction',
            config: {
