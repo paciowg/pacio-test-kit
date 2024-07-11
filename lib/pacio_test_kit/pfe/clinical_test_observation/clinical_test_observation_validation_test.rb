@@ -9,7 +9,7 @@ module PacioTestKit
         Observation resources returned during previous tests conform to the PACIO PFE Clinical Test Observation Profile
       )
       id :pacio_pfe_clinical_test_observation_validation
-      description 'TODO'
+      description 'TODO: Add description.'
 
       def tag
         'clinical_test_observation'
