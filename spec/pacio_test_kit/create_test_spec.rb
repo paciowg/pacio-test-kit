@@ -39,7 +39,7 @@ RSpec.describe PacioTestKit::CreateTest do
       { 'Location' => "#{url}/456/#{resource_type}" },
       { 'Location' => "#{url}/#{resource_type}" },
       { 'Location' => "#{url}/456" },
-      { 'Location' => url.to_s },
+      { 'Location' => url },
       { 'Location' => '' }
     ]
   end
@@ -71,13 +71,13 @@ RSpec.describe PacioTestKit::CreateTest do
     expect(result.result_message).to match(/Invalid JSON./)
   end
 
-  it 'fails when the submitted resource does not include the resourceType field' do
+  it 'skips when the submitted resource does not include the resourceType field' do
     result = run(runnable, resource_input: { 'id' => '123' }.to_json, url:)
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/resource input submitted does not have a `resourceType` field/)
   end
 
-  it 'fails when the submitted resource type is not the expected resource type' do
+  it 'skips when the submitted resource type is not the expected resource type' do
     result = run(runnable, resource_input: { resourceType: 'Encounter' }.to_json, url:)
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/Unexpected resource type: expected #{resource_type}/)
@@ -109,10 +109,8 @@ RSpec.describe PacioTestKit::CreateTest do
   end
 
   it 'fails if the response resource id is missing' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation',
-                                      meta: { lastUpdated: 'now',
-                                              versionId: 'someVersionId' } }.to_json, headers: response_headers)
+    body = { resourceType: 'Observation', meta: { lastUpdated: 'now' } }.to_json
+    stub_request(:post, "#{url}/#{resource_type}").to_return(status: 201, body:, headers: response_headers)
 
     result = run(runnable, resource_input: observation.to_json, url:)
     expect(result.result).to eq('fail')
@@ -120,11 +118,8 @@ RSpec.describe PacioTestKit::CreateTest do
   end
 
   it 'fails if the response resource id is the same as the submitted resource id' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation',
-                                      id: '123',
-                                      meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json,
-                 headers: response_headers)
+    body = { resourceType: 'Observation', id: '123', meta: { lastUpdated: 'now' } }.to_json
+    stub_request(:post, "#{url}/#{resource_type}").to_return(status: 201, body:, headers: response_headers)
 
     result = run(runnable, resource_input: observation.to_json, url:)
     expect(result.result).to eq('fail')
@@ -132,25 +127,18 @@ RSpec.describe PacioTestKit::CreateTest do
   end
 
   it 'fails if response resource meta.lastUpdated is present and is the same as submitted resource meta.lastUpdated' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation', id: '567',
-                                      meta: { lastUpdated: 'now', versionId: 'someOtherVersionId' } }.to_json,
-                 headers: response_headers)
+    body = { resourceType: 'Observation', id: '567', meta: { lastUpdated: 'now' } }.to_json
+    stub_request(:post, "#{url}/#{resource_type}").to_return(status: 201, body:, headers: response_headers)
 
-    result = run(runnable,
-                 resource_input: { resourceType: 'Observation', id: '123',
-                                   meta: {
-                                     lastUpdated: 'now',
-                                     versionId: 'someVersionId'
-                                   } }.to_json, url:)
+    resource_input = { resourceType: 'Observation', id: '123', meta: { lastUpdated: 'now' } }.to_json
+    result = run(runnable, resource_input:, url:)
     expect(result.result).to eq('fail')
     expect(entity_result_message.message).to match(/SHALL ignore `meta.lastUpdated` provided in the request body/)
   end
 
   it 'fails if location header is not returned' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
-                                      meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json)
+    body = { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now' } }.to_json
+    stub_request(:post, "#{url}/#{resource_type}").to_return(status: 201, body:)
 
     result = run(runnable, resource_input: observation.to_json, url:)
     expect(result.result).to eq('fail')
@@ -159,10 +147,8 @@ RSpec.describe PacioTestKit::CreateTest do
 
   it 'fails if the location header is not correctly formatted' do
     wrong_format_response_headers.each do |headers|
-      stub_request(:post, "#{url}/#{resource_type}")
-        .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
-                                        meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json,
-                   headers:)
+      body = { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now' } }.to_json
+      stub_request(:post, "#{url}/#{resource_type}").to_return(status: 201, body:, headers:)
 
       result = run(runnable, resource_input: observation.to_json, url:)
       expect(result.result).to eq('fail')
@@ -171,10 +157,8 @@ RSpec.describe PacioTestKit::CreateTest do
   end
 
   it 'passes when resource is successfully created with the correct metadata and location header is returned' do
-    stub_request(:post, "#{url}/#{resource_type}")
-      .to_return(status: 201, body: { resourceType: 'Observation', id: '456',
-                                      meta: { lastUpdated: 'now', versionId: 'someVersionId' } }.to_json,
-                 headers: response_headers)
+    body = { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now' } }.to_json
+    stub_request(:post, "#{url}/#{resource_type}").to_return(status: 201, body:, headers: response_headers)
 
     result = run(runnable, resource_input: observation.to_json, url:)
     expect(result.result).to eq('pass')
