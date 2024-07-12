@@ -1,6 +1,38 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
+    def create_and_validate_resource(resource_to_create)
+      fhir_resource = validate_resource_input(resource_to_create)
+
+      fhir_create(fhir_resource.deep_dup)
+
+      assert_response_status(201)
+      assert_valid_json(request.response_body, 'create interaction response must be a valid JSON')
+      assert_resource_type(resource_type)
+      validate_response_metadata(resource, fhir_resource, 'create')
+      validate_create_response_headers(request.headers, resource)
+    end
+
+    def validate_resource_input(resource_to_create)
+      fhir_resource = FHIR.from_contents(resource_to_create.to_json)
+      skip_if fhir_resource.blank?, 'resource input submitted does not have a `resourceType` field'
+      skip_if resource_type != fhir_resource.resourceType, 'Unexpected resource type: expected ' \
+                                                           "#{resource_type}, received #{fhir_resource.resourceType}"
+      fhir_resource
+    end
+
+    def validate_create_response_headers(headers, response_resource)
+      location_header = headers.find { |header| header.name.downcase == 'location' }
+      assert(location_header.present?, 'Server SHALL return a Location header.')
+
+      relative_path = "#{response_resource.resourceType}/#{response_resource.id}"
+
+      location_header_value = location_header.value
+      error_message = 'The location header is incorrectly formatted. Expected patterns:' \
+                      'server_base_url/resource_type/resource_id/_history/version_id, resource_type/' \
+                      'resource_id/_history/version_id, or resource_type/resource_id.'
+      assert(location_header_value.include?(relative_path), error_message)
+    end
 
     def read_and_validate_resources(resource_ids, tag = '')
       resource_ids = [resource_ids].flatten
@@ -9,7 +41,7 @@ module PacioTestKit
         fhir_read(resource_type, id, tags: [tag])
 
         status = request.response[:status]
-        next unless validate_status(status, req_num)
+        next unless validate_status(200, status, req_num)
 
         next unless validate_json(request.response_body, req_num)
 
@@ -19,17 +51,19 @@ module PacioTestKit
       end
     end
 
-    def validate_status(status, req_num)
-      if status == 200
+    def validate_status(expected_status, received_status, req_num = '')
+      if expected_status == received_status
         true
       else
-        status_error_msg = "Request-#{req_num}: Unexpected response status: expected 200, but received #{status}"
+        prefix = req_num.present? ? "Request-#{req_num}: " : ''
+        status_error_msg = "#{prefix}Unexpected response status: expected #{expected_status}, " \
+                           "but received #{received_status}"
         add_message('error', status_error_msg)
         false
       end
     end
 
-    def validate_json(response_body, req_num)
+    def validate_json(response_body, req_num = '')
       if valid_json?(response_body)
         true
       else
@@ -38,11 +72,11 @@ module PacioTestKit
       end
     end
 
-    def validate_resource_type(resource, req_num)
+    def validate_resource_type(resource, req_num = '')
       if resource.resourceType == resource_type
         true
       else
-        add_message('error', bad_resource_type_message(resource_type, req_num))
+        add_message('error', wrong_resource_type_message(resource_type, req_num))
         false
       end
     end
@@ -60,12 +94,31 @@ module PacioTestKit
       false
     end
 
+    def validate_response_metadata(response_resource, submitted_resource, method_type)
+      if response_resource.id.present?
+        error_message = 'Server SHALL ignore `id` provided in the request body.'
+        add_message('error', error_message) if method_type == 'create' && response_resource.id == submitted_resource.id
+      else
+        add_message('error', 'Server SHALL populate the `id` for the newly created resource')
+      end
+
+      validate_meta_field(response_resource, submitted_resource, 'lastUpdated')
+      validate_meta_field(response_resource, submitted_resource, 'versionId') if method_type != 'create'
+    end
+
+    def validate_meta_field(response_resource, submitted_resource, field)
+      if response_resource.meta&.send(field).present? &&
+         response_resource.meta.send(field) == submitted_resource.meta&.send(field)
+        add_message('error', "Server SHALL ignore `meta.#{field}` provided in the request body.")
+      end
+    end
+
     def bad_resource_id_message(expected_id, request_num = nil)
       prefix = request_num.present? ? "Request-#{request_num}: " : ''
       "#{prefix}Expected resource to have id `#{expected_id.inspect}`, but found `#{resource.id.inspect}`"
     end
 
-    def bad_resource_type_message(expected_resource_type, request_num = nil)
+    def wrong_resource_type_message(expected_resource_type, request_num = nil)
       prefix = request_num.present? ? "Request-#{request_num}: " : ''
       "#{prefix}Expected resource type to be: `#{expected_resource_type.inspect}`, but found " \
         "`#{resource.resourceType.inspect}`"
