@@ -1,8 +1,12 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module PFE
     class DiagnosticReportNoteExchangeGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'DiagnosticReport Note Exchange Tests'
       id :pacio_pfe_diagnostic_report_note_exchange
       short_description %(
@@ -29,6 +33,15 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'DiagnosticReport Resources returned in previous tests conform to the ' \
+                  'PFEDiagnosticReportNoteExchange profile',
+           description: ERB.new(File.read(File.join(
+                                            'lib', 'docs', 'validation_test_description.md.erb'
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end

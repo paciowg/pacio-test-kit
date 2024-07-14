@@ -1,11 +1,14 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 require_relative '../common_tests/create_test'
 require_relative 'clinical_test_observation/clinical_test_observation_update_test'
-require_relative 'clinical_test_observation/clinical_test_observation_validation_test'
 
 module PacioTestKit
   module PFE
     class ClinicalTestObservationGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'Clinical Test Observation Tests'
       id :pacio_pfe_clinical_test_observation
       short_description %(
@@ -41,7 +44,14 @@ module PacioTestKit
              }
            }
       test from: :pacio_pfe_clinical_test_observation_update
-      test from: :pacio_pfe_clinical_test_observation_validation
+      test from: :pacio_resource_validation,
+           title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',
+           description: ERB.new(File.read(File.join(
+                                            'lib', 'docs', 'validation_test_description.md.erb'
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end

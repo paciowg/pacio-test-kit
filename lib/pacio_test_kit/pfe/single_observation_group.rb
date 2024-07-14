@@ -1,9 +1,12 @@
 require_relative '../common_tests/read_test'
-require_relative 'single_observation/single_observation_validation_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module PFE
     class SingleObservationGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'Single Observation Tests'
       id :pacio_pfe_single_observation
       short_description %(
@@ -28,7 +31,14 @@ module PacioTestKit
                }
              }
            }
-      test from: :pacio_pfe_single_observation_validation
+      test from: :pacio_resource_validation,
+           title: 'Observation Resources returned in previous tests conform to the PFESingleObservation profile',
+           description: ERB.new(File.read(File.join(
+                                            'lib', 'docs', 'validation_test_description.md.erb'
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end

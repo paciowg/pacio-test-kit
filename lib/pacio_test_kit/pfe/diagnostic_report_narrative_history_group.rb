@@ -1,9 +1,13 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/create_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module PFE
     class DiagnosticReportNarrativeHistoryGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'Diagnostic Report Narrative History Tests'
       id :pacio_pfe_diagnostic_report_narrative_history
       short_description %(
@@ -39,6 +43,15 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'DiagnosticReport Resources returned in previous tests conform to the ' \
+                  'PFENarrativeHistoryOfStatus profile',
+           description: ERB.new(File.read(File.join(
+                                            'lib', 'docs', 'validation_test_description.md.erb'
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end

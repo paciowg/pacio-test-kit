@@ -1,8 +1,12 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module PFE
     class NutritionOrderGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'NutritionOrder Tests'
       id :pacio_pfe_nutrition_order
       short_description %(
@@ -29,6 +33,14 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'NutritionOrder Resources returned in previous tests conform to the PFENutritionOrder profile',
+           description: ERB.new(File.read(File.join(
+                                            'lib', 'docs', 'validation_test_description.md.erb'
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end

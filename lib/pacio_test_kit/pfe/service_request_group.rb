@@ -1,8 +1,12 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module PFE
     class ServiceRequestGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'ServiceRequest Tests'
       id :pacio_pfe_service_request
       short_description %(
@@ -29,6 +33,14 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'ServiceRequest Resources returned in previous tests conform to the PFEServiceRequest profile',
+           description: ERB.new(File.read(File.join(
+                                            'lib', 'docs', 'validation_test_description.md.erb'
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end
