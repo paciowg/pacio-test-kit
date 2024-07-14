@@ -59,7 +59,7 @@ RSpec.describe PacioTestKit::ValidationTest do
     expect(result.result).to eq('pass')
   end
 
-  it 'skips when no read or search requests were made in presvious tests' do
+  it 'skips when no read or search requests were made in previous tests' do
     result = run(runnable)
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/No #{profile} resource read or search request was made in previous tests/)
