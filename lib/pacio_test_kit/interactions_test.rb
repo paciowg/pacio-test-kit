@@ -1,6 +1,22 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
+
+    def update_and_validate_resource(id_to_update, new_resource)
+      new_fhir_resource = validate_resource_input(new_resource)
+      fhir_update(new_fhir_resource, id_to_update)
+
+      assert_response_status([200, 201])
+      method_type_used = response[:status] == 200 ? 'update' : 'create'
+      validate_response_metadata(resource, new_fhir_resource, method_type_used)
+
+      return unless response[:status] == 201
+
+      assert_valid_json(request.response_body, 'create interaction response must be a valid JSON')
+      assert_resource_type(resource_type)
+      validate_create_response_headers(request.headers, resource)
+    end
+
     def create_and_validate_resource(resource_to_create)
       fhir_resource = validate_resource_input(resource_to_create)
 

@@ -15,6 +15,14 @@ module PacioTestKit
       previous tests or if all requests were unsuccessful.
     )
 
+    input :id_to_update,
+          title: 'The id of the FHIR resource to update on the server',
+          description: 'Provide a string id of a resource to update on the server.'
+
+    input :new_resource,
+          title: 'The resource to update the FHIR resource on the server',
+          description: 'Provide a FHIR resource to update on the server.'
+
     def resource_type
       config.options[:resource_type]
     end
@@ -27,18 +35,14 @@ module PacioTestKit
       load_tagged_requests(tag)
       skip_if requests.blank?, "No #{tag} resource read request was made in previous tests as expected."
 
-      only_read_requests = requests.select { |request| request.verb.downcase == 'read' }
-      skip_if only_read_requests.empty?, "There are no #{tag} resource read requests."
-
-      successful_requests = requests.select { |request| request.status == 200 }
+      successful_requests = requests.select { |request| request.verb.downcase == 'read' && request.status == 200 }
       skip_if successful_requests.empty?, "All #{tag} resource read requests were unsuccessful."
 
-      resources_to_validate = successful_requests.map(&:resource).uniq.compact
-      resources_to_validate.each do |resource|
-        # check if metadata has changed
-      end
+      resources_to_update = successful_requests.map(&:resource).uniq.compact
+      resource_to_update = resources_to_update.select { |resource| resource.id.to_s == id_to_update.to_s }
 
-      # call create method if unable to update from id obtained from read response
+      assert_valid_json(new_resource) unless resource_to_update.present?
+      update_and_validate_resource(id_to_update.to_s, JSON.parse(new_resource))
 
       error_msg = "One or more of the #{tag} resources returned in previous read tests are " \
                   'unable to be updated.'

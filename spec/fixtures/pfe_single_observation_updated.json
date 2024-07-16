@@ -1,0 +1,8 @@
+{
+  "resourceType": "Observation",
+  "id": "123",
+  "meta": {
+    "lastUpdated": "now",
+    "versionId": "someVersionId"
+  }
+}
