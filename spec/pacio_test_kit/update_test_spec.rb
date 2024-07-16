@@ -1,5 +1,20 @@
 RSpec.describe PacioTestKit::UpdateTest do
-  let(:runnable) { Inferno::Repositories::Tests.new.find('pacio_resource_update') }
+  let(:runnable) do
+    Class.new(PacioTestKit::UpdateTest) do
+      config(
+        options: {
+          resource_type: 'Observation',
+          profile: 'PFESingleObservation'
+        }
+      )
+
+      input :url
+
+      fhir_client do
+        url :url
+      end
+    end
+  end
   let(:session_data_repo) { Inferno::Repositories::SessionData.new }
   let(:results_repo) { Inferno::Repositories::Results.new }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
@@ -12,6 +27,14 @@ RSpec.describe PacioTestKit::UpdateTest do
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
     )
   end
+  let(:new_observation) do
+    JSON.parse(
+      File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation_updated.json'))
+    )
+  end
+  let(:response_headers) do
+    { 'Location' => "#{url}/#{resource_type}/456" }
+  end
 
   def build_read_request(body: nil, status: 200, headers: nil)
     repo_create(
@@ -21,7 +44,8 @@ RSpec.describe PacioTestKit::UpdateTest do
       test_session_id: test_session.id,
       response_body: body.is_a?(Hash) ? body.to_json : body,
       status:,
-      headers:
+      headers:,
+      verb: 'read'
     )
   end
 
@@ -53,24 +77,60 @@ RSpec.describe PacioTestKit::UpdateTest do
     allow_any_instance_of(runnable).to receive(:tag).and_return(profile)
   end
 
-  # it 'skips when no read requests were made in previous tests' do
-  # end
+  it 'skips when no requests and no read requests were made in previous tests' do
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: observation.to_json)
 
-  # it 'skips when all read requests were unsuccessful' do
-  # end
+    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
 
-  # it 'fails when can read resource but update does not have 200 response' do
-  # end
+    expect(result.result).to eq('skip')
+    expect(result.result_message).to match(/No #{profile} resource read request was made in previous tests/)
+  end
 
-  # it 'fails when can read resource and update returns 200 response but not correct metadata' do
-  # end
+  it 'skips when all read requests were unsuccessful in previous tests' do
+    mock_server(status: 401, valid_resource: true)
 
-  it 'passes when can read resource and update returns 200 response and correct metadata' do
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: observation.to_json)
+
+    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
+
+    expect(result.result).to eq('skip')
+    expect(result.result_message).to match(/All #{profile} resource read requests were unsuccessful/)
+  end
+
+  it 'fails if unable to both update a resource that exists and create one on the server' do
     mock_server(body: observation, valid_resource: true)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
-      .to_return(status: 200, body: observation_json_returned.to_json, url:)
-    result = run(runnable, url:)
+      .to_return(status: 500, body: observation.to_json)
+
+    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
+
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected response status: expected 200/)
+  end
+
+  it 'passes if unable to update but instead creates resource not on server' do
+    mock_server(body: observation, valid_resource: true)
+
+    body = { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now' } }.to_json
+
+    stub_request(:put, "#{url}/#{resource_type}/000")
+      .to_return(status: 201, body:, headers: response_headers)
+
+    result = run(runnable, id_to_update: '000', new_resource: { resourceType: 'Observation' }.to_json, url:)
+
+    expect(result.result).to eq('pass')
+  end
+
+  it 'passes if can update previous read request and returns 200 response and correct metadata' do
+    mock_server(body: observation, valid_resource: true)
+
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: observation.to_json)
+
+    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
     expect(result.result).to eq('pass')
   end
 end
