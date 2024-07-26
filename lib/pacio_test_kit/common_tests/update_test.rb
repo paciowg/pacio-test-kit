@@ -9,19 +9,11 @@ module PacioTestKit
     title 'Resources returned in previous read tests can be updated'
     id :pacio_resource_update
     description %(
-      This test verifies resources returned from the read tests are able to be updated.
+      This test verifies the resource returned from a previous read test is able to be updated.
 
-      This test will be skipped if no resource read requests were made in
-      previous tests or if all requests were unsuccessful.
+      This test will be skipped if no resource read request was made in
+      previous tests or if the request was unsuccessful.
     )
-
-    input :id_to_update,
-          title: 'The id of the FHIR resource to update on the server',
-          description: 'Provide a string id of a resource to update on the server.'
-
-    input :new_resource,
-          title: 'The resource to update the FHIR resource on the server',
-          description: 'Provide a FHIR resource to update on the server.'
 
     def resource_type
       config.options[:resource_type]
@@ -35,17 +27,14 @@ module PacioTestKit
       load_tagged_requests(tag)
       skip_if requests.blank?, "No #{tag} resource read request was made in previous tests as expected."
 
-      successful_requests = requests.select { |request| request.verb.downcase == 'read' && request.status == 200 }
-      skip_if successful_requests.empty?, "All #{tag} resource read requests were unsuccessful."
+      successful_request = requests.select { |request| request.status == 200 }
+      skip_if successful_request.empty?, "The #{tag} resource update request was skipped because" \
+                                         'no previous read test was successful.'
 
-      resources_to_update = successful_requests.map(&:resource).uniq.compact
-      resource_to_update = resources_to_update.select { |resource| resource.id.to_s == id_to_update.to_s }
+      update_and_validate_resource(successful_request[0])
 
-      assert_valid_json(new_resource) unless resource_to_update.present?
-      update_and_validate_resource(id_to_update.to_s, JSON.parse(new_resource))
-
-      error_msg = "One or more of the #{tag} resources returned in previous read tests are " \
-                  'unable to be updated.'
+      error_msg = "The #{tag} resource returned in a previous read test was " \
+                  'unable to be updated. See error messages for details.'
       no_error_validation(error_msg)
     end
   end

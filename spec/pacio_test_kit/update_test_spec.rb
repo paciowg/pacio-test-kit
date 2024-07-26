@@ -27,13 +27,10 @@ RSpec.describe PacioTestKit::UpdateTest do
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
     )
   end
-  let(:new_observation) do
+  let(:updated_observation) do
     JSON.parse(
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation_updated.json'))
     )
-  end
-  let(:response_headers) do
-    { 'Location' => "#{url}/#{resource_type}/456" }
   end
 
   def build_read_request(body: nil, status: 200, headers: nil)
@@ -77,60 +74,59 @@ RSpec.describe PacioTestKit::UpdateTest do
     allow_any_instance_of(runnable).to receive(:tag).and_return(profile)
   end
 
-  it 'skips when no requests and no read requests were made in previous tests' do
+  it 'skips when no read request was made in previous tests' do
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
-      .to_return(status: 200, body: observation.to_json)
+      .to_return(status: 200, body: updated_observation.to_json)
 
-    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/No #{profile} resource read request was made in previous tests/)
   end
 
-  it 'skips when all read requests were unsuccessful in previous tests' do
+  it 'skips when read request was unsuccessful in previous tests' do
     mock_server(status: 401, valid_resource: true)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
-      .to_return(status: 200, body: observation.to_json)
+      .to_return(status: 200, body: updated_observation.to_json)
 
-    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/All #{profile} resource read requests were unsuccessful/)
+    expect(result.result_message).to match(/no previous read test was successful/)
   end
 
-  it 'fails if unable to both update a resource that exists and create one on the server' do
+  it 'fails if unable to update a resource that exists on the server' do
     mock_server(body: observation, valid_resource: true)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
-      .to_return(status: 500, body: observation.to_json)
+      .to_return(status: 500, body: {}.to_json)
 
-    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Unexpected response status: expected 200/)
   end
 
-  it 'passes if unable to update but instead creates resource not on server' do
-    mock_server(body: observation, valid_resource: true)
-
-    body = { resourceType: 'Observation', id: '456', meta: { lastUpdated: 'now' } }.to_json
-
-    stub_request(:put, "#{url}/#{resource_type}/000")
-      .to_return(status: 201, body:, headers: response_headers)
-
-    result = run(runnable, id_to_update: '000', new_resource: { resourceType: 'Observation' }.to_json, url:)
-
-    expect(result.result).to eq('pass')
-  end
-
-  it 'passes if can update previous read request and returns 200 response and correct metadata' do
+  it 'fails if resource returns 200 but did not successfully update status field' do
     mock_server(body: observation, valid_resource: true)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 200, body: observation.to_json)
 
-    result = run(runnable, id_to_update: resource_id, new_resource: new_observation.to_json, url:)
+    result = run(runnable, url:)
+
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/resource status was not updated/)
+  end
+
+  it 'passes if can update previous read request and returns 200 response' do
+    mock_server(body: observation, valid_resource: true)
+
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: updated_observation.to_json)
+
+    result = run(runnable, url:)
     expect(result.result).to eq('pass')
   end
 end
