@@ -44,8 +44,7 @@ module PacioTestKit
              }
            }
       test from: :pacio_resource_update,
-           title: 'Server can update Observation resource that is present on the server or create when not present',
-           description: 'update description'
+           title: 'Server can update status of Observation resource from a previous read interaction'
 
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',
