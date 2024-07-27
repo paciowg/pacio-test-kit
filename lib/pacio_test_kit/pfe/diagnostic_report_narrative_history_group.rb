@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/create_test'
 require_relative '../common_tests/validation_test'
+require_relative '../common_tests/search_type_test'
 require_relative '../pacio_profiles'
 
 module PacioTestKit
@@ -40,6 +41,28 @@ module PacioTestKit
                resource_ids: {
                  name: :diagnostic_report_narrative_history_resource_ids,
                  title: 'ID(s) for PFENarrativeHistoryOfStatus resources present on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_search_type,
+           title: 'Server returns correct DiagnosticReport resource from DiagnosticReport search-type interaction',
+           config: {
+             inputs: {
+               patient: {
+                 name: '',
+                 title: 'Patient search-type parameter for searching resources present on the server.'
+               },
+               category: {
+                 name: '',
+                 title: 'Category search-type parameter for searching resources present on the server.'
+               },
+               code: {
+                 name: '',
+                 title: 'Code search-type parameter for searching resources present on the server.'
+               },
+               date: {
+                 name: '',
+                 title: 'Date search-type parameter for searching resources present on the server.'
                }
              }
            }
