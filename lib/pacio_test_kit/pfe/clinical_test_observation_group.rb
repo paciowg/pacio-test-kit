@@ -3,6 +3,7 @@ require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
 require_relative '../common_tests/create_test'
 require_relative 'clinical_test_observation/clinical_test_observation_update_test'
+require_relative '../common_tests/search_type_test'
 
 module PacioTestKit
   module PFE
@@ -44,6 +45,29 @@ module PacioTestKit
              }
            }
       test from: :pacio_pfe_clinical_test_observation_update
+
+      test from: :pacio_resource_search_type,
+           title: 'Server returns correct Observation resource from Observation search-type interaction',
+           config: {
+             inputs: {
+               patient: {
+                 name: '',
+                 title: 'Patient search-type parameter for searching resources present on the server.'
+               },
+               category: {
+                 name: '',
+                 title: 'Category search-type parameter for searching resources present on the server.'
+               },
+               code: {
+                 name: '',
+                 title: 'Code search-type parameter for searching resources present on the server.'
+               },
+               date: {
+                 name: '',
+                 title: 'Date search-type parameter for searching resources present on the server.'
+               }
+             }
+           }
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',
            description: ERB.new(File.read(File.join(
