@@ -22,9 +22,16 @@ RSpec.describe PacioTestKit::SearchTypeTest do
   let(:resource_type) { 'Observation' }
   let(:resource_id) { '123' }
   let(:resource_category) { 'category_name|category_code' }
+  let(:resource_code) { 'code_name|code_value' }
+  let(:resource_date) { 'gedate_value' }
   let(:observation) do
     JSON.parse(
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
+    )
+  end
+  let(:observation_search_response) do
+    JSON.parse(
+      File.read(File.join(__dir__, '..', 'fixtures', 'pfe_bundle_observation_search_response.json'))
     )
   end
 
@@ -50,10 +57,62 @@ RSpec.describe PacioTestKit::SearchTypeTest do
   end
 
   it 'passes when search by patient and category is successful and correct resource is retrieved' do
-    stub_request(:get, "#{url}/#{resource_type}?Patient=#{resource_id}&Category=#{resource_category}")
-      .to_return(status: 200, body: observation.to_json)
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{resource_id}&category=#{resource_category}")
+      .to_return(status: 200, body: observation_search_response.to_json)
 
-    result = run(runnable, patient: patient_search_param, category: category_search_param, url:)
+    stub_request(:post, "#{url}/#{resource_type}/_search")
+      .with(body: { patient: resource_id, category: resource_category })
+      .to_return(status: 200, body: observation_search_response.to_json)
+
+    result = run(runnable, patient: resource_id, category: resource_category, url:)
     expect(result.result).to eq('pass')
+  end
+
+  it 'passes when search by patient, category, and date is successful and correct resource is retrieved' do
+    stub_request(:get,
+                 "#{url}/#{resource_type}?patient=#{resource_id}&category=#{resource_category}&date=#{resource_date}")
+      .to_return(status: 200, body: observation_search_response.to_json)
+
+    stub_request(:post, "#{url}/#{resource_type}/_search").with(body:
+    { patient: resource_id, category: resource_category, date: resource_date })
+      .to_return(status: 200, body: observation_search_response.to_json)
+
+    result = run(runnable, patient: resource_id, category: resource_category, date: resource_date, url:)
+    expect(result.result).to eq('pass')
+  end
+
+  it 'passes when search by patient and code is successful and correct resource is retrieved' do
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{resource_id}&code=#{resource_code}")
+      .to_return(status: 200, body: observation_search_response.to_json)
+
+    stub_request(:post, "#{url}/#{resource_type}/_search").with(body: { patient: resource_id, code: resource_code })
+      .to_return(status: 200, body: observation_search_response.to_json)
+
+    result = run(runnable, patient: resource_id, code: resource_code, url:)
+    expect(result.result).to eq('pass')
+  end
+
+  it 'fails when response status is not 200' do
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{resource_id}&code=#{resource_code}")
+      .to_return(status: 500, body: {}.to_json)
+
+    result = run(runnable, patient: resource_id, code: resource_code, url:)
+    expect(result.result).to eq('fail')
+  end
+
+  it 'fails when response type is not fhir bundle' do
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{resource_id}&code=#{resource_code}")
+      .to_return(status: 200, body: { resourceType: 'Observation' }.to_json)
+
+    result = run(runnable, patient: resource_id, code: resource_code, url:)
+    expect(result.result).to eq('fail')
+  end
+
+  it 'fails when response resource does not have type searchset' do
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{resource_id}&code=#{resource_code}")
+      .to_return(status: 200, body: { resourceType: 'Bundle', type: 'notSearchSet' }.to_json)
+
+    result = run(runnable, patient: resource_id, code: resource_code, url:)
+    expect(result.result).to eq('fail')
   end
 end

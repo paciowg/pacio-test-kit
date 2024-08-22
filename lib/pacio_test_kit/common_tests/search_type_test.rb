@@ -9,16 +9,20 @@ module PacioTestKit
     description 'A server SHALL support the search-type interaction.'
 
     input :patient,
-          title: 'The patient search-type parameter to find a resource on the server.'
+          title: 'The patient search-type parameter to find a resource on the server.',
+          optional: true
 
     input :category,
-          title: 'The category search-type parameter to find a resource on the server.'
+          title: 'The category search-type parameter to find a resource on the server.',
+          optional: true
 
     input :code,
-          title: 'The code search-type parameter to find a resource on the server.'
+          title: 'The code search-type parameter to find a resource on the server.',
+          optional: true
 
     input :date,
-          title: 'The date search-type parameter to find a resource on the server.'
+          title: 'The date search-type parameter to find a resource on the server.',
+          optional: true
 
     def resource_type
       config.options[:resource_type]
@@ -29,6 +33,7 @@ module PacioTestKit
     end
 
     run do
+      search_and_validate_resource(patient, category, code, date)
       no_error_validation("Fail to find #{resource_type} resource(s) by search-type. See error messages for details.")
     end
   end

@@ -1,6 +1,42 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
+    def search_and_validate_resource(patient, category, code, date)
+      search_params = set_search_params(patient, category, code, date)
+
+      fhir_search_method(:get, search_params)
+      fhir_search_method(:post, search_params)
+    end
+
+    def fhir_search_method(method, search_params)
+      first_request = fhir_search(resource_type, params: search_params, search_method: method)
+      assert_response_status(200)
+      assert_resource_type('Bundle', resource: first_request.resource)
+      assert(first_request.resource.type == 'searchset',
+             'The bundle returned from search-type interaction was not of type searchset')
+      # assert_valid_bundle_entries(resource_types: 'Observation')
+      validate_bundle_entries(first_request.resource)
+    end
+
+    def validate_bundle_entries(resource)
+      resource_list = resource.entry
+      resource_list.each do |resource_selected|
+        validate_resource_type(resource_selected.resource)
+      end
+    end
+
+    def set_search_params(patient, category, code, date)
+      return unless patient.present?
+
+      if category.present? && date.present?
+        { 'patient' => patient, 'category' => category, 'date' => date }
+      elsif category.present?
+        { 'patient' => patient, 'category' => category }
+      elsif code.present?
+        { 'patient' => patient, 'code' => code }
+      end
+    end
+
     def create_and_validate_resource(resource_to_create)
       fhir_resource = validate_resource_input(resource_to_create)
 

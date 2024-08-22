@@ -49,20 +49,23 @@ module PacioTestKit
            config: {
              inputs: {
                patient: {
-                 name: '',
+                 name: :patient,
                  title: 'Patient search-type parameter for searching resources present on the server.'
                },
                category: {
-                 name: '',
-                 title: 'Category search-type parameter for searching resources present on the server.'
+                 name: :category,
+                 title: 'Category search-type parameter for searching resources present on the server.',
+                 optional: true
                },
                code: {
-                 name: '',
-                 title: 'Code search-type parameter for searching resources present on the server.'
+                 name: :code,
+                 title: 'Code search-type parameter for searching resources present on the server.',
+                 optional: true
                },
                date: {
-                 name: '',
-                 title: 'Date search-type parameter for searching resources present on the server.'
+                 name: :date,
+                 title: 'Date search-type parameter for searching resources present on the server.',
+                 optional: true
                }
              }
            }
