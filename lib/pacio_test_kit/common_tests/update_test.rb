@@ -6,7 +6,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
     include PacioTestKit::InteractionsTest
 
-    title 'Resources returned in previous read tests can be updated'
+    title 'A resource returned in previous read tests can be updated'
     id :pacio_resource_update
     description %(
       This test verifies that a resource obtained from a prior read operation can be successfully updated.
