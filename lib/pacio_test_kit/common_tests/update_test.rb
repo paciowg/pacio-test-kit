@@ -9,10 +9,10 @@ module PacioTestKit
     title 'Resources returned in previous read tests can be updated'
     id :pacio_resource_update
     description %(
-      This test verifies the resource returned from a previous read test is able to be updated.
+      This test verifies that a resource obtained from a prior read operation can be successfully updated.
 
-      This test will be skipped if no resource read request was made in
-      previous tests or if the request was unsuccessful.
+      This test will be skipped if no read requests were made in
+      previous tests, or if all requests were unsuccessful.
     )
 
     def resource_type
