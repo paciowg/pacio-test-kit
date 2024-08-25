@@ -44,7 +44,14 @@ module PacioTestKit
              }
            }
       test from: :pacio_resource_update,
-           title: 'Server can update status of Observation resource from a previous read interaction'
+           config: {
+             inputs: {
+               updated_status: {
+                 name: :clinical_test_observation_updated_status,
+                 title: 'Status to update PFEClinicalTestObservation resource present on the server'
+               }
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',

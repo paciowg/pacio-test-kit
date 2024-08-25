@@ -1,4 +1,3 @@
-require_relative '../pacio_profiles'
 require_relative '../interactions_test'
 
 module PacioTestKit
@@ -15,6 +14,10 @@ module PacioTestKit
       previous tests, or if all requests were unsuccessful.
     )
 
+    input :updated_status,
+          title: 'Status to update a resource present on the server',
+          description: 'Updated status must be in the observation-status value set'
+
     def resource_type
       config.options[:resource_type]
     end
@@ -27,15 +30,10 @@ module PacioTestKit
       load_tagged_requests(tag)
       skip_if requests.blank?, "No #{tag} resource read request was made in previous tests as expected."
 
-      successful_request = requests.select { |request| request.status == 200 }
-      skip_if successful_request.empty?, "The #{tag} resource update request was skipped because" \
-                                         'no previous read test was successful.'
+      successful_resource = requests.select { |request| request.status == 200 }
+      skip_if successful_resource.empty?, "All previous #{tag} resource read requests were unsuccessful."
 
-      update_and_validate_resource(successful_request[0])
-
-      error_msg = "The #{tag} resource returned in a previous read test was " \
-                  'unable to be updated. See error messages for details.'
-      no_error_validation(error_msg)
+      update_and_validate_resource(successful_resource[0], updated_status)
     end
   end
 end

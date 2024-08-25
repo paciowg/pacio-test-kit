@@ -2,25 +2,19 @@ module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
 
-    def update_and_validate_resource(retrieved_request)
-      retrieved_fhir_resource = FHIR.from_contents(JSON.parse(retrieved_request.response_body).to_json)
+    def update_and_validate_resource(retrieved_request, updated_status)
+      fhir_resource = retrieved_request.resource
 
-      modified_fhir_resource = modify_resource_status(retrieved_fhir_resource.deep_dup)
+      fhir_resource_updated = fhir_resource.deep_dup
+      fhir_resource_updated.status = updated_status
+      fhir_update(fhir_resource_updated, fhir_resource.id)
 
-      fhir_update(modified_fhir_resource, retrieved_fhir_resource.id)
       assert_response_status(200)
-
-      validate_resource_status(retrieved_fhir_resource, resource)
-    end
-
-    def modify_resource_status(retrieved_fhir_resource)
-      retrieved_fhir_resource.status = 'registered'
-      retrieved_fhir_resource
-    end
-
-    def validate_resource_status(retrieved_resource, updated_resource)
-      assert(retrieved_resource.status != updated_resource.status,
+      assert(fhir_resource.status != resource.status,
              'Update validation failed and resource status was not updated.')
+      assert_resource_type(resource_type)
+      assert(fhir_resource.id == resource.id, 'Resource id is not same as updated resource id.')
+      validate_response_metadata(resource, fhir_resource, 'update')
     end
 
     def create_and_validate_resource(resource_to_create)
