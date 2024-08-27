@@ -43,16 +43,7 @@ module PacioTestKit
                }
              }
            }
-      test from: :pacio_resource_update,
-           config: {
-             inputs: {
-               updated_status: {
-                 name: :clinical_test_observation_updated_status,
-                 title: 'Status to update PFEClinicalTestObservation resource present on the server'
-               }
-             }
-           }
-
+      test from: :pacio_resource_update
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',
            description: ERB.new(File.read(File.join(

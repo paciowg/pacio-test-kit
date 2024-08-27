@@ -44,16 +44,7 @@ module PacioTestKit
                }
              }
            }
-      test from: :pacio_resource_update,
-           config: {
-             inputs: {
-               updated_status: {
-                 name: :diagnostic_report_narrative_history_updated_status,
-                 title: 'Status to update PFENarrativeHistoryOfStatus resource present on the server'
-               }
-             }
-           }
-
+      test from: :pacio_resource_update
       test from: :pacio_resource_validation,
            title: 'DiagnosticReport Resources returned in previous tests conform to the ' \
                   'PFENarrativeHistoryOfStatus profile',

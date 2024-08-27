@@ -66,8 +66,15 @@ RSpec.describe PacioTestKit::UpdateTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
+  def entity_result_message
+    results_repo.current_results_for_test_session_and_runnables(test_session.id, [runnable])
+      .first
+      .messages
+      .first
+  end
+
   it 'skips when no read request was made in previous tests' do
-    result = run(runnable, updated_status: 'registered', url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/No #{profile} resource read request was made in previous tests/)
@@ -76,7 +83,7 @@ RSpec.describe PacioTestKit::UpdateTest do
   it 'skips when read request was unsuccessful in previous tests' do
     mock_server(status: 401)
 
-    result = run(runnable, updated_status: 'registered', url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/resource read requests were unsuccessful/)
@@ -88,10 +95,34 @@ RSpec.describe PacioTestKit::UpdateTest do
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 500, body: {}.to_json)
 
-    result = run(runnable, updated_status: 'final', url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Unexpected response status: expected 200/)
+  end
+
+  it 'fails if resourceType is not Observation' do
+    mock_server(body: observation)
+
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: { resourceType: 'Encounter' }.to_json)
+
+    result = run(runnable, url:)
+
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected resource type: expected Observation/)
+  end
+
+  it 'fails if id does not match updated resource id' do
+    mock_server(body: observation)
+
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: { resourceType: 'Observation', id: '456' }.to_json)
+
+    result = run(runnable, url:)
+
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Update must not change the resource ID/)
   end
 
   it 'fails if resource returns 200 but did not successfully update status field' do
@@ -100,10 +131,37 @@ RSpec.describe PacioTestKit::UpdateTest do
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 200, body: observation.to_json)
 
-    result = run(runnable, updated_status: 'final', url:)
+    result = run(runnable, url:)
 
     expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/resource status was not updated/)
+    expect(result.result_message).to match(/Update failed: Expected status to be updated/)
+  end
+
+  it 'fails if response resource meta.lastUpdated is present and is the same as submitted resource meta.lastUpdated' do
+    resource_body = { resourceType: 'Observation', id: '123', status: 'final', meta: { lastUpdated: 'now' } }.to_json
+    mock_server(body: resource_body)
+
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: updated_observation.to_json)
+
+    result = run(runnable, url:)
+
+    expect(result.result).to eq('fail')
+    expect(entity_result_message.message).to match(/Server SHALL ignore `meta.lastUpdated`/)
+  end
+
+  it 'fails if response resource meta.versionId is present and is the same as submitted resource meta.versionId' do
+    resource_body = { resourceType: 'Observation', id: '123', status: 'final',
+                      meta: { versionId: 'someVersionId' } }.to_json
+    mock_server(body: resource_body)
+
+    stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: updated_observation.to_json)
+
+    result = run(runnable, url:)
+
+    expect(result.result).to eq('fail')
+    expect(entity_result_message.message).to match(/Server SHALL ignore `meta.versionId`/)
   end
 
   it 'passes if can update previous read request and returns 200 response' do
@@ -112,7 +170,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 200, body: updated_observation.to_json)
 
-    result = run(runnable, updated_status: 'registered', url:)
+    result = run(runnable, url:)
     expect(result.result).to eq('pass')
   end
 end
