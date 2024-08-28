@@ -101,7 +101,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     expect(result.result_message).to match(/Unexpected response status: expected 200/)
   end
 
-  it 'fails if resourceType is not Observation' do
+  it 'fails if resourceType is not the expected one' do
     mock_server(body: observation)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
