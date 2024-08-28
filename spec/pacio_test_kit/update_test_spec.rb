@@ -164,7 +164,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     expect(entity_result_message.message).to match(/Server SHALL ignore `meta.versionId`/)
   end
 
-  it 'passes if can update previous read request and returns 200 response' do
+  it 'passes if resource is successfully updated' do
     mock_server(body: observation)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
