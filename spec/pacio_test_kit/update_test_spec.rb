@@ -125,7 +125,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     expect(result.result_message).to match(/Update must not change the resource ID/)
   end
 
-  it 'fails if resource returns 200 but did not successfully update status field' do
+  it 'fails if the updated status was not persisted' do
     mock_server(body: observation)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
