@@ -1,6 +1,30 @@
 module PacioTestKit
   module InteractionsTest
     # TODO: All helper methods for interactions tests (CRUD) will be added here.
+
+    def update_and_validate_resource(resource_to_update)
+      statuses = ['final', 'cancelled']
+      new_status = statuses.find { |status| status != resource_to_update.status }
+      resource_to_update.status = new_status
+
+      fhir_update(resource_to_update, resource_to_update.id)
+      perform_update_validation(resource_to_update)
+    end
+
+    def perform_update_validation(resource_to_update)
+      assert_response_status(200)
+
+      assert_resource_type(resource_type)
+
+      msg = "Update must not change the resource ID: expected ID `#{resource_to_update.id}`, got `#{resource.id}`"
+      assert(resource_to_update.id == resource.id, msg)
+
+      msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`, got `#{resource.status}`"
+      assert(resource.status == resource_to_update.status, msg)
+
+      validate_response_metadata(resource, resource_to_update, 'update')
+    end
+
     def create_and_validate_resource(resource_to_create)
       fhir_resource = validate_resource_input(resource_to_create)
 
