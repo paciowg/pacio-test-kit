@@ -113,7 +113,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     expect(result.result_message).to match(/Unexpected resource type: expected #{resource_type}/)
   end
 
-  it 'fails if id does not match updated resource id' do
+  it 'fails when the resource id changes' do
     mock_server(body: observation)
 
     stub_request(:put, "#{url}/#{resource_type}/#{resource_id}")
