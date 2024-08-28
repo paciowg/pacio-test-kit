@@ -110,7 +110,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     result = run(runnable, url:)
 
     expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected resource type: expected Observation/)
+    expect(result.result_message).to match(/Unexpected resource type: expected #{resource_type}/)
   end
 
   it 'fails if id does not match updated resource id' do
