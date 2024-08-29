@@ -1,5 +1,6 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/create_test'
+require_relative '../common_tests/update_test'
 require_relative '../common_tests/validation_test'
 require_relative '../common_tests/search_type_test'
 require_relative '../pacio_profiles'
@@ -44,6 +45,7 @@ module PacioTestKit
                }
              }
            }
+
       test from: :pacio_resource_search_type,
            title: 'Server returns correct DiagnosticReport resource from DiagnosticReport search-type interaction',
            config: {
@@ -69,6 +71,9 @@ module PacioTestKit
                }
              }
            }
+
+      test from: :pacio_resource_update
+
       test from: :pacio_resource_validation,
            title: 'DiagnosticReport Resources returned in previous tests conform to the ' \
                   'PFENarrativeHistoryOfStatus profile',
