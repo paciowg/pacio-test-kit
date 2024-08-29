@@ -3,11 +3,9 @@ require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
 require_relative '../common_tests/create_test'
 
-
 require_relative '../common_tests/search_type_test'
 
 require_relative '../common_tests/update_test'
-
 
 module PacioTestKit
   module PFE
@@ -48,8 +46,6 @@ module PacioTestKit
                }
              }
            }
-
-      
 
       test from: :pacio_resource_search_type,
            title: 'Server returns correct Observation resource from Observation search-type interaction',

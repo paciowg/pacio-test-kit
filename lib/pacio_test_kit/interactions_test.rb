@@ -36,7 +36,7 @@ module PacioTestKit
       elsif code.present?
         { 'patient' => patient, 'code' => code }
       end
-
+    end
 
     def update_and_validate_resource(resource_to_update)
       statuses = ['final', 'cancelled']
@@ -59,7 +59,6 @@ module PacioTestKit
       assert(resource.status == resource_to_update.status, msg)
 
       validate_response_metadata(resource, resource_to_update, 'update')
-
     end
 
     def create_and_validate_resource(resource_to_create)
