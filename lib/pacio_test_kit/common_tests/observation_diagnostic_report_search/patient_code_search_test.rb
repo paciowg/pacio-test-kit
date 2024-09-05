@@ -22,7 +22,7 @@ module PacioTestKit
         resource_type: config.options[:resource_type],
         search_params: [
           { name: 'patient', paths: ['subject'] },
-          { name: 'code', paths: ['code'] },
+          { name: 'code', paths: ['code'] }
         ],
         token_search_params: [{ name: 'code', paths: ['code'] }]
       )
