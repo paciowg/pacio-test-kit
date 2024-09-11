@@ -268,7 +268,7 @@ module PacioTestKit
       return unless response.status.to_s.start_with?('2')
 
       transform_fhirpath_results(JSON.parse(response.body))
-    rescue Faradat::Error => e
+    rescue Faraday::Error => e
       logger.error "FHIRPath service not available: #{e.message}"
     rescue JSON::ParserError
       logger.error "Error parsing response from FHIRPath service: response body\n #{response.body}"
