@@ -68,7 +68,7 @@
               ]
             },
             "subject": {
-              "reference": "Patient/PFEIG-patientBSJ1"
+              "reference": "Patient/PFEIG-wrong-id"
             },
             "effectiveDateTime": "2020-04-09T18:00:00-05:00",
             "performer": [
