@@ -187,54 +187,57 @@ RSpec.describe PacioTestKit::PatientCategoryDateSearchTest do
   end
 
   # TODO: not working
-  # it 'fails status for search by post is not 200' do
-  #   mock_server(body: observation)
+  it 'passes if 200 responses' do
+    mock_server(body: observation)
 
-  #   stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-  #     .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-  #     .to_return(status: 200, body: [{ type: 'Reference',
-  #                                      element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-  #                headers: { 'Content-Type' => 'application/json' })
-  #   stub_request(:post, 'https://example.com/fhirpath/evaluate?path=category')
-  #     .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-  #     .to_return(status: 200, body: [{ type: 'CodeableConcept',
-  #                                      element: {
-  #                                        coding: [
-  #                                          {
-  #                                            system: 'http://terminology.hl7.org/CodeSystem/observation-category',
-  #                                            code: 'survey'
-  #                                          }
-  #                                        ]
-  #                                      } }].to_json,
-  #                headers: { 'Content-Type' => 'application/json' })
-  #   stub_request(:post, 'https://example.com/fhirpath/evaluate?path=category.coding.code')
-  #     .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-  #     .to_return(status: 200, body: [{ type: 'CodeableConcept',
-  #                                      element: {
-  #                                        coding: [
-  #                                          {
-  #                                            system: 'http://terminology.hl7.org/CodeSystem/observation-category',
-  #                                            code: 'survey'
-  #                                          }
-  #                                        ]
-  #                                      } }].to_json,
-  #                headers: { 'Content-Type' => 'application/json' })
-  #   stub_request(:post, 'https://example.com/fhirpath/evaluate?path=effective')
-  #     .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-  #     .to_return(status: 200, body: [{ type: 'Coding',
-  #                                      element: '2020-04-09T18:00:00-05:00' }].to_json,
-  #                headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
+      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: [{ type: 'Reference',
+                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
+                 headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=category')
+      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: [{ type: 'CodeableConcept',
+                                       element: {
+                                         coding: [
+                                           {
+                                             system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+                                             code: 'survey'
+                                           }
+                                         ]
+                                       } }].to_json,
+                 headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=category.coding')
+      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: [{ type: 'CodeableConcept',
+                                       element:
+                                         {
+                                           system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+                                           code: 'survey'
+                                         } }].to_json,
+                 headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=category.coding.code')
+      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: [{ type: 'CodeableConcept',
+                                       element: 'survey' }].to_json,
+                 headers: { 'Content-Type' => 'application/json' })
+    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=effective')
+      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: [{ type: 'dateTime',
+                                       element: '2020-04-09T18:00:00-05:00' }].to_json,
+                 headers: { 'Content-Type' => 'application/json' })
 
-  #   stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}&category=#{resource_code}&date=#{resource_date}")
-  #     .to_return(status: 200, body: observation_search_response.to_json)
+    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}&category=#{resource_code}&date=#{resource_date}")
+      .to_return(status: 200, body: observation_search_response.to_json)
 
-  #   stub_request(:post, "#{url}/#{resource_type}/_search")
-  #     .with(body: { patient: "Patient/#{patient_id}", category: resource_code,
-  #                   date: resource_date })
-  #     .to_return(status: 500, body: {}.to_json)
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}&category=#{resource_code}&date=#{resource_date}")
+      .to_return(status: 200, body: observation_search_response.to_json)
 
-  #   result = run(runnable, url:)
-  #   expect(result.result).to eq('fail')
-  #   expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
-  # end
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}&category=#{resource_system}|#{resource_code}&date=#{resource_date}")
+      .to_return(status: 200, body: observation_search_response.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('pass')
+    # expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
+  end
 end
