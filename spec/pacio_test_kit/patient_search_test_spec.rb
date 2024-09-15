@@ -258,7 +258,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     expect(result.result_message).to match(/Unexpected resource type: expected Bundle/)
   end
 
-  it 'fails if return type of search by get is not valid json' do
+  it 'fails if return type of search by get and logs error if not valid json' do
     mock_server(body: observation)
 
     stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
@@ -279,8 +279,8 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
     result = run(runnable, url:)
     expect(result.result).to eq('error')
+    expect(result.result_message).to match(/Error: unexpected token at/)
     # TODO: how to check logger error msg
-    # expect(entity_result_message.message).to match(/not a valid JSON/)
   end
 
   it 'fails if return type of search by post is not valid json' do
@@ -304,8 +304,8 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
     result = run(runnable, url:)
     expect(result.result).to eq('error')
+    expect(result.result_message).to match(/Error: unexpected token at/)
     # TODO: how to check logger error msg
-    # expect(entity_result_message.message).to match(/not a valid JSON/)
   end
 
   it 'fails if the resource returned is not the expected resourceType' do
@@ -330,6 +330,30 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     result = run(runnable, url:)
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/No #{resource_type} resources appear to be available. Please provide id/)
+  end
+
+  it 'logs if the resource returned a bundle of unexpected resourceTypes' do
+    mock_server(body: observation)
+
+    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
+      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: [{ type: 'Reference',
+                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
+                 headers: { 'Content-Type' => 'application/json' })
+
+    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
+      .to_return(status: 200, body: observation_search_response_two.to_json)
+
+    stub_request(:post, "#{url}/#{resource_type}/_search")
+      .with(body: { patient: "Patient/#{patient_id}" })
+      .to_return(status: 200, body: observation_search_response_two.to_json)
+
+    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
+      .to_return(status: 200, body: observation_search_response_two.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('pass')
+    expect(entity_result_message.message).to match(/This is unusual but allowed/)
   end
 
   # TODO: NOT WORKING

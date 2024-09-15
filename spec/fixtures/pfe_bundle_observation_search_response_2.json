@@ -10,6 +10,16 @@
         {
       "fullUrl" : "https://example.com/base/SearchResponse/BundleExample",
       "resource" : {
+            "resourceType": "Encounter",
+            "id": "123"
+        },
+      "search" : {
+        "mode" : "include"
+      }
+    },
+    {
+      "fullUrl" : "https://example.com/base/SearchResponse/BundleExample",
+      "resource" : {
             "resourceType": "Observation",
             "id": "123",
             "meta": {
