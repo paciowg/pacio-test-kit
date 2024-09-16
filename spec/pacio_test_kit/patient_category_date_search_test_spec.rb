@@ -439,7 +439,7 @@ RSpec.describe PacioTestKit::PatientCategoryDateSearchTest do
     expect(result.result_message).to match(/did not match the search parameters/)
   end
 
-  it 'fails if unable to retrieve search parameters' do
+  it 'fails if unable to retrieve search parameters values' do
     mock_server(body: observation)
 
     stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
