@@ -108,23 +108,23 @@ RSpec.describe PacioTestKit::PatientSearchTest do
       .first
   end
 
-  it 'skips when no read or search request was made in previous tests' do
+  it 'skips when no read request was made in previous tests' do
     result = run(runnable, url:)
 
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/No #{profile} resource read or search request was made in previous tests/)
+    expect(result.result_message).to match(/No #{profile} resource read request was made in previous tests/)
   end
 
-  it 'skips when no read or search request was successful in previous tests' do
+  it 'skips when no read request was successful in previous tests' do
     mock_server(status: 401)
 
     result = run(runnable, url:)
 
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/All #{profile} resource read or search requests failed/)
+    expect(result.result_message).to match(/All #{profile} resource read requests failed/)
   end
 
-  it 'fails if status for search by get reference by type is not 200' do
+  it 'fails if response status for `GET` search is not 200' do
     mock_server(body: observation)
 
     stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
@@ -186,7 +186,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
   end
 
-  it 'fails if return type of search by get is not type bundle' do
+  it 'fails if the response resource type of `GET` search is not a bundle' do
     mock_server(body: observation)
 
     stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
@@ -387,7 +387,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
   #   expect(result.result_message).to match(/did not match the search parameters/)
   # end
 
-  it 'fails if unable to retrieve search parameters' do
+  it 'fails if unable to retrieve search parameters values' do
     mock_server(body: observation)
 
     stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
@@ -398,7 +398,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
     result = run(runnable, url:)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/Could not find values for all search params patient/)
+    expect(result.result_message).to match(/Could not find values for all search params/)
   end
 
   it 'fails if resources returned from post and get search methods were not the same' do

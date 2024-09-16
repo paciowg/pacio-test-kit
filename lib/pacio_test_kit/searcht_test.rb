@@ -18,9 +18,9 @@ module PacioTestKit
     def read_resources
       @read_resources ||= begin
         load_tagged_requests(tag)
-        skip_if requests.blank?, "No #{tag} resource read or search request was made in previous tests."
+        skip_if requests.blank?, "No #{tag} resource read request was made in previous tests."
         successful_requests = requests.select { |req| req.status == 200 }
-        skip_if successful_requests.empty?, "All #{tag} resource read or search requests failed."
+        skip_if successful_requests.empty?, "All #{tag} resource read requests failed."
         successful_requests.map(&:resource).uniq.compact
       end
     end
@@ -297,7 +297,7 @@ module PacioTestKit
     end
 
     def unable_to_resolve_params_message(search_param_names)
-      "Could not find values for all search params #{search_param_names.to_sentence}"
+      "Could not find values for all search params: `#{search_param_names.to_sentence}`"
     end
 
     #### RESULT CHECKING ####
