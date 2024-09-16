@@ -46,7 +46,7 @@ module PacioTestKit
       check_all_resources_against_params(target_resources, params)
 
       perform_post_search(target_resources, params) if test_post_search?
-      perform_reference_with_type_search(params, target_resources.count) if test_reference_variants?
+      perform_reference_variant_search(params, target_resources.count) if test_reference_variants?
       perform_search_with_system(params) if token_search_params?
 
       target_resources
@@ -70,7 +70,7 @@ module PacioTestKit
              "#{get_resource_count} resources for GET and #{post_resource_count} for POST."
     end
 
-    def perform_reference_with_type_search(params, resource_count)
+    def perform_reference_variant_search(params, resource_count)
       return if resource_count.zero?
 
       new_search_params = params.merge('patient' => get_new_patient_search_value(params))
@@ -102,6 +102,7 @@ module PacioTestKit
 
     def check_search_response
       assert_response_status(200)
+      assert_valid_json(request.response_body)
       assert_resource_type(:bundle)
     end
 

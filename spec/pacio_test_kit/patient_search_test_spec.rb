@@ -16,15 +16,12 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     end
   end
   let(:session_data_repo) { Inferno::Repositories::SessionData.new }
-  let(:results_repo) { Inferno::Repositories::Results.new }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
   let(:resource_type) { 'Observation' }
   let(:resource_id) { '123' }
   let(:patient_id) { 'PFEIG-patientBSJ1' }
 
-  let(:resource_system) { 'http://terminology.hl7.org/CodeSystem/observation-category' }
-  let(:resource_code) { 'survey' }
   let(:profile) { 'PFESingleObservation' }
 
   let(:observation) do
@@ -32,42 +29,20 @@ RSpec.describe PacioTestKit::PatientSearchTest do
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
     )
   end
-  let(:observation_two) do
-    JSON.parse(
-      File.read(File.join(__dir__, '..', 'fixtures',
-                          'pfe_single_observation_2.json'))
-    )
-  end
+
   let(:observation_search_response) do
     JSON.parse(
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_bundle_observation_search_response.json'))
     )
   end
-  let(:observation_search_response_wrong_resource_type) do
-    JSON.parse(
-      File.read(File.join(__dir__, '..', 'fixtures', 'pfe_bundle_observation_search_response_wrong_resource_type.json'))
-    )
-  end
-  let(:observation_search_response_different_search_param_response) do
-    JSON.parse(
-      File.read(File.join(__dir__, '..', 'fixtures',
-                          'pfe_bundle_observation_search_response_different_search_param_response.json'))
-    )
-  end
-  let(:observation_search_response_two) do
-    JSON.parse(
-      File.read(File.join(__dir__, '..', 'fixtures',
-                          'pfe_bundle_observation_search_response_2.json'))
-    )
-  end
-  let(:observation_not_match_response) do
-    JSON.parse(
-      File.read(File.join(__dir__, '..', 'fixtures',
-                          'pfe_bundle_observation_search_response_not_match.json'))
-    )
-  end
 
-  let(:faraday_url) { 'https://example.com/fhirpath' }
+  let(:fhirpath_url) { 'https://example.com/fhirpath/evaluate' }
+  let(:headers) do
+    { 'Content-Type' => 'application/json' }
+  end
+  let(:fhirpath_response) do
+    [{ type: 'Reference', element: { reference: 'Patient/PFEIG-patientBSJ1' } }]
+  end
 
   def build_read_request(body: nil, status: 200, headers: nil)
     repo_create(
@@ -101,11 +76,32 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
-  def entity_result_message
-    results_repo.current_results_for_test_session_and_runnables(test_session.id, [runnable])
-      .first
-      .messages
-      .first
+  def fhifpath_stub_request(request_body, response_body)
+    stub_request(:post, "#{fhirpath_url}?path=subject")
+      .with(body: request_body.to_json, headers:)
+      .to_return(status: 200, body: response_body.to_json)
+  end
+
+  def get_search_stub_request(query_params, response_body, status = 200)
+    stub_request(:get, "#{url}/#{resource_type}?#{query_params}")
+      .to_return(status:, body: response_body)
+  end
+
+  def post_search_stub_request(request_body, response_body, status = 200)
+    stub_request(:post, "#{url}/#{resource_type}/_search")
+      .with(body: request_body)
+      .to_return(status:, body: response_body)
+  end
+
+  it 'passes when search by patient is successful and correct resource is retrieved' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=#{patient_id}", observation_search_response.to_json)
+    post_search_stub_request({ patient: "Patient/#{patient_id}" }, observation_search_response.to_json)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('pass')
   end
 
   it 'skips when no read request was made in previous tests' do
@@ -124,361 +120,120 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     expect(result.result_message).to match(/All #{profile} resource read requests failed/)
   end
 
-  it 'fails if response status for `GET` search is not 200' do
+  it 'skips if unable to retrieve search parameters values' do
     mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 500, body: {}.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
-  end
-
-  it 'fails if status for search by get is not 200' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 500, body: {}.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
-  end
-
-  it 'fails status for search by post is not 200' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 500, body: {}.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
-  end
-
-  it 'fails if the response resource type of `GET` search is not a bundle' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: { resourceType: 'Encounter' }.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected resource type: expected Bundle/)
-  end
-
-  it 'fails if return type of search by post is not type bundle' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: { resourceType: 'Encounter' }.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected resource type: expected Bundle/)
-  end
-
-  it 'fails if return type of search by get reference with type is not type bundle' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: { resourceType: 'Encounter' }.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected resource type: expected Bundle/)
-  end
-
-  it 'fails if return type of search by get and logs error if not valid json' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: '[[')
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: '[[')
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('error')
-    expect(result.result_message).to match(/Error: unexpected token at/)
-    # TODO: how to check logger error msg
-  end
-
-  it 'fails if return type of search by post is not valid json' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: '[[')
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('error')
-    expect(result.result_message).to match(/Error: unexpected token at/)
-    # TODO: how to check logger error msg
-  end
-
-  it 'fails if the resource returned is not the expected resourceType' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_wrong_resource_type.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response_wrong_resource_type.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_wrong_resource_type.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/No #{resource_type} resources appear to be available. Please provide id/)
-  end
-
-  it 'logs if the resource returned a bundle of unexpected resourceTypes' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_two.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response_two.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_two.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('pass')
-    expect(entity_result_message.message).to match(/This is unusual but allowed/)
-  end
-
-  # TODO: NOT WORKING
-  # it 'fails when resource retrieved does not match the search parameters' do
-  #   mock_server(body: observation)
-
-  #   stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-  #     .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-  #     .to_return(status: 200, body: [{ type: 'Reference',
-  #                                      element: { reference: "Patient/#{patient_id}" } }].to_json,
-  #                headers: { 'Content-Type' => 'application/json' })
-
-  #   stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-  #     .with(body: FHIR.from_contents(observation_not_match_response.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-  #     .to_return(status: 200, body: [{ type: 'Reference',
-  #                                      element: { reference: 'Patient/PFEIG-wrong-id' } }].to_json,
-  #                headers: { 'Content-Type' => 'application/json' })
-
-  #   stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-  #     .to_return(status: 200, body: observation_search_response.to_json)
-
-  #   stub_request(:post, "#{url}/#{resource_type}/_search")
-  #     .with(body: { patient: "Patient/#{patient_id}" })
-  #     .to_return(status: 200, body: observation_search_response.to_json)
-
-  #   stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-  #     .to_return(status: 200, body: observation_not_match_response.to_json)
-
-  #   result = run(runnable, url:)
-  #   expect(result.result).to eq('fail')
-  #   expect(result.result_message).to match(/did not match the search parameters/)
-  # end
-
-  it 'fails if unable to retrieve search parameters values' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: '' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
+    fhirpath_response.first[:element][:reference] = ''
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
 
     result = run(runnable, url:)
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/Could not find values for all search params/)
   end
 
-  it 'fails if resources returned from post and get search methods were not the same' do
+  it 'fails if response status for `GET` search is not 200' do
     mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", {}.to_json, 500)
 
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation_two.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/wrong-patient-id' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
+  end
 
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_two.to_json)
+  it 'fails if response for `GET` search is not a valid json' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", '[[')
 
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Invalid JSON/)
+  end
 
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_two.to_json)
+  it 'fails if the response resource type of `GET` search is not a bundle' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", { resourceType: 'Encounter' }.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected resource type: expected Bundle/)
+  end
+
+  it 'skips if the response bundle entry does not contain at least one expected resource type' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", { resourceType: 'Bundle', entry: [] }.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('skip')
+    expect(result.result_message).to match(/No #{resource_type} resources appear to be available/)
+  end
+
+  it 'fails if none of the resource retrieved matches the search criteria' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+
+    allow_any_instance_of(runnable).to receive(:resource_matches_param?).and_return(false)
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/did not match the search parameters/)
+  end
+
+  it 'fails if response status for `POST` search is not 200' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+    post_search_stub_request({ patient: "Patient/#{patient_id}" }, {}.to_json, 500)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected response status: expected 200, but received 500/)
+  end
+
+  it 'fails if response for `POST` search is not a valid json' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+    post_search_stub_request({ patient: "Patient/#{patient_id}" }, '[[')
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Invalid JSON/)
+  end
+
+  it 'fails if the response resource type of `POST` search is not a bundle' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+    post_search_stub_request({ patient: "Patient/#{patient_id}" }, { resourceType: 'Encounter' }.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected resource type: expected Bundle/)
+  end
+
+  it 'fails if the number of resources returned from post and get search is not the same' do
+    mock_server(body: observation)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+    post_search_stub_request({ patient: "Patient/#{patient_id}" }, { resourceType: 'Bundle', entry: [] }.to_json)
 
     result = run(runnable, url:)
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Expected POST search to return the same results as GET, but found/)
   end
 
-  it 'fails if resources returned from variations of get search methods were not the same' do
+  it 'fails if number of expected resources from the patient variant searches is not the same' do
     mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation_two.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/wrong-patient-id' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response_two.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
+    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
+    post_search_stub_request({ patient: "Patient/#{patient_id}" }, observation_search_response.to_json)
+    get_search_stub_request("patient=#{patient_id}", { resourceType: 'Bundle', entry: [] }.to_json)
 
     result = run(runnable, url:)
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/to return the same results as searching by/)
-  end
-
-  it 'passes when search by patient is successful and correct resource is retrieved' do
-    mock_server(body: observation)
-
-    stub_request(:post, 'https://example.com/fhirpath/evaluate?path=subject')
-      .with(body: FHIR.from_contents(observation.to_json).to_json, headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 200, body: [{ type: 'Reference',
-                                       element: { reference: 'Patient/PFEIG-patientBSJ1' } }].to_json,
-                 headers: { 'Content-Type' => 'application/json' })
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { patient: "Patient/#{patient_id}" })
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    stub_request(:get, "#{url}/#{resource_type}?patient=Patient/#{patient_id}")
-      .to_return(status: 200, body: observation_search_response.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('pass')
   end
 end
