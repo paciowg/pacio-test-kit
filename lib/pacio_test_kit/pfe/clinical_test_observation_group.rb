@@ -2,7 +2,7 @@ require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
 require_relative '../common_tests/create_test'
-require_relative 'clinical_test_observation/clinical_test_observation_update_test'
+require_relative '../common_tests/update_test'
 
 module PacioTestKit
   module PFE
@@ -43,7 +43,7 @@ module PacioTestKit
                }
              }
            }
-      test from: :pacio_pfe_clinical_test_observation_update
+      test from: :pacio_resource_update
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',
            description: ERB.new(File.read(File.join(
