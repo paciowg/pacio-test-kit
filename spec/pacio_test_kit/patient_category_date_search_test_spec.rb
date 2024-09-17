@@ -107,7 +107,7 @@ RSpec.describe PacioTestKit::PatientCategoryDateSearchTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
-  def fhifpath_stub_request(request_path, request_body, response_body)
+  def fhirpath_stub_request(request_path, request_body, response_body)
     stub_request(:post, "#{fhirpath_url}?path=#{request_path}")
       .with(body: request_body.to_json, headers:)
       .to_return(status: 200, body: response_body.to_json)
@@ -122,13 +122,13 @@ RSpec.describe PacioTestKit::PatientCategoryDateSearchTest do
     mock_server(body: observation)
 
     # fhirpath
-    fhifpath_stub_request('subject', FHIR.from_contents(observation.to_json), fhirpath_patient_response)
-    fhifpath_stub_request('category', FHIR.from_contents(observation.to_json), fhirpath_category_response)
-    fhifpath_stub_request('category.coding', FHIR.from_contents(observation.to_json),
+    fhirpath_stub_request('subject', FHIR.from_contents(observation.to_json), fhirpath_patient_response)
+    fhirpath_stub_request('category', FHIR.from_contents(observation.to_json), fhirpath_category_response)
+    fhirpath_stub_request('category.coding', FHIR.from_contents(observation.to_json),
                           fhirpath_category_coding_response)
-    fhifpath_stub_request('category.coding.code', FHIR.from_contents(observation.to_json),
+    fhirpath_stub_request('category.coding.code', FHIR.from_contents(observation.to_json),
                           fhirpath_category_coding_code_response)
-    fhifpath_stub_request('effective', FHIR.from_contents(observation.to_json), fhirpath_effective_response)
+    fhirpath_stub_request('effective', FHIR.from_contents(observation.to_json), fhirpath_effective_response)
 
     # search
     get_search_stub_request("patient=Patient/#{patient_id}&category=#{resource_code}&date=#{resource_date}",
@@ -151,13 +151,13 @@ RSpec.describe PacioTestKit::PatientCategoryDateSearchTest do
     mock_server(body: observation)
 
     # fhirpath
-    fhifpath_stub_request('subject', FHIR.from_contents(observation.to_json), fhirpath_patient_response)
-    fhifpath_stub_request('category', FHIR.from_contents(observation.to_json), fhirpath_category_response)
-    fhifpath_stub_request('category.coding', FHIR.from_contents(observation.to_json),
+    fhirpath_stub_request('subject', FHIR.from_contents(observation.to_json), fhirpath_patient_response)
+    fhirpath_stub_request('category', FHIR.from_contents(observation.to_json), fhirpath_category_response)
+    fhirpath_stub_request('category.coding', FHIR.from_contents(observation.to_json),
                           fhirpath_category_coding_response)
-    fhifpath_stub_request('category.coding.code', FHIR.from_contents(observation.to_json),
+    fhirpath_stub_request('category.coding.code', FHIR.from_contents(observation.to_json),
                           fhirpath_category_coding_code_response)
-    fhifpath_stub_request('effective', FHIR.from_contents(observation.to_json), fhirpath_effective_response)
+    fhirpath_stub_request('effective', FHIR.from_contents(observation.to_json), fhirpath_effective_response)
 
     # search
     get_search_stub_request("patient=Patient/#{patient_id}&category=#{resource_code}&date=#{resource_date}",

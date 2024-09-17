@@ -76,7 +76,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
-  def fhifpath_stub_request(request_body, response_body)
+  def fhirpath_stub_request(request_body, response_body)
     stub_request(:post, "#{fhirpath_url}?path=subject")
       .with(body: request_body.to_json, headers:)
       .to_return(status: 200, body: response_body.to_json)
@@ -95,7 +95,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'passes when search by patient is successful and correct resource is retrieved' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=#{patient_id}", observation_search_response.to_json)
     post_search_stub_request({ patient: "Patient/#{patient_id}" }, observation_search_response.to_json)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
@@ -123,7 +123,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
   it 'skips if unable to retrieve search parameters values' do
     mock_server(body: observation)
     fhirpath_response.first[:element][:reference] = ''
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
 
     result = run(runnable, url:)
     expect(result.result).to eq('skip')
@@ -132,7 +132,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if response status for `GET` search is not 200' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", {}.to_json, 500)
 
     result = run(runnable, url:)
@@ -142,7 +142,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if response for `GET` search is not a valid json' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", '[[')
 
     result = run(runnable, url:)
@@ -152,7 +152,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if the response resource type of `GET` search is not a bundle' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", { resourceType: 'Encounter' }.to_json)
 
     result = run(runnable, url:)
@@ -162,7 +162,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'skips if the response bundle entry does not contain at least one expected resource type' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", { resourceType: 'Bundle', entry: [] }.to_json)
 
     result = run(runnable, url:)
@@ -172,7 +172,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if none of the resource retrieved matches the search criteria' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
 
     allow_any_instance_of(runnable).to receive(:resource_matches_param?).and_return(false)
@@ -183,7 +183,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if response status for `POST` search is not 200' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
     post_search_stub_request({ patient: "Patient/#{patient_id}" }, {}.to_json, 500)
 
@@ -194,7 +194,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if response for `POST` search is not a valid json' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
     post_search_stub_request({ patient: "Patient/#{patient_id}" }, '[[')
 
@@ -205,7 +205,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if the response resource type of `POST` search is not a bundle' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
     post_search_stub_request({ patient: "Patient/#{patient_id}" }, { resourceType: 'Encounter' }.to_json)
 
@@ -216,7 +216,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if the number of resources returned from post and get search is not the same' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
     post_search_stub_request({ patient: "Patient/#{patient_id}" }, { resourceType: 'Bundle', entry: [] }.to_json)
 
@@ -227,7 +227,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
 
   it 'fails if number of expected resources from the patient variant searches is not the same' do
     mock_server(body: observation)
-    fhifpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
+    fhirpath_stub_request(FHIR.from_contents(observation.to_json), fhirpath_response)
     get_search_stub_request("patient=Patient/#{patient_id}", observation_search_response.to_json)
     post_search_stub_request({ patient: "Patient/#{patient_id}" }, observation_search_response.to_json)
     get_search_stub_request("patient=#{patient_id}", { resourceType: 'Bundle', entry: [] }.to_json)
