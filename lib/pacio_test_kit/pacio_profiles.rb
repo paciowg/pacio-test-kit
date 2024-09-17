@@ -38,29 +38,38 @@ module PacioTestKit
     ADI_RESOURCES = {
       'Bundle' => [].freeze,
       'Composition' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-Composition-Header.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PACPComposition.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Composition-Header',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PACPComposition',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOComposition'
       ].freeze,
       'Consent' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-HealthcareAgentAuthority.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-ConsentForHealthcareAgent.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-ParticipantConsent'
       ].freeze,
-      'DocumentReference' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-DocumentReference.html'].freeze,
-      'Goal' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PersonalGoal.html'].freeze,
-      'List' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PersonalPrioritiesOrganizer.html'].freeze,
+      'DocumentReference' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-DocumentReference'].freeze,
+      'Goal' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalGoal'].freeze,
+      'List' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalPrioritiesOrganizer'].freeze,
       'Observation' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-DocumentationObservation.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PersonalInterventionPreference.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-OrganDonationObservation.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-AutopsyObservation.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-CareExperiencePreference.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-DocumentationObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalInterventionPreference',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-OrganDonationObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-AutopsyObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-CareExperiencePreference'
       ].freeze,
       'Organization' => [].freeze,
-      'Patient' => ['https://www.hl7.org/fhir/us/core/StructureDefinition-us-core-patient.html'].freeze,
-      'Provenance' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-Provenance.html'].freeze,
+      'Patient' => ['http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'].freeze,
+      'Provenance' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Provenance'].freeze,
       'RelatedPerson' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-HealthcareAgent.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-Guardian.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Witness',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Participant',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Notary'
+      ].freeze,
+      'ServiceRequest' => [
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOMedicallyAssistedNutritionServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOMedicallyAssistedHydrationServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOInitialTreatmentServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOCPRServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOAdditionalOrdersOrInstructionsServiceRequest'
       ].freeze
     }.freeze
   end
