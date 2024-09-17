@@ -6,7 +6,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
 
     id :pacio_adi_server
-    title 'PACIO ADI Server Test Suite'
+    title 'PACIO ADI v2.1.0 Server Test Suite'
     description 'PACIO Advance Directives Server Test Suite'
 
     input :url,
@@ -27,6 +27,7 @@ module PacioTestKit
     config(
       options: {
         ig: 'ADI',
+        ig_version: '2.1.0',
         capability_statement_url: 'http://hl7.org/fhir/us/pacio-adi/CapabilityStatement/adi',
         supported_resources: ADI_RESOURCES.keys,
         required_profiles: ADI_RESOURCES.values.flatten
