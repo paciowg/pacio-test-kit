@@ -26,7 +26,7 @@ module PacioTestKit
                resource_ids: {
                  name: :care_experience_preference_observation_resource_ids,
                  optional: true,
-                 title: 'ID(s) for ADICareExperiencePreference resources present on the server'
+                 title: 'ID(s) for ADICareExperiencePreference Observation resources present on the server'
                }
              }
            }

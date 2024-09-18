@@ -26,7 +26,7 @@ module PacioTestKit
                resource_ids: {
                  name: :personal_intervention_preference_observation_resource_ids,
                  optional: true,
-                 title: 'ID(s) for ADIPersonalInterventionPreference resources present on the server'
+                 title: 'ID(s) for ADIPersonalInterventionPreference Observation resources present on the server'
                }
              }
            }
