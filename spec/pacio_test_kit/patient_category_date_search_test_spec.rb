@@ -60,7 +60,7 @@ RSpec.describe PacioTestKit::PatientCategoryDateSearchTest do
        } }]
   end
   let(:fhirpath_category_coding_response) do
-    [{ type: 'coding',
+    [{ type: 'Coding',
        element: {
          system: 'http://terminology.hl7.org/CodeSystem/observation-category',
          code: 'survey'

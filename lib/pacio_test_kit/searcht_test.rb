@@ -227,9 +227,9 @@ module PacioTestKit
     def extract_codeable_concept_value(resource, path, include_system)
       if include_system
         coding = fhir_path_single_result(resource, "#{path}.coding") do |c|
-          c['code'].present? && c['system'].present?
+          c.code.present? && c.system.present?
         end&.dig('element')
-        "#{coding['system']}|#{coding['code']}" if coding
+        "#{coding.system}|#{coding.code}" if coding
       else
         fhir_path_single_result(resource, "#{path}.coding.code")&.dig('element')
       end
