@@ -18,7 +18,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
 
     id :pacio_pfe_server
-    title 'PACIO PFE Server Test Suite'
+    title 'PACIO PFE v2.0.0-ballot Server Test Suite'
     description 'PACIO Personal Functioning and Engagement Server Test Suite'
 
     input :url,
@@ -39,6 +39,7 @@ module PacioTestKit
     config(
       options: {
         ig: 'PFE',
+        ig_version: '2.0.0-ballot',
         capability_statement_url: 'http://hl7.org/fhir/us/pacio-pfe/CapabilityStatement/pacio-pfe-cap',
         supported_resources: PFE_RESOURCES.keys,
         required_profiles: PFE_RESOURCES.values.flatten

@@ -29,6 +29,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :service_request_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFEServiceRequest resources present on the server'
                }
              }

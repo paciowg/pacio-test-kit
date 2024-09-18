@@ -21,6 +21,8 @@ module PacioTestKit
     end
 
     run do
+      skip_if resource_ids.blank?, 'No resource id provided for the read interaction'
+
       id_list = resource_ids.split(',').map(&:strip)
       read_and_validate_resources(id_list, tag)
 

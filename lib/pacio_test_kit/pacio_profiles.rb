@@ -11,7 +11,29 @@ module PacioTestKit
       'PFEGoal' => 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-goal',
       'PFENutritionOrder' => 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-nutrition-order',
       'PFEServiceRequest' => 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-service-request',
-      'PFESingleObservation' => 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-observation-single'
+      'PFESingleObservation' => 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-observation-single',
+      'ADICompositionHeader' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Composition-Header',
+      'ADIPACPComposition' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PACPComposition',
+      'ADIPMOComposition' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOComposition',
+      'ADIParticipantConsent' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-ParticipantConsent',
+      'ADIDocumentReference' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-DocumentReference',
+      'ADIPersonalGoal' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalGoal',
+      'ADIPersonalPrioritiesOrganizer' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalPrioritiesOrganizer',
+      'ADIAutopsyObservation' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-AutopsyObservation',
+      'ADIDocumentationObservation' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-DocumentationObservation',
+      'ADIOrganDonationObservation' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-OrganDonationObservation',
+      'ADIPMOHospiceObservation' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOHospiceObservation',
+      'ADIPMOParticipantObservation' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOParticipantObservation',
+      'ADIPMOReviewObservation' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOReviewObservation',
+      'ADICareExperiencePreference' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-CareExperiencePreference',
+      'ADIPersonalInterventionPreference' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalInterventionPreference',
+      'USCOREOrganization' => 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization',
+      'USCOREPatient' => 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient',
+      'ADIProvenance' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Provenance',
+      'ADIWitness' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Witness',
+      'ADIParticipant' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Participant',
+      'ADINotary' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Notary',
+      'ADIPMOServiceRequest' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOServiceRequest'
     }.freeze
 
     PFE_RESOURCES = {
@@ -38,29 +60,41 @@ module PacioTestKit
     ADI_RESOURCES = {
       'Bundle' => [].freeze,
       'Composition' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-Composition-Header.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PACPComposition.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Composition-Header',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PACPComposition',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOComposition'
       ].freeze,
       'Consent' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-HealthcareAgentAuthority.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-ConsentForHealthcareAgent.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-ParticipantConsent'
       ].freeze,
-      'DocumentReference' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-DocumentReference.html'].freeze,
-      'Goal' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PersonalGoal.html'].freeze,
-      'List' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PersonalPrioritiesOrganizer.html'].freeze,
+      'DocumentReference' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-DocumentReference'].freeze,
+      'Goal' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalGoal'].freeze,
+      'List' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalPrioritiesOrganizer'].freeze,
       'Observation' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-DocumentationObservation.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-PersonalInterventionPreference.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-OrganDonationObservation.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-AutopsyObservation.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-CareExperiencePreference.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-DocumentationObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PersonalInterventionPreference',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-OrganDonationObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-AutopsyObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-CareExperiencePreference',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOHospiceObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOParticipantObservation',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOReviewObservation'
       ].freeze,
-      'Organization' => [].freeze,
-      'Patient' => ['https://www.hl7.org/fhir/us/core/StructureDefinition-us-core-patient.html'].freeze,
-      'Provenance' => ['https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-Provenance.html'].freeze,
+      'Organization' => ['http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization'].freeze,
+      'Patient' => ['http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'].freeze,
+      'Provenance' => ['http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Provenance'].freeze,
       'RelatedPerson' => [
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-HealthcareAgent.html',
-        'https://hl7.org/fhir/us/pacio-adi/StructureDefinition-ADI-Guardian.html'
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Witness',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Participant',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Notary'
+      ].freeze,
+      'ServiceRequest' => [
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOMedicallyAssistedNutritionServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOMedicallyAssistedHydrationServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOInitialTreatmentServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOCPRServiceRequest',
+        'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOAdditionalOrdersOrInstructionsServiceRequest'
       ].freeze
     }.freeze
   end
