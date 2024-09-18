@@ -29,6 +29,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :goal_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFEGoal resources present on the server'
                }
              }

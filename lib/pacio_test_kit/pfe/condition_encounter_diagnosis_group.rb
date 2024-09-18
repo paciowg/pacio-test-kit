@@ -29,6 +29,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :condition_encounter_diagnosis_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFEConditionEncounterDiagnosis resources present on the server'
                }
              }

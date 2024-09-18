@@ -30,6 +30,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :condition_problems_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFEConditionProblemsHealthConcerns resources present on the server'
                }
              }

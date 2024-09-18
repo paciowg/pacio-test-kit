@@ -29,6 +29,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :nutrition_order_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFENutritionOrder resources present on the server'
                }
              }

@@ -29,6 +29,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :device_use_statement_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFEUseOfDevice resources present on the server'
                }
              }
