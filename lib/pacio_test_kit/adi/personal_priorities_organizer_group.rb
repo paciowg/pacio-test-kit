@@ -26,7 +26,7 @@ module PacioTestKit
                resource_ids: {
                  name: :personal_priorities_organizer_resource_ids,
                  optional: true,
-                 title: 'ID(s) for ADIPersonalPrioritiesOrganizer resources present on the server'
+                 title: 'ID(s) for ADIPersonalPrioritiesOrganizer List resources present on the server'
                }
              }
            }
