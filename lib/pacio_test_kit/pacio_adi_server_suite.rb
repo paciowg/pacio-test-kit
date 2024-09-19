@@ -29,7 +29,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
 
     id :pacio_adi_server
-    title 'PACIO ADI v2.1.0 Server Test Suite'
+    title 'PACIO ADI Server Suite v2.1.0'
     description 'PACIO Advance Directives Server Test Suite'
 
     input :url,
@@ -40,7 +40,7 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs 'hl7.fhir.us.pacio-adi'
+      igs 'hl7.fhir.us.pacio-adi#current'
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)

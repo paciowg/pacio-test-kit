@@ -1,8 +1,12 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module ADI
     class DocumentReferenceGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'ADI Document Reference Tests'
       id :pacio_adi_document_reference
       description %(
@@ -27,6 +31,14 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'DocumentReference Resources returned in previous tests conform to the ADIDocumentReference profile',
+           description: ERB.new(File.read(File.expand_path(
+                                            '../../docs/validation_test_description.md.erb', __dir__
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end

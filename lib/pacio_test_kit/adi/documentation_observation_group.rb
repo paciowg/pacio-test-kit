@@ -1,8 +1,12 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module ADI
     class DocumentationObservationGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'ADI Documentation Observation Tests'
       id :pacio_adi_documentation_observation
       description %(
@@ -30,6 +34,14 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'Observation Resources returned in previous tests conform to the ADIDocumentationObservation profile',
+           description: ERB.new(File.read(File.expand_path(
+                                            '../../docs/validation_test_description.md.erb', __dir__
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end
