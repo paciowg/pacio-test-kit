@@ -8,16 +8,6 @@ module PacioTestKit
 
     title 'Resources returned in previous tests conform to the given profile'
     id :pacio_resource_validation
-    description %(
-      This test verifies resources returned from the read and search tests conform to
-      the [Pacio #{short_title}](#{PACIO_PROFILES[config.options[:profile]]}).
-
-      It verifies the presence of mandatory elements and that elements with required
-      bindings contain appropriate values.
-
-      This test will be skipped if no resource read or search requests were made in
-      previous tests or if all requests were unsuccessful.
-    )
 
     def resource_type
       config.options[:resource_type]
@@ -35,7 +25,7 @@ module PacioTestKit
       load_tagged_requests(tag)
       skip_if requests.blank?, "No #{tag} resource read or search request was made in previous tests as expected."
       successful_requests = requests.select { |request| request.status == 200 }
-      skip_if successful_requests.empty?, "All #{tag} resource read or search requests were unsuccessful."
+      skip_if successful_requests.empty?, "All #{tag} resource read requests were unsuccessful."
 
       resources_to_validate = successful_requests.map(&:resource).uniq.compact
       resources_to_validate.each do |resource|
