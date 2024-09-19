@@ -18,7 +18,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
 
     id :pacio_pfe_server
-    title 'PACIO PFE v2.0.0-ballot Server Test Suite'
+    title 'PACIO PFE Server Suite v2.0.0-ballot'
     description 'PACIO Personal Functioning and Engagement Server Test Suite'
 
     input :url,
@@ -29,7 +29,7 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs 'hl7.fhir.us.pacio-pfe'
+      igs 'hl7.fhir.us.pacio-pfe#2.0.0-ballot'
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
