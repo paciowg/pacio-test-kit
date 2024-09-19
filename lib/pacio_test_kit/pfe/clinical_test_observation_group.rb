@@ -76,6 +76,7 @@ module PacioTestKit
       TODO
 
       )
+      # description adapted from US-Core-Test-Kit groups: https://github.com/inferno-framework/us-core-test-kit
 
       config options: {
         resource_type: 'Observation',
