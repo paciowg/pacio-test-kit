@@ -1,8 +1,12 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
 
 module PacioTestKit
   module ADI
     class PatientGroup < Inferno::TestGroup
+      include PacioTestKit::PacioProfiles
+
       title 'Patient Tests'
       id :pacio_adi_patient
       description %(
@@ -28,6 +32,14 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_validation,
+           title: 'Patient Resources returned in previous tests conform to the US Core Patient profile',
+           description: ERB.new(File.read(File.expand_path(
+                                            '../../docs/validation_test_description.md.erb', __dir__
+                                          ))).result_with_hash(
+                                            config:,
+                                            pacio_profiles: PACIO_PROFILES
+                                          )
     end
   end
 end
