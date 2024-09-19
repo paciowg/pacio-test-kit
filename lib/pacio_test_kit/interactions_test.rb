@@ -1,7 +1,5 @@
 module PacioTestKit
   module InteractionsTest
-    # TODO: All helper methods for interactions tests (CRUD) will be added here.
-
     def update_and_validate_resource(resource_to_update)
       statuses = ['final', 'cancelled']
       new_status = statuses.find { |status| status != resource_to_update.status }
