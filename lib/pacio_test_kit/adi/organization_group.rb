@@ -16,7 +16,7 @@ module PacioTestKit
 
       config options: {
         resource_type: 'Organization',
-        profile: 'USCOREOrganization'
+        profile: 'USCoreOrganization'
       }
       run_as_group
       input_order :url

@@ -17,7 +17,7 @@ module PacioTestKit
 
       config options: {
         resource_type: 'Patient',
-        profile: 'USCOREPatient'
+        profile: 'USCorePatient'
       }
       run_as_group
       input_order :url
