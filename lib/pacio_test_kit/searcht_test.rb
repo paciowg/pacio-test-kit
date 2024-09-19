@@ -252,37 +252,13 @@ module PacioTestKit
     end
 
     def fhir_path_single_result(resource, path, &)
-      results = evaluate_fhirpath(resource, path)
+      results = evaluate_fhirpath(resource:, path:)
       return unless results.present?
 
       return results.first unless block_given?
 
       element = results.map { |result| result['element'] }.find(&)
       results.find { |result| result['element'] == element }
-    end
-
-    def evaluate_fhirpath(resource, path)
-      fhirpath_url = ENV.fetch('FHIRPATH_URL')
-      endpoint = "#{fhirpath_url}/evaluate?path=#{path}"
-      logger = Logger.new($stdout)
-      response = Faraday.post(endpoint, resource.to_json, 'Content-Type' => 'application/json')
-      return unless response.status.to_s.start_with?('2')
-
-      transform_fhirpath_results(JSON.parse(response.body))
-    rescue Faraday::Error => e
-      logger.error "FHIRPath service not available: #{e.message}"
-    rescue JSON::ParserError
-      logger.error "Error parsing response from FHIRPath service: response body\n #{response.body}"
-    end
-
-    def transform_fhirpath_results(fhirpath_results)
-      fhirpath_results.each do |result|
-        klass = Object.const_get("FHIR::#{result['type']}")
-        result['element'] = klass.new(result['element'])
-      rescue NameError
-        next
-      end
-      fhirpath_results
     end
 
     def get_new_patient_search_value(params)
@@ -330,7 +306,7 @@ module PacioTestKit
       paths = search_param_paths(search_param_name)
 
       paths.each do |path|
-        results = evaluate_fhirpath(resource, path)
+        results = evaluate_fhirpath(resource:, path:)
         next unless results.present?
 
         type = results.first['type']
