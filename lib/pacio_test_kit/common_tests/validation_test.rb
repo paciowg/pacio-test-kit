@@ -17,13 +17,17 @@ module PacioTestKit
       config.options[:profile]
     end
 
+    def ig_version
+      config.options[:ig_version]
+    end
+
     def profile_url
-      PACIO_PROFILES[tag]
+      tag&.include?('USCore') ? PACIO_PROFILES[tag] : "#{PACIO_PROFILES[tag]}|#{ig_version}"
     end
 
     run do
       load_tagged_requests(tag)
-      skip_if requests.blank?, "No #{tag} resource read or search request was made in previous tests as expected."
+      skip_if requests.blank?, "No #{tag} resource read request was made in previous tests as expected."
       successful_requests = requests.select { |request| request.status == 200 }
       skip_if successful_requests.empty?, "All #{tag} resource read requests were unsuccessful."
 
