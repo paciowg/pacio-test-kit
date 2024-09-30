@@ -1,0 +1,193 @@
+{
+  "title": "HAPI FHIR Server RI",
+  "id": "adi-hapi-fhir-server-ri",
+  "test_suite_id": "pacio_adi_server",
+  "inputs": [
+    {
+      "name": "url",
+      "title": "FHIR Server Base URL",
+      "type": "text",
+      "value": "http://hapi.fhir.org/baseR4"
+    },
+    {
+      "name": "bundle_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for Bundle resources present on the server",
+      "type": "text",
+      "value": "51241bd8-11be-4844-97c8-33b48b68d146"
+    },
+    {
+      "name": "document_reference_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for ADIDocumentReference resources present on the server",
+      "type": "text",
+      "value": "2d8045f1-4b04-493e-b4b8-880e96ecfe60"
+    },
+    {
+      "name": "organization_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for Organization resources present on the server",
+      "type": "text",
+      "value": "8749f296-24f5-43c8-9183-8182e840eaa7"
+    },
+    {
+      "name": "patient_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for Patient resources present on the server",
+      "type": "text",
+      "value": "a2dbfbf4-f313-4bf1-991f-483ea165a9de"
+    },
+    {
+      "name": "composition_header_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADICompositionHeader resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "pacp_composition_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPACPComposition resources present on the server",
+      "type": "text",
+      "value": "a896a274-f857-4e82-a0e9-f5aae92f13cb"
+    },
+    {
+      "name": "pmo_composition_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPMOComposition resources present on the server",
+      "type": "text",
+      "value": "3666f6d4-7505-44e2-a32e-dfd78fddaba1"
+    },
+    {
+      "name": "participant_consent_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIParticipantConsent resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "personal_goal_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPersonalGoal resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "personal_priorities_organizer_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPersonalPrioritiesOrganizer List resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "autopsy_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIAutopsyObservation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "documentation_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIDocumentationObservation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "organ_donation_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIOrganDonationObservation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "pmo_hospice_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPMOHospiceObservation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "pmo_participant_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPMOParticipantObservation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "pmo_review_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPMOReviewObservation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "care_experience_preference_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADICareExperiencePreference Observation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "personal_intervention_preference_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPersonalInterventionPreference Observation resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "provenance_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIProvenance resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "witness_related_person_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIWitness RelatedPerson resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "participant_related_person_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIParticipant RelatedPerson resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "notary_related_person_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADINotary RelatedPerson resources present on the server",
+      "type": "text",
+      "value": ""
+    },
+    {
+      "name": "pmo_service_request_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "optional": true,
+      "title": "ID(s) for ADIPMOServiceRequest resources present on the server",
+      "type": "text",
+      "value": ""
+    }
+  ]
+}
