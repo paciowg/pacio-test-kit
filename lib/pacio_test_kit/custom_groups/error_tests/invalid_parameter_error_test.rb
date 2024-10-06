@@ -8,9 +8,13 @@ module PacioTestKit
     )
 
     run do
-      fhir_search('Observation', params: { 'unknownParam' => 'unknown' })
-      assert_response_status(400)
-      assert_resource_type('OperationOutcome')
+      first_search = fhir_search('Observation', params: { 'unknownParam' => 'unknown' })
+      assert_response_status(400, request: first_search)
+      assert_resource_type('OperationOutcome', resource: first_search.resource)
+
+      second_search = fhir_search('Observation', params: { 'unknownParam' => 'unknown' }, search_method: :post)
+      assert_response_status(400, request: second_search)
+      assert_resource_type('OperationOutcome', resource: second_search.resource)
     end
   end
 end

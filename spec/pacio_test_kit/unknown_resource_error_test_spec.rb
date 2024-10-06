@@ -37,4 +37,13 @@ RSpec.describe PacioTestKit::UnknownResourceErrorTest do
     result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:)
     expect(result.result).to eq('pass')
   end
+
+  it 'fails when read request with unknown resource is not 404' do
+    stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 402, body: {}.to_json)
+
+    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected response status: expected 404, but received 402/)
+  end
 end

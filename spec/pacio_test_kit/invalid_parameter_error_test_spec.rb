@@ -30,11 +30,37 @@ RSpec.describe PacioTestKit::InvalidParameterErrorTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
-  it 'passes when search request with invalid parameter is 400' do
+  it 'passes when search request with invalid parameter is 400 status' do
     stub_request(:get, "#{url}/#{resource_type}?unknownParam=unknown")
+      .to_return(status: 400, body: error_outcome.to_json)
+
+    stub_request(:post, "#{url}/#{resource_type}/_search")
+      .with(body: { unknownParam: 'unknown' })
       .to_return(status: 400, body: error_outcome.to_json)
 
     result = run(runnable, url:)
     expect(result.result).to eq('pass')
+  end
+
+  it 'fails when search request by get with invalid parameter is not 400 status' do
+    stub_request(:get, "#{url}/#{resource_type}?unknownParam=unknown")
+      .to_return(status: 401, body: {}.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected response status: expected 400, but received 401/)
+  end
+
+  it 'fails when search request by post with invalid parameter is not 400 status' do
+    stub_request(:get, "#{url}/#{resource_type}?unknownParam=unknown")
+      .to_return(status: 400, body: error_outcome.to_json)
+
+    stub_request(:post, "#{url}/#{resource_type}/_search")
+      .with(body: { unknownParam: 'unknown' })
+      .to_return(status: 401, body: {}.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+    expect(result.result_message).to match(/Unexpected response status: expected 400, but received 401/)
   end
 end

@@ -7,11 +7,11 @@ module PacioTestKit
       attempting to read a deleted resource.
     )
     input :resource_ids,
-          title: 'ID(s) for resources present on the server',
+          title: 'ID(s) for deleted resources from the server',
           description: 'If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3'
 
     input :resource_types,
-          title: 'Resource types(s) for the resources present on the server',
+          title: 'Resource type(s) for the deleted resources from the server',
           description: 'If providing multiple types, separate them by a comma and a space. e.g. type_1, type_2, type_3'
 
     run do
