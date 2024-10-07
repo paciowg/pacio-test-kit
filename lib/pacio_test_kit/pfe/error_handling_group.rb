@@ -17,11 +17,11 @@ module PacioTestKit
            config: {
              inputs: {
                resource_ids: {
-                 name: :unknown_resource_ids,
+                 name: :resource_ids,
                  title: 'ID(s) for resources unknown to the server'
                },
                resource_types: {
-                 name: :unknown_resource_types,
+                 name: :resource_types,
                  title: 'Type(s) for resources unknown to the server'
                }
              }
@@ -30,11 +30,11 @@ module PacioTestKit
            config: {
              inputs: {
                resource_ids: {
-                 name: :unknown_resource_ids,
+                 name: :resource_ids,
                  title: 'ID(s) for resources deleted from the server'
                },
                resource_types: {
-                 name: :unknown_resource_types,
+                 name: :resource_types,
                  title: 'Type(s) for resources deleted from the server'
                }
              }
