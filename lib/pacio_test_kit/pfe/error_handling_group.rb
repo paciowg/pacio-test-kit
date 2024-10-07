@@ -1,6 +1,8 @@
 require_relative '../custom_groups/error_tests/invalid_parameter_error_test'
 require_relative '../custom_groups/error_tests/unknown_resource_error_test'
 require_relative '../custom_groups/error_tests/deleted_resource_error_test'
+require_relative '../custom_groups/error_tests/unauthorized_request_error_test'
+
 module PacioTestKit
   module PFE
     class ErrorHandlingGroup < Inferno::TestGroup
@@ -34,6 +36,19 @@ module PacioTestKit
                resource_types: {
                  name: :unknown_resource_types,
                  title: 'Type(s) for resources deleted from the server'
+               }
+             }
+           }
+      test from: :pacio_unauthorized_request_error,
+           config: {
+             inputs: {
+               resource_ids: {
+                 name: :resource_ids,
+                 title: 'ID(s) for resources present on the server'
+               },
+               resource_types: {
+                 name: :resource_types,
+                 title: 'Type(s) for resources present on the server'
                }
              }
            }
