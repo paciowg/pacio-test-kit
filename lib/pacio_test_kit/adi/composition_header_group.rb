@@ -5,7 +5,7 @@ module PacioTestKit
     class CompositionHeaderGroup < Inferno::TestGroup
       title 'ADI Composition Header Tests'
       id :pacio_adi_composition_header
-      short_description 'Verify support for the server capabilities required by the PACIO ADI Composition Header Profile'
+      short_description 'Verify support for server capabilities required by the PACIO ADI Composition Header Profile'
       description %(
 
       # Background

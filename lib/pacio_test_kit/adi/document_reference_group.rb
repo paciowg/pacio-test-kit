@@ -61,8 +61,8 @@ module PacioTestKit
       a previous successful read request, the update test will skip.
 
       ### Search Validation
-      Inferno will retrieve up to the first 20 bundle pages of the reply for the DocumentReference resources and save them
-      for subsequent tests. The resources are checked to ensure they are the correct resource type.
+      Inferno will retrieve up to the first 20 bundle pages of the reply for the DocumentReference resources and save
+      them for subsequent tests. The resources are checked to ensure they are the correct resource type.
 
       ## Profile Validation
       Each resource returned from the first read is expected to conform to the Document Reference Profile. Each
