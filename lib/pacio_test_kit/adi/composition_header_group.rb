@@ -60,7 +60,9 @@ module PacioTestKit
       the test will fail.
 
       ## Must Support
-      TODO
+      Each profile contains elements marked as "must support". This test sequence expects to see each of these elements
+      at least once. If at least one cannot be found, the test will fail. The resource returned from the first read
+      is used for this test.
 
       )
       # description adapted from US-Core-Test-Kit groups: https://github.com/inferno-framework/us-core-test-kit
