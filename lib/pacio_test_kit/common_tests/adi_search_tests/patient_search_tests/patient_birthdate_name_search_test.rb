@@ -21,7 +21,7 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'birthdate', paths: ['birthdate'] },
+          { name: 'birthDate', paths: ['birthDate'] },
           { name: 'name', paths: ['name'] }
         ]
       )

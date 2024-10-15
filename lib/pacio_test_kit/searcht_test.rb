@@ -95,6 +95,12 @@ module PacioTestKit
     end
 
     def search_and_check_response(params, resource_type = self.resource_type)
+      # set params to be lowercase for fhir_search in cases where camelCase
+      params_formatted_case = {}
+      params.each do |key, value|
+        params_formatted_case[key.downcase] = value
+      end
+      params = params_formatted_case
       fhir_search resource_type, params:, tags: ["#{tag}_Search"]
 
       check_search_response

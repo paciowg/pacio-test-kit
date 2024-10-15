@@ -45,8 +45,6 @@ module PacioTestKit
                }
              }
            }
-      test from: :id_search_test,
-           title: 'Server returns valid results for Patient search by id'
       test from: :patient_id_search_test,
            title: 'Server returns valid results for Patient search by _id'
       test from: :patient_birthdate_family_search_test,

@@ -21,7 +21,7 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'family', paths: ['family'] },
+          { name: 'family', paths: ['name.family'] },
           { name: 'gender', paths: ['gender'] }
         ],
         token_search_params: [{ name: 'gender', paths: ['gender'] }]

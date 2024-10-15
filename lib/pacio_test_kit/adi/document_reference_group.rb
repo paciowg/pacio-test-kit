@@ -40,8 +40,6 @@ module PacioTestKit
                }
              }
            }
-      test from: :id_search_test,
-           title: 'Server returns valid results for DocumentReference search by id'
       test from: :document_ref__id_search_test,
            title: 'Server returns valid results for DocumentReference search by _id'
       test from: :document_ref_custodian_search_test,

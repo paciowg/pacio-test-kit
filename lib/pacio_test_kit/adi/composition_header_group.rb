@@ -32,8 +32,6 @@ module PacioTestKit
                }
              }
            }
-      test from: :id_search_test,
-           title: 'Server returns valid results for Composition search by id'
       test from: :pacio_resource_validation,
            title: 'Composition Resources returned in previous tests conform to the ADICompositionHeader profile',
            description: ERB.new(File.read(File.expand_path(
