@@ -1,4 +1,5 @@
-require_relative 'pfe/capability_statement_group'
+require_relative 'pacio_profiles'
+require_relative 'custom_groups/capability_statement_group'
 require_relative 'pfe/clinical_test_observation_group'
 require_relative 'pfe/collection_observation_group'
 require_relative 'pfe/condition_encounter_diagnosis_group'
@@ -14,8 +15,10 @@ require_relative 'pfe/single_observation_group'
 
 module PacioTestKit
   class PacioPFEServerSuite < Inferno::TestSuite
+    include PacioTestKit::PacioProfiles
+
     id :pacio_pfe_server
-    title 'PACIO PFE Server Test Suite'
+    title 'PACIO PFE Server Suite v2.0.0-ballot'
     description 'PACIO Personal Functioning and Engagement Server Test Suite'
 
     input :url,
@@ -32,17 +35,31 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs 'hl7.fhir.us.pacio-pfe'
+      igs 'hl7.fhir.us.pacio-pfe#2.0.0-ballot'
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
       end
     end
 
+    config(
+      options: {
+        ig: 'PFE',
+        ig_version: '2.0.0-ballot',
+        capability_statement_url: 'http://hl7.org/fhir/us/pacio-pfe/CapabilityStatement/pacio-pfe-cap',
+        supported_resources: PFE_RESOURCES.keys,
+        required_profiles: PFE_RESOURCES.values.flatten
+      }
+    )
+
     group do
       title 'PFE FHIR API'
 
-      group from: :pacio_pfe_capability_statement
+      group from: :capability_statement do
+        description ERB.new(File.read(
+                              File.expand_path('../docs/capability_statement_group_description.md.erb', __dir__)
+                            )).result_with_hash(config:)
+      end
       group from: :pacio_pfe_clinical_test_observation
       group from: :pacio_pfe_single_observation
       group from: :pacio_pfe_collection_observation

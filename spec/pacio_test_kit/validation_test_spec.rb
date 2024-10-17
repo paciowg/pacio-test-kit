@@ -53,23 +53,23 @@ RSpec.describe PacioTestKit::ValidationTest do
     allow_any_instance_of(runnable).to receive(:tag).and_return(profile)
   end
 
-  it 'passes when at least one previous read or search request is successful and returns conformant resource' do
+  it 'passes when at least one previous read request is successful and returns conformant resource' do
     mock_server(body: observation, valid_resource: true)
     result = run(runnable)
     expect(result.result).to eq('pass')
   end
 
-  it 'skips when no read or search requests were made in previous tests' do
+  it 'skips when no read requests were made in previous tests' do
     result = run(runnable)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/No #{profile} resource read or search request was made in previous tests/)
+    expect(result.result_message).to match(/No #{profile} resource read request was made in previous tests/)
   end
 
-  it 'skips when all read or search requests were unsuccessful' do
+  it 'skips when all read requests were unsuccessful' do
     mock_server(status: 401, valid_resource: true)
     result = run(runnable)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/read or search requests were unsuccessful/)
+    expect(result.result_message).to match(/read requests were unsuccessful/)
   end
 
   it 'fails if at least one of the returned resources is not conformant to the given profile' do

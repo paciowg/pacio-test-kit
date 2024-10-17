@@ -33,3 +33,7 @@ services:
     extends:
       file: docker-compose.background.yml
       service: hl7_validator_service
+  fhirpath:
+    extends:
+      file: docker-compose.background.yml
+      service: fhirpath

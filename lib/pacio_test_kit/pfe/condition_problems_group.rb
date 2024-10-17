@@ -30,6 +30,7 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :condition_problems_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFEConditionProblemsHealthConcerns resources present on the server'
                }
              }
@@ -37,8 +38,8 @@ module PacioTestKit
       test from: :pacio_resource_validation,
            title: 'Condition Resources returned in previous tests conform to the ' \
                   'PFEConditionProblemsHealthConcerns profile',
-           description: ERB.new(File.read(File.join(
-                                            'lib', 'docs', 'validation_test_description.md.erb'
+           description: ERB.new(File.read(File.expand_path(
+                                            '../../docs/validation_test_description.md.erb', __dir__
                                           ))).result_with_hash(
                                             config:,
                                             pacio_profiles: PACIO_PROFILES

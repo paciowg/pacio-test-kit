@@ -29,14 +29,15 @@ module PacioTestKit
              inputs: {
                resource_ids: {
                  name: :nutrition_order_resource_ids,
+                 optional: true,
                  title: 'ID(s) for PFENutritionOrder resources present on the server'
                }
              }
            }
       test from: :pacio_resource_validation,
            title: 'NutritionOrder Resources returned in previous tests conform to the PFENutritionOrder profile',
-           description: ERB.new(File.read(File.join(
-                                            'lib', 'docs', 'validation_test_description.md.erb'
+           description: ERB.new(File.read(File.expand_path(
+                                            '../../docs/validation_test_description.md.erb', __dir__
                                           ))).result_with_hash(
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
