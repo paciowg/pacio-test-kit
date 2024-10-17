@@ -1,4 +1,3 @@
-
 require_relative 'error_handling_group'
 require_relative 'pacio_profiles'
 require_relative 'custom_groups/capability_statement_group'
@@ -25,7 +24,6 @@ require_relative 'adi/witness_related_person_group'
 require_relative 'adi/participant_related_person_group'
 require_relative 'adi/notary_related_person_group'
 require_relative 'adi/pmo_service_request_group'
-
 
 module PacioTestKit
   class PacioADIServerSuite < Inferno::TestSuite
@@ -55,7 +53,6 @@ module PacioTestKit
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
       end
     end
-
 
     config(
       options: {
@@ -100,7 +97,6 @@ module PacioTestKit
       group from: :pacio_adi_notary_related_person
       group from: :pacio_adi_pmo_service_request
       group from: :pacio_error_handling
-
     end
   end
 end
