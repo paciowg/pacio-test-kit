@@ -1,12 +1,49 @@
 module PacioTestKit
   module InteractionsTest
     def update_and_validate_resource(resource_to_update)
-      statuses = ['final', 'cancelled']
-      new_status = statuses.find { |status| status != resource_to_update.status }
-      resource_to_update.status = new_status
+      case resource_type
+      when FHIR::Bundle, 'Bundle'
+        first_resource = FHIR.from_contents(resource_to_update.entry[0].to_json)
+        resource_to_update.entry[0] = update_resource_field(first_resource, first_resource.resourceType)
+      else
+        resource_to_update = update_resource_field(resource_to_update, resource_type)
+      end
 
+      # TODO: transaction for bundle type
       fhir_update(resource_to_update, resource_to_update.id)
       perform_update_validation(resource_to_update)
+    end
+
+    def update_resource_field(resource_to_update, type_of_resource)
+      case type_of_resource
+      when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
+        statuses = ['work', 'billing']
+        resource_to_update = update_resource_address_use(statuses, resource_to_update)
+      when FHIR::DocumentReference, 'DocumentReference'
+        statuses = ['current', 'superseded']
+        resource_to_update = update_resource_status(statuses, resource_to_update)
+      else # pfe profiles, adi composition
+        statuses = ['final', 'amended']
+        resource_to_update = update_resource_status(statuses, resource_to_update)
+      end
+      resource_to_update
+    end
+
+    def update_resource_status(statuses, resource_to_update)
+      new_status = statuses.find { |status| status != resource_to_update.status }
+      resource_to_update.status = new_status
+      resource_to_update
+    end
+
+    def update_resource_address_use(statuses, resource_to_update)
+      if resource_to_update.address[0].use.nil?
+        resource_to_update.address[0][:use] = statuses[0]
+      else
+        new_status = statuses.find { |status| status != resource_to_update.address[0].use }
+        resource_to_update.address[0].use = new_status
+      end
+
+      resource_to_update
     end
 
     def perform_update_validation(resource_to_update)
@@ -17,10 +54,32 @@ module PacioTestKit
       msg = "Update must not change the resource ID: expected ID `#{resource_to_update.id}`, got `#{resource.id}`"
       assert(resource_to_update.id == resource.id, msg)
 
-      msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`, got `#{resource.status}`"
-      assert(resource.status == resource_to_update.status, msg)
+      check_field_change(resource_to_update)
 
-      validate_response_metadata(resource, resource_to_update, 'update')
+      if resource_to_update.resourceType == 'Bundle' || resource_to_update.resourceType == FHIR::Bundle
+        # TODO: what to check in bundle response itself (same as below?)
+      else
+        validate_response_metadata(resource, resource_to_update, 'update')
+      end
+    end
+
+    def check_field_change(resource_to_update)
+      if resource_type == 'Bundle' || resource_type == FHIR::Bundle
+        first_resource = FHIR.from_contents(resource_to_update.entry[0].to_json)
+        type_of_resource = first_resource.resourceType
+      else
+        type_of_resource = resource_type
+      end
+
+      case type_of_resource
+      when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
+        msg = "Update failed: Expected status to be updated to `#{resource_to_update.address[0].use}`, got `#{resource.address[0].use}`"
+        assert(resource.address[0].use == resource_to_update.address[0].use, msg)
+      else
+        msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`, got `#{resource.status}`"
+        assert(resource.status == resource_to_update.status, msg)
+
+      end
     end
 
     def create_and_validate_resource(resource_to_create)

@@ -21,7 +21,7 @@
       "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
       "title": "ID(s) for ADIDocumentReference resources present on the server",
       "type": "text",
-      "value": "2d8045f1-4b04-493e-b4b8-880e96ecfe60"
+      "value": "3e84c7bc-8e9d-4394-96a8-51f81ff69a00"
     },
     {
       "name": "organization_resource_ids",
@@ -51,7 +51,7 @@
       "optional": true,
       "title": "ID(s) for ADIPACPComposition resources present on the server",
       "type": "text",
-      "value": "a896a274-f857-4e82-a0e9-f5aae92f13cb"
+      "value": "8ba2874b-e541-4d5c-bc52-1b6bda9d5fb3"
     },
     {
       "name": "pmo_composition_resource_ids",

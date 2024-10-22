@@ -26,7 +26,7 @@
       "system" : "urn:oid:2.16.840.1.113883.4.823.1.8561",
       "value" : "5367-047e62ccf09d4b39a8add708a69b7f38"
     }],
-    "status" : "final",
+    "status" : "superseded",
     "docStatus" : "final",
     "type" : {
       "coding" : [{
