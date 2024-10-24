@@ -1,4 +1,5 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/update_test'
 
 module PacioTestKit
   module ADI
@@ -24,6 +25,7 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_update
     end
   end
 end
