@@ -13,7 +13,6 @@ require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_given_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_identifier_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_name_search_test'
-require_relative '../common_tests/adi_search_tests/id_search_test'
 
 module PacioTestKit
   module ADI

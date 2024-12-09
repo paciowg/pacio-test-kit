@@ -1,7 +1,6 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
-require_relative '../common_tests/adi_search_tests/id_search_test'
 
 module PacioTestKit
   module ADI

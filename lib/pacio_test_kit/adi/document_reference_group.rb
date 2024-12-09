@@ -9,7 +9,6 @@ require_relative '../common_tests/adi_search_tests/document_reference_tests/docu
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_period_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_status_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_type_search_test'
-require_relative '../common_tests/adi_search_tests/id_search_test'
 
 module PacioTestKit
   module ADI
