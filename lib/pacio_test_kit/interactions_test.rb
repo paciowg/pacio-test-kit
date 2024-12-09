@@ -70,60 +70,24 @@ module PacioTestKit
       else
         type_of_resource = resource_type
       end
-      check_by_type_resource(type_of_resource)
-    end
-
-    def check_by_type_resource(type_of_resource)
       case type_of_resource
       when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
-        check_patient_org_types
+        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
+          msg = "Update failed: Expected address.use to be updated to `#{resource_to_update.entry[0].resource.address[0].use}`, got `#{resource.entry[0].resource.address[0].use}`"
+          assert(resource.entry[0].resource.address[0].use == resource_to_update.entry[0].resource.address[0].use, msg)
+        else
+          msg = "Update failed: Expected address.use to be updated to `#{resource_to_update.address[0].use}`, got `#{resource.address[0].use}`"
+          assert(resource.address[0].use == resource_to_update.address[0].use, msg)
+        end
       else
-        check_other_types
+        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
+          msg = "Update failed: Expected status to be updated to `#{resource_to_update.entry[0].resource.status}`, got `#{resource.entry[0].resource.status}`"
+          assert(resource.entry[0].resource.status == resource_to_update.entry[0].resource.status, msg)
+        else
+          msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`, got `#{resource.status}`"
+          assert(resource.status == resource_to_update.status, msg)
+        end
       end
-    end
-
-    def check_patient_org_types
-      if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-        assert_expected_address_update
-      else
-        assert_expected_address_update_other
-      end
-    end
-
-    def assert_expected_address_update
-      resource_to_update_field = resource_to_update.entry[0].resource.address[0].use
-      resource_received_field = resource.entry[0].resource.address[0].use
-      msg = "Update failed: Expected address.use to be updated to
-        `#{resource_to_update_field}`, got `#{resource_received_field}`"
-      assert(resource_received_field == resource_to_update_field, msg)
-    end
-
-    def assert_expected_address_update_other
-      msg = "Update failed: Expected address.use to be updated to `#{resource_to_update.address[0].use}`,
-        got `#{resource.address[0].use}`"
-      assert(resource.address[0].use == resource_to_update.address[0].use, msg)
-    end
-
-    def check_other_types
-      if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-        assert_expected_status_update
-      else
-        assert_expected_status_update_other
-      end
-    end
-
-    def assert_expected_status_update
-      expected_status = resource_to_update.entry[0].resource.status
-      received_status = resource.entry[0].resource.status
-      msg = "Update failed: Expected status to be updated to `#{expected_status}`,
-        got `#{received_status}`"
-      assert(received_status == expected_status, msg)
-    end
-
-    def assert_expected_status_update_other
-      msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`,
-        got `#{resource.status}`"
-      assert(resource.status == resource_to_update.status, msg)
     end
 
     def create_and_validate_resource(resource_to_create)
