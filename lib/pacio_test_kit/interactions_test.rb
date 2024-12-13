@@ -9,7 +9,6 @@ module PacioTestKit
         resource_to_update = update_resource_field(resource_to_update, resource_type)
       end
 
-      # TODO: transaction for bundle type
       fhir_update(resource_to_update, resource_to_update.id)
       perform_update_validation(resource_to_update)
     end
@@ -57,37 +56,53 @@ module PacioTestKit
       check_field_change(resource_to_update)
 
       if resource_to_update.resourceType == 'Bundle' || resource_to_update.resourceType == FHIR::Bundle
-        # TODO: what to check in bundle response itself (same as below?)
+        # check the first resource metadata
+        first_resource_request = FHIR.from_contents(resource.entry[0].resource.to_json)
+        first_resource_response = FHIR.from_contents(resource_to_update.entry[0].resource.to_json)
+        validate_response_metadata(first_resource_request, first_resource_response, 'update')
       else
         validate_response_metadata(resource, resource_to_update, 'update')
       end
     end
 
     def check_field_change(resource_to_update)
+      type_of_resource = first_resource_type(resource_to_update)
+      case type_of_resource
+      when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
+        check_address_field(resource_to_update)
+        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
+          address_update_fail(resource_to_update.entry[0].resource.address[0].use,
+                              resource.entry[0].resource.address[0].use)
+        else
+          address_update_fail(resource_to_update.address[0].use, resource.address[0].use)
+        end
+      else
+        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
+          status_update_fail(resource_to_update.entry[0].resource.status, resource.entry[0].resource.status)
+        else
+          status_update_fail(resource_to_update.status, resource.status)
+        end
+      end
+    end
+
+    def first_resource_type(resource_to_update)
       if resource_type == 'Bundle' || resource_type == FHIR::Bundle
         first_resource = FHIR.from_contents(resource_to_update.entry[0].resource.to_json)
         type_of_resource = first_resource.resourceType
       else
         type_of_resource = resource_type
       end
-      case type_of_resource
-      when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
-        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-          msg = "Update failed: Expected address.use to be updated to `#{resource_to_update.entry[0].resource.address[0].use}`, got `#{resource.entry[0].resource.address[0].use}`"
-          assert(resource.entry[0].resource.address[0].use == resource_to_update.entry[0].resource.address[0].use, msg)
-        else
-          msg = "Update failed: Expected address.use to be updated to `#{resource_to_update.address[0].use}`, got `#{resource.address[0].use}`"
-          assert(resource.address[0].use == resource_to_update.address[0].use, msg)
-        end
-      else
-        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-          msg = "Update failed: Expected status to be updated to `#{resource_to_update.entry[0].resource.status}`, got `#{resource.entry[0].resource.status}`"
-          assert(resource.entry[0].resource.status == resource_to_update.entry[0].resource.status, msg)
-        else
-          msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`, got `#{resource.status}`"
-          assert(resource.status == resource_to_update.status, msg)
-        end
-      end
+      type_of_resource
+    end
+
+    def address_update_fail(expected_value, actual_value)
+      msg = "Update failed: Expected address.use to be updated to `#{expected_value}`, got `#{actual_value}`"
+      assert(expected_value == actual_value, msg)
+    end
+
+    def status_update_fail(expected_value, actual_value)
+      msg = "Update failed: Expected status to be updated to `#{expected_value}`, got `#{actual_value}`"
+      assert(expected_value == actual_value, msg)
     end
 
     def create_and_validate_resource(resource_to_create)
