@@ -47,19 +47,20 @@ module PacioTestKit
 
     def perform_update_validation(resource_to_update)
       assert_response_status(200)
-
       assert_resource_type(resource_type)
 
       msg = "Update must not change the resource ID: expected ID `#{resource_to_update.id}`, got `#{resource.id}`"
       assert(resource_to_update.id == resource.id, msg)
 
       check_field_change(resource_to_update)
+      check_metadata(resource_to_update)
+    end
 
+    def check_metadata(resource_to_update)
       if resource_to_update.resourceType == 'Bundle' || resource_to_update.resourceType == FHIR::Bundle
         # check the first resource metadata
-        first_resource_request = FHIR.from_contents(resource.entry[0].resource.to_json)
-        first_resource_response = FHIR.from_contents(resource_to_update.entry[0].resource.to_json)
-        validate_response_metadata(first_resource_request, first_resource_response, 'update')
+        validate_response_metadata(FHIR.from_contents(resource.entry[0].resource.to_json),
+                                   FHIR.from_contents(resource_to_update.entry[0].resource.to_json), 'update')
       else
         validate_response_metadata(resource, resource_to_update, 'update')
       end
@@ -70,18 +71,28 @@ module PacioTestKit
       case type_of_resource
       when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
         check_address_field(resource_to_update)
-        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-          address_update_fail(resource_to_update.entry[0].resource.address[0].use,
-                              resource.entry[0].resource.address[0].use)
-        else
-          address_update_fail(resource_to_update.address[0].use, resource.address[0].use)
-        end
       else
-        if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-          status_update_fail(resource_to_update.entry[0].resource.status, resource.entry[0].resource.status)
-        else
-          status_update_fail(resource_to_update.status, resource.status)
-        end
+        check_status_field(resource_to_update)
+      end
+    end
+
+    def check_address_field(resource_to_update)
+      if resource_type == FHIR::Bundle || resource_type == 'Bundle'
+        address_update_fail(get_expected_bundle_address(resource_to_update),
+                            resource.entry[0].resource.address[0].use)
+      end
+      address_update_fail(resource_to_update.address[0].use, resource.address[0].use)
+    end
+
+    def get_expected_bundle_address(resource_to_update)
+      resource_to_update.entry[0].resource.address[0].use
+    end
+
+    def check_status_field(resource_to_update)
+      if resource_type == FHIR::Bundle || resource_type == 'Bundle'
+        status_update_fail(resource_to_update.entry[0].resource.status, resource.entry[0].resource.status)
+      else
+        status_update_fail(resource_to_update.status, resource.status)
       end
     end
 
