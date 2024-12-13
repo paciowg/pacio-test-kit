@@ -21,7 +21,7 @@
       "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
       "title": "ID(s) for ADIDocumentReference resources present on the server",
       "type": "text",
-      "value": "4f324d9b-7551-420c-acc1-5502e2ddcf27"
+      "value": "83488524-6865-4256-a74a-45fdc8ac64f3"
     },
     {
       "name": "organization_resource_ids",
