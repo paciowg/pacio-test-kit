@@ -13,3 +13,12 @@ namespace :db do
     Inferno::Utils::Migration.new.run
   end
 end
+
+namespace :pacio_ms do
+  desc 'Generate MS tests'
+  task :generate do
+    require_relative 'lib/pacio_test_kit/generator'
+
+    PacioTestKit::Generator.generate
+  end
+end
