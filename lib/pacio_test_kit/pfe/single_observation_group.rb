@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../generated/v2.0.0-ballot/pfe_observation_single/pfe_observation_single_must_support_test'
 
 module PacioTestKit
   module PFE
@@ -21,6 +22,13 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      def self.metadata
+        @metadata ||= Generator::GroupMetadata.new(YAML.load_file(
+                                                     File.join('../generated/v2.0.0-ballot/pfe_observation_single/',
+                                                               'metadata.yml'), aliases: true
+                                                   ))
+      end
+
       test from: :pacio_resource_read,
            title: 'Server returns correct Observation resource from Observation read interaction',
            config: {
@@ -39,6 +47,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pfe_v200_ballot_pfe_observation_single_must_support_test,
+           title: 'Observation resource conforming to must support requirements of the PFESingleObservation profile'
     end
   end
 end
