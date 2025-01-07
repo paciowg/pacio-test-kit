@@ -1,0 +1,111 @@
+---
+:name: pfe_nutrition_order
+:class_name: PfeNutritionOrderSequence
+:version: v2.0.0-ballot
+:reformatted_version: v200_ballot
+:resource: NutritionOrder
+:profile_url: http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-nutrition-order
+:profile_name: Personal Functioning and Engagement Nutrition Order Profile
+:profile_version: 2.0.0-ballot
+:title: Personal Functioning and Engagement Nutrition Order
+:short_description: Verify support for the server capabilities required by the Personal
+Functioning and Engagement Nutrition Order Profile.
+:interactions:
+- :code: create
+:expectation: SHOULD
+- :code: update
+:expectation: SHOULD
+- :code: delete
+:expectation: SHOULD
+- :code: read
+:expectation: SHOULD
+- :code: vread
+:expectation: MAY
+- :code: history-instance
+:expectation: MAY
+- :code: history-type
+:expectation: MAY
+- :code: search-type
+:expectation: MAY
+- :code: patch
+:expectation: MAY
+:operations: []
+:searches: []
+:include_params:
+- NutritionOrder.identifier
+- NutritionOrder.subject
+- NutritionOrder.patient
+- NutritionOrder.encounter
+- NutritionOrder.orderer
+- NutritionOrder.status
+:revincludes: []
+:required_concepts: []
+:must_supports:
+:extensions: []
+:slices: []
+:elements:
+- :path: encounter
+  :types:
+  - Reference
+- :path: orderer
+  :types:
+  - Reference
+- :path: foodPreferenceModifier
+- :path: excludeFoodModifier
+- :path: oralDiet
+- :path: oralDiet.type
+- :path: oralDiet.nutrient
+- :path: oralDiet.nutrient.modifier
+- :path: oralDiet.nutrient.amount
+- :path: oralDiet.texture
+- :path: oralDiet.texture.modifier
+- :path: oralDiet.texture.foodType
+- :path: oralDiet.fluidConsistencyType
+- :path: oralDiet.instruction
+- :path: supplement
+- :path: supplement.type
+- :path: supplement.schedule
+- :path: supplement.quantity
+- :path: supplement.instruction
+- :path: enteralFormula
+- :path: enteralFormula.baseFormulaType
+- :path: enteralFormula.additiveType
+- :path: enteralFormula.caloricDensity
+- :path: enteralFormula.routeofAdministration
+- :path: enteralFormula.administration
+- :path: enteralFormula.administration.schedule
+- :path: enteralFormula.administration.quantity
+- :path: enteralFormula.administration.rate[x]
+- :path: enteralFormula.administrationInstruction
+:mandatory_elements:
+- NutritionOrder.status
+- NutritionOrder.intent
+- NutritionOrder.patient
+- NutritionOrder.dateTime
+- NutritionOrder.allergyIntolerance
+:bindings:
+- :type: code
+:strength: required
+:system: http://hl7.org/fhir/ValueSet/request-status
+:path: status
+- :type: code
+:strength: required
+:system: http://hl7.org/fhir/ValueSet/request-intent
+:path: intent
+:references:
+- :path: NutritionOrder.patient
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Patient
+- :path: NutritionOrder.encounter
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Encounter
+- :path: NutritionOrder.orderer
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Practitioner
+- http://hl7.org/fhir/StructureDefinition/PractitionerRole
+- :path: NutritionOrder.allergyIntolerance
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/AllergyIntolerance
+:tests:
+- :id: pfe_v200_ballot_nutrition_order_must_support_test
+:file_name: nutrition_order_must_support_test.rb
