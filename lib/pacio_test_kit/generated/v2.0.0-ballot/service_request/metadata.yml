@@ -1,0 +1,168 @@
+---
+:name: pfe_service_request
+:class_name: PfeServiceRequestSequence
+:version: v2.0.0-ballot
+:reformatted_version: v200_ballot
+:resource: ServiceRequest
+:profile_url: http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-service-request
+:profile_name: Personal Functioning and Engagement Service Request Profile
+:profile_version: 2.0.0-ballot
+:title: Personal Functioning and Engagement Service Request
+:short_description: Verify support for the server capabilities required by the Personal
+Functioning and Engagement Service Request Profile.
+:interactions:
+- :code: create
+:expectation: SHOULD
+- :code: update
+:expectation: SHOULD
+- :code: delete
+:expectation: SHOULD
+- :code: read
+:expectation: SHOULD
+- :code: vread
+:expectation: MAY
+- :code: history-instance
+:expectation: MAY
+- :code: history-type
+:expectation: MAY
+- :code: search-type
+:expectation: MAY
+- :code: patch
+:expectation: MAY
+:operations: []
+:searches: []
+:include_params:
+- ServiceRequest.identifier
+- ServiceRequest.subject
+- ServiceRequest.patient
+- ServiceRequest.status
+- ServiceRequest.code
+- ServiceRequest.requester
+- ServiceRequest.performer
+- ServiceRequest.reasonReference
+:revincludes: []
+:required_concepts:
+- category
+:must_supports:
+:extensions: []
+:slices:
+- :slice_id: ServiceRequest.category:us-core
+  :slice_name: us-core
+  :path: category
+  :discriminator:
+    :type: requiredBinding
+    :path: ''
+    :values:
+    - :system: http://snomed.info/sct
+      :code: '108252007'
+    - :system: http://snomed.info/sct
+      :code: '363679005'
+    - :system: http://snomed.info/sct
+      :code: '409063005'
+    - :system: http://snomed.info/sct
+      :code: '409073007'
+    - :system: http://snomed.info/sct
+      :code: '387713003'
+:elements:
+- :path: status
+- :path: intent
+- :path: category
+- :path: code
+- :path: orderDetail
+- :path: subject
+  :types:
+  - Reference
+  :target_profiles:
+  - http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+- :path: occurrencePeriod
+  :original_path: occurrence[x]
+- :path: authoredOn
+- :path: requester
+  :types:
+  - Reference
+  :target_profiles:
+  - http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner
+- :path: reasonCode
+  :uscdi_only: true
+- :path: reasonReference
+  :types:
+  - Reference
+- :path: note
+:mandatory_elements:
+- ServiceRequest.status
+- ServiceRequest.intent
+- ServiceRequest.code
+- ServiceRequest.subject
+:bindings:
+- :type: code
+:strength: required
+:system: http://hl7.org/fhir/ValueSet/request-status
+:path: status
+- :type: code
+:strength: required
+:system: http://hl7.org/fhir/ValueSet/request-intent
+:path: intent
+- :type: code
+:strength: required
+:system: http://hl7.org/fhir/ValueSet/request-priority
+:path: priority
+:references:
+- :path: ServiceRequest.basedOn
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/CarePlan
+- http://hl7.org/fhir/StructureDefinition/ServiceRequest
+- http://hl7.org/fhir/StructureDefinition/MedicationRequest
+- :path: ServiceRequest.replaces
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/ServiceRequest
+- :path: ServiceRequest.subject
+:profiles:
+- http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+- :path: ServiceRequest.encounter
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Encounter
+- :path: ServiceRequest.requester
+:profiles:
+- http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner
+- http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization
+- http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+- http://hl7.org/fhir/StructureDefinition/PractitionerRole
+- http://hl7.org/fhir/us/core/StructureDefinition/us-core-relatedperson
+- http://hl7.org/fhir/StructureDefinition/Device
+- :path: ServiceRequest.performer
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Practitioner
+- http://hl7.org/fhir/StructureDefinition/PractitionerRole
+- http://hl7.org/fhir/StructureDefinition/Organization
+- http://hl7.org/fhir/StructureDefinition/CareTeam
+- http://hl7.org/fhir/StructureDefinition/HealthcareService
+- http://hl7.org/fhir/StructureDefinition/Patient
+- http://hl7.org/fhir/StructureDefinition/Device
+- http://hl7.org/fhir/StructureDefinition/RelatedPerson
+- :path: ServiceRequest.locationReference
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Location
+- :path: ServiceRequest.reasonReference
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Condition
+- http://hl7.org/fhir/StructureDefinition/Observation
+- http://hl7.org/fhir/StructureDefinition/DiagnosticReport
+- http://hl7.org/fhir/StructureDefinition/DocumentReference
+- :path: ServiceRequest.insurance
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Coverage
+- http://hl7.org/fhir/StructureDefinition/ClaimResponse
+- :path: ServiceRequest.supportingInfo
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Resource
+- :path: ServiceRequest.specimen
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Specimen
+- :path: ServiceRequest.relevantHistory
+:profiles:
+- http://hl7.org/fhir/StructureDefinition/Provenance
+:tests:
+- :id: pfe_v200_ballot_service_request_must_support_test
+:file_name: service_request_must_support_test.rb
+:granular_scope_resource_type_groups: {}
+:granular_scope_groups: []

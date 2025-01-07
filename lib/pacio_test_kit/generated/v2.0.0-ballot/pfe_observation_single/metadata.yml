@@ -96,10 +96,6 @@
     :original_path: value[x]
   - :path: valueBoolean
     :original_path: value[x]
-  - :path: derivedFrom
-    :uscdi_only: true
-    :types:
-    - Reference
 :mandatory_elements:
 - Observation.status
 - Observation.category
@@ -156,10 +152,6 @@
   - http://hl7.org/fhir/StructureDefinition/Observation
   - http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse
   - http://hl7.org/fhir/StructureDefinition/MolecularSequence
-- :path: Observation.derivedFrom
-  :profiles:
-  - http://hl7.org/fhir/us/core/StructureDefinition/us-core-questionnaireresponse
-  - http://hl7.org/fhir/us/core/StructureDefinition/us-core-simple-observation
 :tests:
 - :id: pfe_v200_ballot_pfe_observation_single_must_support_test
   :file_name: pfe_observation_single_must_support_test.rb

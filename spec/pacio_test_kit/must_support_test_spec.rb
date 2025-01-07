@@ -17,31 +17,66 @@ RSpec.describe PacioTestKit::MustSupportTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
-  describe 'must support test for regular elements' do
+  describe 'must support test for single observation' do
     let(:observation_must_support_test) do
       Inferno::Repositories::Tests.new.find('pfe_v200_ballot_pfe_observation_single_must_support_test')
     end
-    let(:observation) do
+    let(:perfect_observation) do
       FHIR::Observation.new(
-        JSON.parse(
-          File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
-        )
+        id: '123',
+        extension: [{ url: 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/event-location',
+                      valueReference: { reference: 'Location/example-location-1' } },
+                    { url: 'http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/device-patient-used',
+                      valueReference: { reference: 'Device/example-device-1' } }],
+        status: 'final',
+        category: [
+          { coding: [
+            { system: 'http://hl7.org/fhir/us/core/CodeSystem/us-core-category',
+              code: 'cognitive-status' }
+          ] },
+          { coding: [
+            { system: 'http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-category-cs',
+              code: 'BlockL1-d11' }
+          ] },
+          { coding: [
+            { system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+              code: 'survey' }
+          ] }
+        ],
+        code: { coding: [{ system: 'http://loinc.org', code: '54628-3',
+                           display: 'Inattention in last 7 days [CAM.CMS]' }] },
+        subject: { reference: 'Patient/PFEIG-patientBSJ1' },
+        effectiveDateTime: '2020-04-09T18:00:00-05:00',
+        performer: [{ reference: 'PractitionerRole/PFEIG-Role-SLP-HoneyJones' }],
+        valueQuantity: { value: '25', units: 'sec', system: 'http://unitsofmeasure.org', code: 's' },
+        valueBoolean: 'true',
+        valueString: 'some string',
+        valueCodeableConcept: { coding: [{ system: 'http://loinc.org', code: 'LA61-7', display: 'Behavior not present' }] }
       )
     end
 
     it 'passes when server supports all MS elements' do
       allow_any_instance_of(observation_must_support_test).to receive(:scratch_resources).and_return(
         {
-          all: [observation]
+          all: [perfect_observation]
+        }
+      )
+
+      result = run(observation_must_support_test)
+      expect(result.result).to eq('pass')
+    end
+
+    it 'skips when server does not support one MS element' do
+      perfect_observation.effectiveDateTime = nil
+      allow_any_instance_of(observation_must_support_test).to receive(:scratch_resources).and_return(
+        {
+          all: [perfect_observation]
         }
       )
 
       result = run(observation_must_support_test)
       expect(result.result).to eq('skip')
-      expect(result.result_message).to include('Observation.extension:device-use')
-      expect(result.result_message).to include('Observation.extension:event-location')
-      expect(result.result_message).to include('Observation.category:PFEDomain')
-      # TODO: value field
+      expect(result.result_message).to include('effectiveDateTime')
     end
   end
 end
