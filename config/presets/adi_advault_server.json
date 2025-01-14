@@ -75,7 +75,7 @@
       "optional": true,
       "title": "ID(s) for ADIPACPComposition resources present on the server",
       "type": "text",
-      "value": "a896a274-f857-4e82-a0e9-f5aae92f13cb"
+      "value": "8ba2874b-e541-4d5c-bc52-1b6bda9d5fb3"
     },
     {
       "name": "pmo_composition_resource_ids",
