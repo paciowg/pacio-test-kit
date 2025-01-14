@@ -37,3 +37,7 @@ specific language governing permissions and limitations under the License.
 
 HL7, FHIR and the FHIR [FLAME DESIGN] are the registered trademarks of Health
 Level Seven International and their use does not constitute endorsement by HL7.
+
+## Version info
+
+This version of the PACIO Test Kit was created to demo at the January 2025 HL7 Connectathon
