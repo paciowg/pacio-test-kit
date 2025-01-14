@@ -1,4 +1,5 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -65,6 +66,16 @@ module PacioTestKit
                resource_ids: {
                  name: :bundle_resource_ids,
                  title: 'ID(s) for Bundle resources present on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Bundle resource from Bundle create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :bundle_resource_input,
+                 title: 'ADIBundle resource to create on the server'
                }
              }
            }

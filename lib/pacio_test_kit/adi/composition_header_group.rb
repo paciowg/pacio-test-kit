@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -88,6 +89,16 @@ module PacioTestKit
                  name: :composition_header_resource_ids,
                  optional: true,
                  title: 'ID(s) for ADICompositionHeader resources present on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Composition resource from Composition create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :composition_header_resource_input,
+                 title: 'ADICompositionHeader resource to create on the server'
                }
              }
            }

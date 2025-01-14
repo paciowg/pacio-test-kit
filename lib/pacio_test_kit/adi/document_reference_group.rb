@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -96,6 +97,16 @@ module PacioTestKit
                resource_ids: {
                  name: :document_reference_resource_ids,
                  title: 'ID(s) for ADIDocumentReference resources present on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_create,
+           title: 'Server creates correct DocumentReference resource from DocumentReference create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :document_reference_resource_input,
+                 title: 'ADIDocumentReference resource to create on the server'
                }
              }
            }

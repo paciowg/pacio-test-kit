@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -88,6 +89,16 @@ module PacioTestKit
                resource_ids: {
                  name: :organization_resource_ids,
                  title: 'ID(s) for Organization resources present on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Organization resource from Organization create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :organization_resource_input,
+                 title: 'Organization resource to create on the server'
                }
              }
            }

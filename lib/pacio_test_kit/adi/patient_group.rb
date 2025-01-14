@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -101,6 +102,16 @@ module PacioTestKit
                resource_ids: {
                  name: :patient_resource_ids,
                  title: 'ID(s) for Patient resources present on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Patient resource from Patient create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :patient_resource_input,
+                 title: 'Patient resource to create on the server'
                }
              }
            }
