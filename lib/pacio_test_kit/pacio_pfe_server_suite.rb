@@ -7,7 +7,7 @@ require_relative 'pfe/condition_problems_group'
 require_relative 'pfe/device_use_statement_group'
 require_relative 'pfe/diagnostic_report_narrative_history_group'
 require_relative 'pfe/diagnostic_report_note_exchange_group'
-require_relative 'pfe/error_handling_group'
+require_relative 'error_handling_group'
 require_relative 'pfe/goal_group'
 require_relative 'pfe/nutrition_order_group'
 require_relative 'pfe/service_request_group'
@@ -24,8 +24,14 @@ module PacioTestKit
     input :url,
           title: 'FHIR Server Base URL'
 
+    input :credentials,
+          title: 'OAuth Credentials',
+          type: :oauth_credentials,
+          optional: true
+
     fhir_client do
       url :url
+      oauth_credentials :credentials
     end
 
     fhir_resource_validator do
@@ -65,7 +71,7 @@ module PacioTestKit
       group from: :pacio_pfe_goal
       group from: :pacio_pfe_nutrition_order
       group from: :pacio_pfe_service_request
-      group from: :pacio_pfe_error_handling
+      group from: :pacio_error_handling
     end
   end
 end
