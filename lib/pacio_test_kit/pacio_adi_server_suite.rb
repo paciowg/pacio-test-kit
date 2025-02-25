@@ -1,3 +1,4 @@
+require_relative 'error_handling_group'
 require_relative 'pacio_profiles'
 require_relative 'custom_groups/capability_statement_group'
 require_relative 'adi/bundle_group'
@@ -35,8 +36,14 @@ module PacioTestKit
     input :url,
           title: 'FHIR Server Base URL'
 
+    input :credentials,
+          title: 'OAuth Credentials',
+          type: :oauth_credentials,
+          optional: true
+
     fhir_client do
       url :url
+      oauth_credentials :credentials
     end
 
     fhir_resource_validator do
@@ -89,6 +96,7 @@ module PacioTestKit
       group from: :pacio_adi_participant_related_person
       group from: :pacio_adi_notary_related_person
       group from: :pacio_adi_pmo_service_request
+      group from: :pacio_error_handling
     end
   end
 end
