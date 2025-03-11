@@ -12,7 +12,7 @@ module PacioTestKit
           title: 'FHIR resource to create on the server',
           # rubocop:disable Layout/LineLength
           description: 'Provide a json resource to create on the server. Please make sure other resources referenced in the input resource are already present on the server.'
-          # rubocop:enable Layout/LineLength
+    # rubocop:enable Layout/LineLength
 
     def resource_type
       config.options[:resource_type]
