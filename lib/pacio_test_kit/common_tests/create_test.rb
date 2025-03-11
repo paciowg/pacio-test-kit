@@ -10,7 +10,7 @@ module PacioTestKit
 
     input :resource_input,
           title: 'FHIR resource to create on the server',
-          description: 'Provide a json resource to create on the server.'
+          description: 'Provide a json resource to create on the server. (Please make sure other resources referenced in the input resource are already present on the server.)'
 
     def resource_type
       config.options[:resource_type]
