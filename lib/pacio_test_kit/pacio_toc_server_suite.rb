@@ -1,3 +1,4 @@
+require_relative 'pacio_profiles'
 
 
 module PacioTestKit
@@ -33,6 +34,18 @@ module PacioTestKit
       }
     )
 
+    group do
+      title 'PFE FHIR API'
+
+      group from: :capability_statement do
+        description ERB.new(File.read(
+                              File.expand_path('../docs/capability_statement_group_description.md.erb', __dir__)
+                            )).result_with_hash(config:)
+      end
+
+      #test groups go here
+
+    end
 
   end
 end
