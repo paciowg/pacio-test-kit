@@ -33,7 +33,8 @@ module PacioTestKit
       'ADIWitness' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Witness',
       'ADIParticipant' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Participant',
       'ADINotary' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Notary',
-      'ADIPMOServiceRequest' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOServiceRequest'
+      'ADIPMOServiceRequest' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOServiceRequest',
+      'TOCComposition' => 'http://hl7.org/fhir/us/pacio-toc/StructureDefinition/TOC-Composition'
     }.freeze
 
     PFE_RESOURCES = {
@@ -97,5 +98,20 @@ module PacioTestKit
         'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOAdditionalOrdersOrInstructionsServiceRequest'
       ].freeze
     }.freeze
+
+    TOC_RESOURCES = {
+      'Bundle' => [].freeze,
+      'Composition' => [
+        'http://hl7.org/fhir/us/pacio-toc/StructureDefinition/TOC-Composition'
+      ].freeze,
+      'Organization' => [].freeze,
+      'Patient' => [
+        'http://hl7.org/fhir/us/core/StructureDefinition-us-core-patient|6.1.0'
+      ].freeze,
+      'OperationDefinition' => [
+        'http://hl7.org/fhir/R4/patient-operation-match'
+      ].freeze
+    }.freeze
+
   end
 end
