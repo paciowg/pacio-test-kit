@@ -1,4 +1,5 @@
 require_relative 'pacio_profiles'
+require_relative 'toc/toc_bundle_group'
 
 
 module PacioTestKit
@@ -35,7 +36,7 @@ module PacioTestKit
     )
 
     group do
-      title 'PFE FHIR API'
+      title 'PFE FHIR TOC'
 
       group from: :capability_statement do
         description ERB.new(File.read(
@@ -43,7 +44,7 @@ module PacioTestKit
                             )).result_with_hash(config:)
       end
 
-      #test groups go here
+      group from: :pacio_toc_bundle_group
 
     end
 
