@@ -34,7 +34,7 @@ RSpec.describe PacioTestKit::DeletedResourceErrorTest do
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 410, body: error_outcome.to_json)
 
-    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:)
+    result = run(runnable, deleted_resource_id: '123', deleted_resource_type: 'Observation', url:)
     expect(result.result).to eq('pass')
   end
 
@@ -42,7 +42,7 @@ RSpec.describe PacioTestKit::DeletedResourceErrorTest do
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 510, body: {}.to_json)
 
-    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:)
+    result = run(runnable, deleted_resource_id: '123', deleted_resource_type: 'Observation', url:)
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Unexpected response status: expected 410, but received 510/)
   end
