@@ -3,6 +3,10 @@ module PacioTestKit
     id :pacio_rat_server
     title 'PACIO Re-Assessment Timepoints Server Test Suite'
     description 'PACIO Re-Assessment Timepoints Server Test Suite'
+    ig_url 'https://hl7.org/fhir/us/pacio-rt/'
+    source_code_url 'https://github.com/paciowg/pacio-test-kit'
+    download_url 'https://github.com/paciowg/pacio-test-kit'
+    report_issue_url 'https://github.com/paciowg/pacio-test-kit/issues'
 
     input :url,
           title: 'FHIR Server Base URL'

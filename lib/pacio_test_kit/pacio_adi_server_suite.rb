@@ -1,3 +1,4 @@
+require_relative 'error_handling_group'
 require_relative 'pacio_profiles'
 require_relative 'custom_groups/capability_statement_group'
 require_relative 'adi/bundle_group'
@@ -31,12 +32,22 @@ module PacioTestKit
     id :pacio_adi_server
     title 'PACIO ADI Server Suite v2.1.0'
     description 'PACIO Advance Directives Server Test Suite'
+    ig_url 'http://hl7.org/fhir/us/pacio-adi'
+    source_code_url 'https://github.com/paciowg/pacio-test-kit'
+    download_url 'https://github.com/paciowg/pacio-test-kit'
+    report_issue_url 'https://github.com/paciowg/pacio-test-kit/issues'
 
     input :url,
           title: 'FHIR Server Base URL'
 
+    input :credentials,
+          title: 'OAuth Credentials',
+          type: :oauth_credentials,
+          optional: true
+
     fhir_client do
       url :url
+      oauth_credentials :credentials
     end
 
     fhir_resource_validator do
@@ -89,6 +100,7 @@ module PacioTestKit
       group from: :pacio_adi_participant_related_person
       group from: :pacio_adi_notary_related_person
       group from: :pacio_adi_pmo_service_request
+      group from: :pacio_error_handling
     end
   end
 end
