@@ -12,8 +12,7 @@ RSpec.describe PacioTestKit::InvalidParameterErrorTest do
   let(:results_repo) { Inferno::Repositories::Results.new }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
-  let(:resource_type) { 'Observation' }
-  let(:resource_id) { '123' }
+  let(:resource_type) { 'Patient' }
   let(:error_outcome) { FHIR::OperationOutcome.new(issue: [{ severity: 'error' }]) }
 
   def run(runnable, inputs = {})
@@ -30,37 +29,35 @@ RSpec.describe PacioTestKit::InvalidParameterErrorTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
-  it 'passes when search request with invalid parameter is 400 status' do
-    stub_request(:get, "#{url}/#{resource_type}?unknownParam=unknown")
-      .to_return(status: 400, body: error_outcome.to_json)
+  it 'passes when a search request with an invalid parameter returns a 400 status' do
+    cases = {
+      get: { url: "#{url}/#{resource_type}", with: { query: { unknownParam: 'unknown' } } },
+      post: { url: "#{url}/#{resource_type}/_search", with: { body: { unknownParam: 'unknown' } } }
+    }
 
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { unknownParam: 'unknown' })
-      .to_return(status: 400, body: error_outcome.to_json)
+    cases.each do |method, cfg|
+      stub_request(method, cfg[:url])
+        .with(cfg[:with])
+        .to_return(status: 400, body: error_outcome.to_json)
 
-    result = run(runnable, url:)
-    expect(result.result).to eq('pass')
+      result = run(runnable, url:, search_method: method.to_s)
+      expect(result.result).to eq('pass')
+    end
   end
 
-  it 'fails when search request by get with invalid parameter is not 400 status' do
-    stub_request(:get, "#{url}/#{resource_type}?unknownParam=unknown")
-      .to_return(status: 401, body: {}.to_json)
+  it 'fails when search request with invalid parameter is not 400 status' do
+    cases = {
+      get: { url: "#{url}/#{resource_type}", with: { query: { unknownParam: 'unknown' } } },
+      post: { url: "#{url}/#{resource_type}/_search", with: { body: { unknownParam: 'unknown' } } }
+    }
 
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected response status: expected 400, but received 401/)
-  end
-
-  it 'fails when search request by post with invalid parameter is not 400 status' do
-    stub_request(:get, "#{url}/#{resource_type}?unknownParam=unknown")
-      .to_return(status: 400, body: error_outcome.to_json)
-
-    stub_request(:post, "#{url}/#{resource_type}/_search")
-      .with(body: { unknownParam: 'unknown' })
-      .to_return(status: 401, body: {}.to_json)
-
-    result = run(runnable, url:)
-    expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Unexpected response status: expected 400, but received 401/)
+    cases.each do |method, cfg|
+      stub_request(method, cfg[:url])
+        .with(cfg[:with])
+        .to_return(status: 401, body: {}.to_json)
+      result = run(runnable, url:, search_method: method.to_s)
+      expect(result.result).to eq('fail')
+      expect(result.result_message).to match(/Unexpected response status: expected 400, but received 401/)
+    end
   end
 end
