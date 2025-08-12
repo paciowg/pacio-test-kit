@@ -12,8 +12,8 @@ RSpec.describe PacioTestKit::UnknownResourceErrorTest do
   let(:results_repo) { Inferno::Repositories::Results.new }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
-  let(:resource_type) { 'Observation' }
-  let(:resource_id) { '123' }
+  let(:resource_type) { 'Patient' }
+  let(:resource_id) { 'unknown-patient-1234' }
   let(:error_outcome) { FHIR::OperationOutcome.new(issue: [{ severity: 'error' }]) }
 
   def run(runnable, inputs = {})
@@ -30,11 +30,15 @@ RSpec.describe PacioTestKit::UnknownResourceErrorTest do
     Inferno::TestRunner.new(test_session:, test_run:).run(runnable)
   end
 
+  before do
+    allow(SecureRandom).to receive(:uuid).and_return('1234')
+  end
+
   it 'passes when read request with unknown resource is 404' do
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 404, body: error_outcome.to_json)
 
-    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:)
+    result = run(runnable, url:)
     expect(result.result).to eq('pass')
   end
 
@@ -42,7 +46,7 @@ RSpec.describe PacioTestKit::UnknownResourceErrorTest do
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 402, body: {}.to_json)
 
-    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:)
+    result = run(runnable, url:)
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Unexpected response status: expected 404, but received 402/)
   end
