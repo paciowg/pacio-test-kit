@@ -20,6 +20,10 @@ module PacioTestKit
     id :pacio_pfe_server
     title 'PACIO PFE Server Suite v2.0.0-ballot'
     description 'PACIO Personal Functioning and Engagement Server Test Suite'
+    ig_url 'http://hl7.org/fhir/us/pacio-pfe'
+    source_code_url 'https://github.com/paciowg/pacio-test-kit'
+    download_url 'https://github.com/paciowg/pacio-test-kit'
+    report_issue_url 'https://github.com/paciowg/pacio-test-kit/issues'
 
     input :url,
           title: 'FHIR Server Base URL'

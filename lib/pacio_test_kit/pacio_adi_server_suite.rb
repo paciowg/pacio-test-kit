@@ -32,6 +32,10 @@ module PacioTestKit
     id :pacio_adi_server
     title 'PACIO ADI Server Suite v2.1.0'
     description 'PACIO Advance Directives Server Test Suite'
+    ig_url 'http://hl7.org/fhir/us/pacio-adi'
+    source_code_url 'https://github.com/paciowg/pacio-test-kit'
+    download_url 'https://github.com/paciowg/pacio-test-kit'
+    report_issue_url 'https://github.com/paciowg/pacio-test-kit/issues'
 
     input :url,
           title: 'FHIR Server Base URL'
