@@ -13,7 +13,8 @@ module PacioTestKit
           title: 'Resource type for the deleted resource from the server for deleted resource error testing'
 
     run do
-      skip_if deleted_resource_id.blank? || deleted_resource_type.blank?, 'No deleted resource ID or resource type provided'
+      skip_if deleted_resource_id.blank? || deleted_resource_type.blank?,
+              'No deleted resource ID or resource type provided'
 
       fhir_read(deleted_resource_type.strip, deleted_resource_id.strip)
       assert_response_status(410)

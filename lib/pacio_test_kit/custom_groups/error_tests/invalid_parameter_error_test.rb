@@ -22,13 +22,11 @@ module PacioTestKit
     run do
       if search_method == 'get'
         fhir_search('Patient', params: { 'unknownParam' => 'unknown' })
-        assert_response_status(400)
-        assert_resource_type('OperationOutcome')
       else
         fhir_search('Patient', params: { 'unknownParam' => 'unknown' }, search_method: :post)
-        assert_response_status(400)
-        assert_resource_type('OperationOutcome')
       end
+      assert_response_status(400)
+      assert_resource_type('OperationOutcome')
     end
   end
 end
