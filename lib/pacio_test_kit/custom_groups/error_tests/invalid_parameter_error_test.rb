@@ -9,7 +9,7 @@ module PacioTestKit
 
     input :search_method,
           title: 'Search Method',
-          description: 'Method to use for the search request. Defaults to GET.',
+          description: 'Method to use for the search request for invalid parameter error testing. Defaults to GET.',
           type: 'radio',
           options: {
             list_options: [
