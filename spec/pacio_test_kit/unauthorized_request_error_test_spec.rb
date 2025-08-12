@@ -2,11 +2,9 @@ RSpec.describe PacioTestKit::UnauthorizedRequestErrorTest do
   let(:runnable) do
     Class.new(PacioTestKit::UnauthorizedRequestErrorTest) do
       input :url
-      # input :credentials
 
       fhir_client do
         url :url
-        # oauth_credentials :credentials
       end
     end
   end
@@ -14,8 +12,7 @@ RSpec.describe PacioTestKit::UnauthorizedRequestErrorTest do
   let(:results_repo) { Inferno::Repositories::Results.new }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
-  # let(:credentials) { 'example-credentials' }
-  let(:resource_type) { 'Observation' }
+  let(:resource_type) { 'Patient' }
   let(:resource_id) { '123' }
   let(:error_outcome) { FHIR::OperationOutcome.new(issue: [{ severity: 'error' }]) }
 
@@ -37,7 +34,7 @@ RSpec.describe PacioTestKit::UnauthorizedRequestErrorTest do
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 401, body: error_outcome.to_json)
 
-    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:) # , credentials:)
+    result = run(runnable, unauthorized_patient_id: resource_id, url:)
     expect(result.result).to eq('pass')
   end
 
@@ -45,7 +42,7 @@ RSpec.describe PacioTestKit::UnauthorizedRequestErrorTest do
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 510, body: {}.to_json)
 
-    result = run(runnable, resource_ids: '123', resource_types: 'Observation', url:) # , credentials:)
+    result = run(runnable, unauthorized_patient_id: resource_id, url:)
     expect(result.result).to eq('fail')
     expect(result.result_message).to match(/Unexpected response status: expected 401, 403, 404, but received 510/)
   end
