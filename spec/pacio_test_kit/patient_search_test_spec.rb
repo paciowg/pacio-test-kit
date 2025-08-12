@@ -16,6 +16,7 @@ RSpec.describe PacioTestKit::PatientSearchTest do
     end
   end
   let(:session_data_repo) { Inferno::Repositories::SessionData.new }
+  let(:suite_id) { 'pacio_pfe_server' }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
   let(:fhirpath_url) { 'https://example.com/fhirpath/evaluate' }

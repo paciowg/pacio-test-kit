@@ -2,6 +2,7 @@ RSpec.describe PacioTestKit::ValidationTest do
   let(:runnable) { Inferno::Repositories::Tests.new.find('pacio_resource_validation') }
   let(:session_data_repo) { Inferno::Repositories::SessionData.new }
   let(:results_repo) { Inferno::Repositories::Results.new }
+  let(:suite_id) { 'pacio_pfe_server' }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
   let(:resource_type) { 'Observation' }
