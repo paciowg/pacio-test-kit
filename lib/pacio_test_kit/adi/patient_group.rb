@@ -1,7 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
-require_relative '../common_tests/adi_search_tests/patient_search_tests/patient__id_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_id_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_birthdate_family_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_birthdate_name_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_birthdate_search_test'
