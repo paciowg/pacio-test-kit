@@ -22,7 +22,8 @@ module PacioTestKit
         resource_type: config.options[:resource_type],
         search_params: [
           { name: 'status', paths: ['status'] }
-        ]
+        ],
+        token_search_params: [{ name: 'status', paths: ['status'] }]
       )
     end
 
