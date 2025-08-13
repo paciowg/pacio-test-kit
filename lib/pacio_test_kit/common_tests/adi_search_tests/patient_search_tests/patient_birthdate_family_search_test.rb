@@ -6,10 +6,11 @@ module PacioTestKit
 
     title 'Server returns valid results for search by birthdate + family'
     description %(
-      A server SHALL support searching by birthdate + family.
-      This test will pass if resources are returned and match the search criteria. If
+      A server SHOULD support searching by birthdate + family.
+      This test is optional. It will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
+    optional
 
     id :patient_birthdate_family_search_test
 
@@ -21,7 +22,7 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'birthDate', paths: ['birthDate'] },
+          { name: 'birthdate', paths: ['birthDate'] },
           { name: 'family', paths: ['name.family'] }
         ]
       )
