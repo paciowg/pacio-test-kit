@@ -1,4 +1,4 @@
-require_relative '../../../searcht_test'
+require_relative '../../../search_test'
 
 module PacioTestKit
   class DocumentReferenceStatusSearchTest < Inferno::Test
