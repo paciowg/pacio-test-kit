@@ -1,7 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
-require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref__id_search_test'
+require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_id_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_custodian_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_date_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_identifier_search_test'
