@@ -6,10 +6,11 @@ module PacioTestKit
 
     title 'Server returns valid results for search by deathdate + family'
     description %(
-      A server SHALL support searching by deathdate + family.
+      A server SHOULD support searching by deathdate + family.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
+    optional
 
     id :patient_deathdate_family_search_test
 
@@ -21,7 +22,7 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'death-date', paths: ['death-date'] },
+          { name: 'death-date', paths: ['deceased'] },
           { name: 'family', paths: ['name.family'] }
         ]
       )
