@@ -7,7 +7,7 @@ require_relative 'pfe/condition_problems_group'
 require_relative 'pfe/device_use_statement_group'
 require_relative 'pfe/diagnostic_report_narrative_history_group'
 require_relative 'pfe/diagnostic_report_note_exchange_group'
-require_relative 'pfe/error_handling_group'
+require_relative 'error_handling_group'
 require_relative 'pfe/goal_group'
 require_relative 'pfe/nutrition_order_group'
 require_relative 'pfe/service_request_group'
@@ -20,12 +20,23 @@ module PacioTestKit
     id :pacio_pfe_server
     title 'PACIO PFE Server Suite v2.0.0-ballot'
     description 'PACIO Personal Functioning and Engagement Server Test Suite'
+    ig_url 'http://hl7.org/fhir/us/pacio-pfe'
+    source_code_url 'https://github.com/paciowg/pacio-test-kit'
+    download_url 'https://github.com/paciowg/pacio-test-kit'
+    report_issue_url 'https://github.com/paciowg/pacio-test-kit/issues'
 
     input :url,
           title: 'FHIR Server Base URL'
 
+    input :credentials,
+          type: :auth_info,
+          title: 'OAuth Credentials',
+          options: { mode: 'access' },
+          optional: true
+
     fhir_client do
       url :url
+      auth_info :credentials
     end
 
     fhir_resource_validator do
@@ -65,7 +76,7 @@ module PacioTestKit
       group from: :pacio_pfe_goal
       group from: :pacio_pfe_nutrition_order
       group from: :pacio_pfe_service_request
-      group from: :pacio_pfe_error_handling
+      group from: :pacio_error_handling
     end
   end
 end

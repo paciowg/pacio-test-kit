@@ -21,7 +21,7 @@ module PacioTestKit
       The PACIO ADI Organization Profile tests verify that the system under test is able to provide
       correct responses for Organization queries. These queries must contain resources conforming to the
       Organization Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
@@ -82,16 +82,6 @@ module PacioTestKit
       run_as_group
       input_order :url
 
-      test from: :pacio_resource_read,
-           title: 'Server returns correct Organization resource from read interaction',
-           config: {
-             inputs: {
-               resource_ids: {
-                 name: :organization_resource_ids,
-                 title: 'ID(s) for Organization resources present on the server'
-               }
-             }
-           }
       test from: :pacio_resource_create,
            title: 'Server creates correct Organization resource from Organization create interaction',
            config: {
@@ -99,6 +89,16 @@ module PacioTestKit
                resource_input: {
                  name: :organization_resource_input,
                  title: 'Organization resource to create on the server'
+               }
+             }
+           }
+      test from: :pacio_resource_read,
+           title: 'Server returns correct Organization resource from read interaction',
+           config: {
+             inputs: {
+               resource_ids: {
+                 name: :organization_resource_ids,
+                 title: 'ID(s) for Organization resources present on the server'
                }
              }
            }

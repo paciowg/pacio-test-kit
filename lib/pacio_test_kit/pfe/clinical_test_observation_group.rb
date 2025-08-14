@@ -7,8 +7,8 @@ require_relative '../common_tests/observation_diagnostic_report_search/patient_c
 require_relative '../common_tests/observation_diagnostic_report_search/patient_code_date_search_test'
 require_relative '../common_tests/observation_diagnostic_report_search/patient_category_status_search_test'
 require_relative '../common_tests/observation_diagnostic_report_search/patient_code_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_category_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_category_search_test'
+require_relative '../common_tests/patient_search_test'
 
 module PacioTestKit
   module PFE
