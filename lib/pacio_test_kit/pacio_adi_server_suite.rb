@@ -30,7 +30,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
 
     id :pacio_adi_server
-    title 'PACIO ADI Server Suite v2.1.0'
+    title 'PACIO ADI Server Suite v2.0.0-ballot'
     description 'PACIO Advance Directives Server Test Suite'
     ig_url 'http://hl7.org/fhir/us/pacio-adi'
     source_code_url 'https://github.com/paciowg/pacio-test-kit'
@@ -51,7 +51,7 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs 'hl7.fhir.us.pacio-adi#current'
+      igs 'hl7.fhir.us.pacio-adi#2.0.0-ballot'
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
@@ -61,7 +61,7 @@ module PacioTestKit
     config(
       options: {
         ig: 'ADI',
-        ig_version: '2.1.0',
+        ig_version: '2.0.0-ballot',
         capability_statement_url: 'http://hl7.org/fhir/us/pacio-adi/CapabilityStatement/adi',
         supported_resources: ADI_RESOURCES.keys,
         required_profiles: ADI_RESOURCES.values.flatten
