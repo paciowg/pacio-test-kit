@@ -13,6 +13,7 @@ require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_given_search_test'
 require_relative '../common_tests/identifier_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_name_search_test'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -106,6 +107,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Patient resource from Patient create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :patient_resource_input,
+                 title: 'Patient resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Patient resource from read interaction',
            config: {
@@ -116,6 +127,7 @@ module PacioTestKit
                }
              }
            }
+
       test from: :patient_id_search_test,
            title: 'Server returns valid results for Patient search by _id'
       test from: :patient_birthdate_family_search_test,

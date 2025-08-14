@@ -17,11 +17,23 @@
       "value": "fa399a67-6705-4b29-a76e-b5b2e193fcc1"
     },
     {
+      "name": "bundle_resource_input",
+      "title": "Bundle resources to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"Bundle\", \"type\": \"document\" }"
+    },
+    {
       "name": "document_reference_resource_ids",
       "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
       "title": "ID(s) for ADIDocumentReference resources present on the server",
       "type": "text",
       "value": "83488524-6865-4256-a74a-45fdc8ac64f3"
+    },
+    {
+      "name": "document_reference_resource_input",
+      "title": "ADIDocumentReference resources to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"DocumentReference\" }"
     },
     {
       "name": "organization_resource_ids",
@@ -31,11 +43,23 @@
       "value": "8749f296-24f5-43c8-9183-8182e840eaa7"
     },
     {
+      "name": "organization_resource_input",
+      "title": "Organization resources to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"Organization\" }"
+    },
+    {
       "name": "patient_resource_ids",
       "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
       "title": "ID(s) for Patient resources present on the server",
       "type": "text",
       "value": "a2dbfbf4-f313-4bf1-991f-483ea165a9de"
+    },
+    {
+      "name": "patient_resource_input",
+      "title": "Patient resources to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"Patient\" }"
     },
     {
       "name": "composition_header_resource_ids",

@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
 
 module PacioTestKit
   module ADI
@@ -81,6 +82,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Organization resource from Organization create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :organization_resource_input,
+                 title: 'Organization resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Organization resource from read interaction',
            config: {
@@ -91,7 +102,6 @@ module PacioTestKit
                }
              }
            }
-
       test from: :pacio_resource_validation,
            title: 'Organization Resources returned in previous tests conform to the US Core Organization profile',
            description: ERB.new(File.read(File.expand_path(

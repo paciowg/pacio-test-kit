@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_id_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_custodian_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_date_search_test'
@@ -97,6 +98,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct DocumentReference resource from DocumentReference create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :document_reference_resource_input,
+                 title: 'ADIDocumentReference resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct DocumentReference resource from read interaction',
            config: {
