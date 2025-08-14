@@ -1,26 +1,49 @@
 module PacioTestKit
   module InteractionsTest
-    def update_and_validate_resource(resource_to_update)
-      statuses = ['final', 'cancelled']
-      new_status = statuses.find { |status| status != resource_to_update.status }
-      resource_to_update.status = new_status
+    def update_and_validate_resource(resource_to_update, field, field_values)
+      case resource_type
+      when FHIR::Bundle, 'Bundle'
+        composition_resource = resource_to_update.entry.first&.resource
+        skip_if !composition_resource.is_a?(FHIR::Composition),
+                'Composition resource Should be the first entry in the bundle'
+
+        update_resource_field(composition_resource, field, field_values)
+      else
+        update_resource_field(resource_to_update, field, field_values)
+      end
 
       fhir_update(resource_to_update, resource_to_update.id)
-      perform_update_validation(resource_to_update)
+      perform_update_validation(resource_to_update, field)
     end
 
-    def perform_update_validation(resource_to_update)
-      assert_response_status(200)
+    def update_resource_field(resource_to_update, field, field_values)
+      current_value = resource_to_update.try(field.to_sym)
+      new_value = field_values.find { |value| value != current_value }
+      resource_to_update.try("#{field}=", new_value)
+    end
 
+    def perform_update_validation(resource_to_update, field)
+      assert_response_status(200)
       assert_resource_type(resource_type)
 
       msg = "Update must not change the resource ID: expected ID `#{resource_to_update.id}`, got `#{resource.id}`"
       assert(resource_to_update.id == resource.id, msg)
 
-      msg = "Update failed: Expected status to be updated to `#{resource_to_update.status}`, got `#{resource.status}`"
-      assert(resource.status == resource_to_update.status, msg)
-
+      check_field_change(resource_to_update, field)
       validate_response_metadata(resource, resource_to_update, 'update')
+    end
+
+    def check_field_change(resource_to_update, field)
+      if resource_to_update.is_a?(FHIR::Bundle)
+        expected_value = resource_to_update.entry.first&.resource&.try(field.to_sym)
+        actual_value = resource.entry.first&.resource&.try(field.to_sym)
+      else
+        expected_value = resource_to_update.try(field.to_sym)
+        actual_value = resource.try(field.to_sym)
+      end
+
+      msg = "Update failed: Expected `#{field}` to change from #{expected_value} to #{actual_value}"
+      assert(expected_value == actual_value, msg)
     end
 
     def create_and_validate_resource(resource_to_create)

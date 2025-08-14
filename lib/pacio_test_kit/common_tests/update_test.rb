@@ -17,6 +17,14 @@ module PacioTestKit
       config.options[:resource_type]
     end
 
+    def element
+      config.options[:element_to_update]
+    end
+
+    def element_values
+      config.options[:element_values]
+    end
+
     def tag
       config.options[:profile]
     end
@@ -28,7 +36,7 @@ module PacioTestKit
       successful_requests = requests.select { |request| request.status == 200 }
       skip_if successful_requests.empty?, "All previous #{tag} resource read requests were unsuccessful."
 
-      update_and_validate_resource(successful_requests.first.resource)
+      update_and_validate_resource(successful_requests.first.resource, element, element_values)
 
       error_msg = "Unable to update #{tag} resource. See error messages for details."
       no_error_validation(error_msg)
