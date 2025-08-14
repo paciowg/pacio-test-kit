@@ -1,5 +1,6 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/create_test'
+require_relative '../common_tests/update_test'
 
 module PacioTestKit
   module ADI
@@ -77,6 +78,14 @@ module PacioTestKit
                  name: :bundle_resource_ids,
                  title: 'ID(s) for Bundle resources present on the server'
                }
+             }
+           }
+      test from: :pacio_resource_update,
+           title: 'Server supports updating Bundle resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
              }
            }
     end

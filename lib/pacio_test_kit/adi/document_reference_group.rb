@@ -10,6 +10,7 @@ require_relative '../common_tests/patient_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_period_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_status_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_type_search_test'
+require_relative '../common_tests/update_test'
 
 module PacioTestKit
   module ADI
@@ -134,6 +135,14 @@ module PacioTestKit
            title: 'Server returns valid results for DocumentReference search by status'
       test from: :document_ref_type_search_test,
            title: 'Server returns valid results for DocumentReference search by type'
+      test from: :pacio_resource_update,
+           title: 'Server supports updating DocumentReference resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['current', 'superseded']
+             }
+           }
       test from: :pacio_resource_validation,
            title: 'DocumentReference Resources returned in previous tests conform to the ADIDocumentReference profile',
            description: ERB.new(File.read(File.expand_path(

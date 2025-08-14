@@ -2,6 +2,7 @@ require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
 require_relative '../common_tests/create_test'
+require_relative '../common_tests/update_test'
 
 module PacioTestKit
   module ADI
@@ -100,6 +101,14 @@ module PacioTestKit
                  name: :organization_resource_ids,
                  title: 'ID(s) for Organization resources present on the server'
                }
+             }
+           }
+      test from: :pacio_resource_update,
+           title: 'Server supports updating an existing Organization resource',
+           config: {
+             options: {
+               element_to_update: :name,
+               element_values: ['Test Organization', 'Test Organization 2']
              }
            }
       test from: :pacio_resource_validation,

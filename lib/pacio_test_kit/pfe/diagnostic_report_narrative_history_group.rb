@@ -129,7 +129,14 @@ module PacioTestKit
       test from: :patient_code_date_search_test,
            title: 'Server returns valid results for DiagnosticReport search by patient + code + date',
            optional: true
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating a DiagnosticReport resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'DiagnosticReport Resources returned in previous tests conform to the ' \
