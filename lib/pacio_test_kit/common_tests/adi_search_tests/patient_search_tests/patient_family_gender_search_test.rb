@@ -6,10 +6,11 @@ module PacioTestKit
 
     title 'Server returns valid results for search by family + gender'
     description %(
-      A server SHALL support searching by family + gender.
+      A server SHOULD support searching by family + gender.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
+    optional
 
     id :patient_family_gender_search_test
 
