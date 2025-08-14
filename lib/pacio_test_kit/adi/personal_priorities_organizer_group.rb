@@ -20,7 +20,7 @@ module PacioTestKit
       The PACIO ADI Personal Priorities Organizer Profile tests verify that the system under test is able to provide
       correct responses for List queries. These queries must contain resources conforming to the
       Personal Priorities Organizer Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 

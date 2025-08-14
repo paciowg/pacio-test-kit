@@ -14,14 +14,14 @@
       "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
       "title": "ID(s) for Bundle resources present on the server",
       "type": "text",
-      "value": "51241bd8-11be-4844-97c8-33b48b68d146"
+      "value": "fa399a67-6705-4b29-a76e-b5b2e193fcc1"
     },
     {
       "name": "document_reference_resource_ids",
       "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
       "title": "ID(s) for ADIDocumentReference resources present on the server",
       "type": "text",
-      "value": "2d8045f1-4b04-493e-b4b8-880e96ecfe60"
+      "value": "83488524-6865-4256-a74a-45fdc8ac64f3"
     },
     {
       "name": "organization_resource_ids",

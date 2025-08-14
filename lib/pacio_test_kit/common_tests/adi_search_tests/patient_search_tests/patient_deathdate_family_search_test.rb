@@ -1,17 +1,18 @@
-require_relative '../../search_test'
+require_relative '../../../search_test'
 
 module PacioTestKit
-  class PatientCodeSearchTest < Inferno::Test
+  class PatientDeathdateFamilySearchTest < Inferno::Test
     include PacioTestKit::SearchTest
 
-    title 'Server returns valid results for search by patient + code'
+    title 'Server returns valid results for search by deathdate + family'
     description %(
-      A server SHALL support searching by patient + code.
+      A server SHOULD support searching by deathdate + family.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
+    optional
 
-    id :patient_code_search_test
+    id :patient_deathdate_family_search_test
 
     def tag
       config.options[:profile]
@@ -21,10 +22,9 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'patient', paths: ['subject'] },
-          { name: 'code', paths: ['code'] }
-        ],
-        token_search_params: [{ name: 'code', paths: ['code'] }]
+          { name: 'death-date', paths: ['deceased'] },
+          { name: 'family', paths: ['name.family'] }
+        ]
       )
     end
 
