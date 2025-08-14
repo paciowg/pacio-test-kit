@@ -41,13 +41,14 @@ module PacioTestKit
           title: 'FHIR Server Base URL'
 
     input :credentials,
+          type: :auth_info,
           title: 'OAuth Credentials',
-          type: :oauth_credentials,
+          options: { mode: 'access' },
           optional: true
 
     fhir_client do
       url :url
-      oauth_credentials :credentials
+      auth_info :credentials
     end
 
     fhir_resource_validator do
