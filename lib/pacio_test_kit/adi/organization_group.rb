@@ -103,7 +103,14 @@ module PacioTestKit
                }
              }
            }
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating an existing Organization resource',
+           config: {
+             options: {
+               element_to_update: :name,
+               element_values: ['Test Organization', 'Test Organization 2']
+             }
+           }
       test from: :pacio_resource_validation,
            title: 'Organization Resources returned in previous tests conform to the US Core Organization profile',
            description: ERB.new(File.read(File.expand_path(

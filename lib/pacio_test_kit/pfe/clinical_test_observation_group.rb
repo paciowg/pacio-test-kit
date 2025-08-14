@@ -128,7 +128,14 @@ module PacioTestKit
            title: 'Server returns valid results for Observation search by patient + code + date',
            optional: true
 
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating an existing Observation resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',

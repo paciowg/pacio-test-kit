@@ -1,118 +1,48 @@
 module PacioTestKit
   module InteractionsTest
-    def update_and_validate_resource(resource_to_update)
+    def update_and_validate_resource(resource_to_update, field, field_values)
       case resource_type
       when FHIR::Bundle, 'Bundle'
-        first_resource = FHIR.from_contents(resource_to_update.entry[0].resource.to_json)
-        resource_to_update.entry[0].resource = update_resource_field(first_resource, first_resource.resourceType)
+        composition_resource = resource_to_update.entry.first&.resource
+        skip_if !composition_resource.is_a?(FHIR::Composition),
+                'Composition resource Should be the first entry in the bundle'
+
+        update_resource_field(composition_resource, field, field_values)
       else
-        resource_to_update = update_resource_field(resource_to_update, resource_type)
+        update_resource_field(resource_to_update, field, field_values)
       end
 
       fhir_update(resource_to_update, resource_to_update.id)
-      perform_update_validation(resource_to_update)
+      perform_update_validation(resource_to_update, field)
     end
 
-    def update_resource_field(resource_to_update, type_of_resource)
-      case type_of_resource
-      when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
-        statuses = ['work', 'billing']
-        resource_to_update = update_resource_address_use(statuses, resource_to_update)
-      when FHIR::DocumentReference, 'DocumentReference'
-        statuses = ['current', 'superseded']
-        resource_to_update = update_resource_status(statuses, resource_to_update)
-      else # pfe profiles, adi composition
-        statuses = ['final', 'amended']
-        resource_to_update = update_resource_status(statuses, resource_to_update)
-      end
-      resource_to_update
+    def update_resource_field(resource_to_update, field, field_values)
+      current_value = resource_to_update.try(field.to_sym)
+      new_value = field_values.find { |value| value != current_value }
+      resource_to_update.try("#{field}=", new_value)
     end
 
-    def update_resource_status(statuses, resource_to_update)
-      new_status = statuses.find { |status| status != resource_to_update.status }
-      resource_to_update.status = new_status
-      resource_to_update
-    end
-
-    def update_resource_address_use(statuses, resource_to_update)
-      if resource_to_update.address[0].use.nil?
-        resource_to_update.address[0][:use] = statuses[0]
-      else
-        new_status = statuses.find { |status| status != resource_to_update.address[0].use }
-        resource_to_update.address[0].use = new_status
-      end
-
-      resource_to_update
-    end
-
-    def perform_update_validation(resource_to_update)
+    def perform_update_validation(resource_to_update, field)
       assert_response_status(200)
       assert_resource_type(resource_type)
 
       msg = "Update must not change the resource ID: expected ID `#{resource_to_update.id}`, got `#{resource.id}`"
       assert(resource_to_update.id == resource.id, msg)
 
-      check_field_change(resource_to_update)
-      check_metadata(resource_to_update)
+      check_field_change(resource_to_update, field)
+      validate_response_metadata(resource, resource_to_update, 'update')
     end
 
-    def check_metadata(resource_to_update)
-      if resource_to_update.resourceType == 'Bundle' || resource_to_update.resourceType == FHIR::Bundle
-        # check the first resource metadata
-        validate_response_metadata(FHIR.from_contents(resource.entry[0].resource.to_json),
-                                   FHIR.from_contents(resource_to_update.entry[0].resource.to_json), 'update')
+    def check_field_change(resource_to_update, field)
+      if resource_to_update.is_a?(FHIR::Bundle)
+        expected_value = resource_to_update.entry.first&.resource&.try(field.to_sym)
+        actual_value = resource.entry.first&.resource&.try(field.to_sym)
       else
-        validate_response_metadata(resource, resource_to_update, 'update')
+        expected_value = resource_to_update.try(field.to_sym)
+        actual_value = resource.try(field.to_sym)
       end
-    end
 
-    def check_field_change(resource_to_update)
-      type_of_resource = first_resource_type(resource_to_update)
-      case type_of_resource
-      when FHIR::Patient, FHIR::Organization, 'Patient', 'Organization'
-        check_address_field(resource_to_update)
-      else
-        check_status_field(resource_to_update)
-      end
-    end
-
-    def check_address_field(resource_to_update)
-      if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-        address_update_fail(get_expected_bundle_address(resource_to_update),
-                            resource.entry[0].resource.address[0].use)
-      end
-      address_update_fail(resource_to_update.address[0].use, resource.address[0].use)
-    end
-
-    def get_expected_bundle_address(resource_to_update)
-      resource_to_update.entry[0].resource.address[0].use
-    end
-
-    def check_status_field(resource_to_update)
-      if resource_type == FHIR::Bundle || resource_type == 'Bundle'
-        status_update_fail(resource_to_update.entry[0].resource.status, resource.entry[0].resource.status)
-      else
-        status_update_fail(resource_to_update.status, resource.status)
-      end
-    end
-
-    def first_resource_type(resource_to_update)
-      if resource_type == 'Bundle' || resource_type == FHIR::Bundle
-        first_resource = FHIR.from_contents(resource_to_update.entry[0].resource.to_json)
-        type_of_resource = first_resource.resourceType
-      else
-        type_of_resource = resource_type
-      end
-      type_of_resource
-    end
-
-    def address_update_fail(expected_value, actual_value)
-      msg = "Update failed: Expected address.use to be updated to `#{expected_value}`, got `#{actual_value}`"
-      assert(expected_value == actual_value, msg)
-    end
-
-    def status_update_fail(expected_value, actual_value)
-      msg = "Update failed: Expected status to be updated to `#{expected_value}`, got `#{actual_value}`"
+      msg = "Update failed: Expected `#{field}` to change from #{expected_value} to #{actual_value}"
       assert(expected_value == actual_value, msg)
     end
 
