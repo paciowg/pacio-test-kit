@@ -20,7 +20,7 @@ module PacioTestKit
       The PACIO ADI Autopsy Observation Profile tests verify that the system under test is able to provide
       correct responses for Observation queries. These queries must contain resources conforming to the
       Autopsy Observation Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
