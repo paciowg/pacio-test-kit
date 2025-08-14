@@ -1,6 +1,6 @@
-RSpec.describe PacioTestKit::DocumentReferenceIdentifierSearchTest do
+RSpec.describe PacioTestKit::IdentifierSearchTest do
   let(:runnable) do
-    Class.new(PacioTestKit::DocumentReferenceIdentifierSearchTest) do
+    Class.new(PacioTestKit::IdentifierSearchTest) do
       config(
         options: {
           resource_type: 'DocumentReference',

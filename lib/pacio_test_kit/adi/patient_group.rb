@@ -11,7 +11,7 @@ require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_gender_name_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_gender_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_given_search_test'
-require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_identifier_search_test'
+require_relative '../common_tests/identifier_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_name_search_test'
 
 module PacioTestKit
@@ -139,7 +139,7 @@ module PacioTestKit
            title: 'Server returns valid results for Patient search by gender'
       test from: :patient_given_search_test,
            title: 'Server returns valid results for Patient search by given'
-      test from: :patient_identifier_search_test,
+      test from: :identifier_search_test,
            title: 'Server returns valid results for Patient search by identifier'
       test from: :patient_name_search_test,
            title: 'Server returns valid results for Patient search by name'

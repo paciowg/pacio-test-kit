@@ -1,7 +1,7 @@
-require_relative '../../../search_test'
+require_relative '../search_test'
 
 module PacioTestKit
-  class DocumentReferenceIdentifierSearchTest < Inferno::Test
+  class IdentifierSearchTest < Inferno::Test
     include PacioTestKit::SearchTest
 
     title 'Server returns valid results for search by identifier'
@@ -11,7 +11,7 @@ module PacioTestKit
       none are returned, the test is skipped.
     )
 
-    id :document_ref_identifier_search_test
+    id :identifier_search_test
 
     def tag
       config.options[:profile]

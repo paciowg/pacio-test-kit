@@ -4,7 +4,7 @@ require_relative '../pacio_profiles'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_id_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_custodian_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_date_search_test'
-require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_identifier_search_test'
+require_relative '../common_tests/identifier_search_test'
 require_relative '../common_tests/patient_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_period_search_test'
 require_relative '../common_tests/adi_search_tests/document_reference_tests/documentref_status_search_test'
@@ -113,7 +113,7 @@ module PacioTestKit
            title: 'Server returns valid results for DocumentReference search by custodian'
       test from: :document_ref_date_search_test,
            title: 'Server returns valid results for DocumentReference search by date'
-      test from: :document_ref_identifier_search_test,
+      test from: :identifier_search_test,
            title: 'Server returns valid results for DocumentReference search by identifier'
       test from: :patient_search_test,
            title: 'Server returns valid results for DocumentReference search by patient'
