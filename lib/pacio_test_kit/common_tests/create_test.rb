@@ -1,8 +1,10 @@
 require_relative '../interactions_test'
+require_relative '../test_helpers'
 
 module PacioTestKit
   class CreateTest < Inferno::Test
     include PacioTestKit::InteractionsTest
+    include PacioTestKit::TestHelpers
 
     title 'Server accepts create interaction'
     id :pacio_resource_create

@@ -168,9 +168,5 @@ module PacioTestKit
       "#{prefix}Expected resource type to be: `#{expected_resource_type.inspect}`, but found " \
         "`#{resource.resourceType.inspect}`"
     end
-
-    def no_error_validation(message)
-      assert messages.none? { |msg| msg[:type] == 'error' }, message
-    end
   end
 end
