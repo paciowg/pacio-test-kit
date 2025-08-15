@@ -53,12 +53,12 @@ module PacioTestKit
       input_order :url
 
       test from: :pacio_resource_create,
-      title: 'Server creates correct TOC Composition resource from TOC Composition create interaction',
-      config: {
-        inputs: {
-          resource_input: {
-            name: :narrative_history_diagnostic_report_resource_input,
-            title: 'TOC Composition resource to create on the server'
+           title: 'Server creates correct TOC Composition resource from TOC Composition create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :narrative_history_diagnostic_report_resource_input,
+                 title: 'TOC Composition resource to create on the server'
           }
         }
       }
