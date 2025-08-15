@@ -1,15 +1,13 @@
 require_relative '../pacio_profiles'
-require_relative '../interactions_test'
 require_relative '../test_helpers'
 
 module PacioTestKit
-  class ValidationTest < Inferno::Test
+  class MustSupportTest < Inferno::Test
     include PacioTestKit::PacioProfiles
-    include PacioTestKit::InteractionsTest
     include PacioTestKit::TestHelpers
 
-    title 'Resources returned in previous tests conform to the given profile'
-    id :pacio_resource_validation
+    title 'All must support elements are provided in the resources returned'
+    id :pacio_resource_must_support
 
     def resource_type
       config.options[:resource_type]
@@ -24,7 +22,7 @@ module PacioTestKit
     end
 
     def profile_url
-      tag&.include?('USCore') ? PACIO_PROFILES[tag] : "#{PACIO_PROFILES[tag]}|#{ig_version}"
+      PACIO_PROFILES[tag]
     end
 
     run do
@@ -37,18 +35,11 @@ module PacioTestKit
       skip_if successful_requests.empty?, "All #{tag} resource read/search requests were unsuccessful."
 
       base_resources = successful_requests.map(&:resource).compact
-      resources_to_validate = extract_target_resources(base_resources, resource_type)
+      targets = extract_target_resources(base_resources, resource_type)
 
-      skip_if resources_to_validate.blank?,
-              " Unable to perform validation: No #{tag} resource was returned in previous tests as expected."
+      skip_if targets.empty?, "No #{tag} resources were found in the responses from previous read/search requests."
 
-      resources_to_validate.each do |resource|
-        resource_is_valid?(resource:, profile_url:)
-      end
-
-      error_msg = "One or more of the #{tag} resources returned in previous tests do not " \
-                  "conform to the profile #{profile_url}"
-      no_error_validation(error_msg)
+      assert_must_support_elements_present(targets, profile_url)
     end
   end
 end

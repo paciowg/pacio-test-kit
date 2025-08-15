@@ -18,7 +18,7 @@ module PacioTestKit
     include PacioTestKit::PacioProfiles
 
     id :pacio_pfe_server
-    title 'PACIO PFE Server Suite v2.0.0-ballot'
+    title 'PACIO PFE Server Suite v2.0.0'
     description 'PACIO Personal Functioning and Engagement Server Test Suite'
     ig_url 'http://hl7.org/fhir/us/pacio-pfe'
     source_code_url 'https://github.com/paciowg/pacio-test-kit'
@@ -40,7 +40,7 @@ module PacioTestKit
     end
 
     fhir_resource_validator do
-      igs 'hl7.fhir.us.pacio-pfe#2.0.0-ballot'
+      igs 'hl7.fhir.us.pacio-pfe#2.0.0'
 
       exclude_message do |message|
         message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
@@ -50,7 +50,7 @@ module PacioTestKit
     config(
       options: {
         ig: 'PFE',
-        ig_version: '2.0.0-ballot',
+        ig_version: '2.0.0',
         capability_statement_url: 'http://hl7.org/fhir/us/pacio-pfe/CapabilityStatement/pacio-pfe-cap',
         supported_resources: PFE_RESOURCES.keys,
         required_profiles: PFE_RESOURCES.values.flatten

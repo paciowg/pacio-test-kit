@@ -1,8 +1,10 @@
 require_relative '../interactions_test'
+require_relative '../test_helpers'
 
 module PacioTestKit
   class UpdateTest < Inferno::Test
     include PacioTestKit::InteractionsTest
+    include PacioTestKit::TestHelpers
 
     title 'Server can update an existing resource.'
     id :pacio_resource_update
