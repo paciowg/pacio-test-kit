@@ -2,6 +2,7 @@ require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
 require_relative '../common_tests/create_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module ADI
@@ -110,6 +111,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Composition resources returned'
     end
   end
 end

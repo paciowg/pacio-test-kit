@@ -14,6 +14,7 @@ require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_
 require_relative '../common_tests/identifier_search_test'
 require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_name_search_test'
 require_relative '../common_tests/create_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module ADI
@@ -163,6 +164,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Patient resources returned'
     end
   end
 end

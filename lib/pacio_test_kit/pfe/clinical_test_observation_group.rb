@@ -9,6 +9,7 @@ require_relative '../common_tests/observation_diagnostic_report_search/patient_c
 require_relative '../common_tests/observation_diagnostic_report_search/patient_code_search_test'
 require_relative '../common_tests/observation_diagnostic_report_search/patient_category_search_test'
 require_relative '../common_tests/patient_search_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module PFE
@@ -145,6 +146,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Observation resources returned'
     end
   end
 end
