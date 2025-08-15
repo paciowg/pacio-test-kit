@@ -1,6 +1,20 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_id_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_birthdate_family_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_birthdate_name_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_birthdate_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_deathdate_family_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_family_gender_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_family_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_gender_name_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_gender_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_given_search_test'
+require_relative '../common_tests/identifier_search_test'
+require_relative '../common_tests/adi_search_tests/patient_search_tests/patient_name_search_test'
+require_relative '../common_tests/create_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module ADI
@@ -20,7 +34,7 @@ module PacioTestKit
       The PACIO ADI Patient Profile tests verify that the system under test is able to provide
       correct responses for Patient queries. These queries must contain resources conforming to the
       Patient Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
@@ -94,6 +108,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Patient resource from Patient create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :patient_resource_input,
+                 title: 'Patient resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Patient resource from read interaction',
            config: {
@@ -104,6 +128,34 @@ module PacioTestKit
                }
              }
            }
+
+      test from: :patient_id_search_test,
+           title: 'Server returns valid results for Patient search by _id'
+      test from: :patient_birthdate_family_search_test,
+           title: 'Server returns valid results for Patient search by birthdate + family',
+           optional: true
+      test from: :patient_birthdate_name_search_test,
+           title: 'Server returns valid results for Patient search by birthdate + name'
+      test from: :patient_birthdate_search_test,
+           title: 'Server returns valid results for Patient search by birthdate'
+      test from: :patient_deathdate_family_search_test,
+           title: 'Server returns valid results for Patient search by deathdate + family',
+           optional: true
+      test from: :patient_family_gender_search_test,
+           title: 'Server returns valid results for Patient search by family + gender',
+           optional: true
+      test from: :patient_family_search_test,
+           title: 'Server returns valid results for Patient search by family'
+      test from: :patient_gender_name_search_test,
+           title: 'Server returns valid results for Patient search by gender + name'
+      test from: :patient_gender_search_test,
+           title: 'Server returns valid results for Patient search by gender'
+      test from: :patient_given_search_test,
+           title: 'Server returns valid results for Patient search by given'
+      test from: :identifier_search_test,
+           title: 'Server returns valid results for Patient search by identifier'
+      test from: :patient_name_search_test,
+           title: 'Server returns valid results for Patient search by name'
       test from: :pacio_resource_validation,
            title: 'Patient Resources returned in previous tests conform to the US Core Patient profile',
            description: ERB.new(File.read(File.expand_path(
@@ -112,6 +164,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Patient resources returned'
     end
   end
 end

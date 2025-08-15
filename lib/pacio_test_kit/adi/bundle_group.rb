@@ -1,4 +1,6 @@
 require_relative '../common_tests/read_test'
+require_relative '../common_tests/create_test'
+require_relative '../common_tests/update_test'
 
 module PacioTestKit
   module ADI
@@ -13,7 +15,7 @@ module PacioTestKit
       The PACIO ADI Bundle Profile tests verify that the system under test is able to provide
       correct responses for Bundle queries. These queries must contain resources conforming to the
       Bundle Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
@@ -58,6 +60,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Bundle resource from Bundle create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :bundle_resource_input,
+                 title: 'ADIBundle resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Bundle resource from read interaction',
            config: {
@@ -66,6 +78,14 @@ module PacioTestKit
                  name: :bundle_resource_ids,
                  title: 'ID(s) for Bundle resources present on the server'
                }
+             }
+           }
+      test from: :pacio_resource_update,
+           title: 'Server supports updating Bundle resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
              }
            }
     end

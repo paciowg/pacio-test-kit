@@ -1,8 +1,10 @@
 require_relative '../interactions_test'
+require_relative '../test_helpers'
 
 module PacioTestKit
   class CreateTest < Inferno::Test
     include PacioTestKit::InteractionsTest
+    include PacioTestKit::TestHelpers
 
     title 'Server accepts create interaction'
     id :pacio_resource_create
@@ -10,7 +12,9 @@ module PacioTestKit
 
     input :resource_input,
           title: 'FHIR resource to create on the server',
-          description: 'Provide a json resource to create on the server.'
+          # rubocop:disable Layout/LineLength
+          description: 'Provide a json resource to create on the server. Please make sure other resources referenced in the input resource are already present on the server.'
+    # rubocop:enable Layout/LineLength
 
     def resource_type
       config.options[:resource_type]

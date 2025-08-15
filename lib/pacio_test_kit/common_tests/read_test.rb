@@ -1,8 +1,10 @@
 require_relative '../interactions_test'
+require_relative '../test_helpers'
 
 module PacioTestKit
   class ReadTest < Inferno::Test
     include PacioTestKit::InteractionsTest
+    include PacioTestKit::TestHelpers
 
     title 'Server returns correct resource from read interaction'
     id :pacio_resource_read

@@ -1,6 +1,7 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module ADI
@@ -20,7 +21,7 @@ module PacioTestKit
       The PACIO ADI PMO Hospice Observation Profile tests verify that the system under test is able to provide
       correct responses for Observation queries. These queries must contain resources conforming to the
       PMO Hospice Observation Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
@@ -71,6 +72,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Observation resources returned'
     end
   end
 end

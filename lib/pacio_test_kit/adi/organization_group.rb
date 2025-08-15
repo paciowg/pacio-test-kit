@@ -1,6 +1,9 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
+require_relative '../common_tests/update_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module ADI
@@ -20,7 +23,7 @@ module PacioTestKit
       The PACIO ADI Organization Profile tests verify that the system under test is able to provide
       correct responses for Organization queries. These queries must contain resources conforming to the
       Organization Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
@@ -81,6 +84,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Organization resource from Organization create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :organization_resource_input,
+                 title: 'Organization resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Organization resource from read interaction',
            config: {
@@ -91,6 +104,14 @@ module PacioTestKit
                }
              }
            }
+      test from: :pacio_resource_update,
+           title: 'Server supports updating an existing Organization resource',
+           config: {
+             options: {
+               element_to_update: :name,
+               element_values: ['Test Organization', 'Test Organization 2']
+             }
+           }
       test from: :pacio_resource_validation,
            title: 'Organization Resources returned in previous tests conform to the US Core Organization profile',
            description: ERB.new(File.read(File.expand_path(
@@ -99,6 +120,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Organization resources returned'
     end
   end
 end

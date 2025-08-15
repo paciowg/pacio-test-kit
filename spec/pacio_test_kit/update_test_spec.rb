@@ -4,7 +4,9 @@ RSpec.describe PacioTestKit::UpdateTest do
       config(
         options: {
           resource_type: 'Observation',
-          profile: 'PFESingleObservation'
+          profile: 'PFESingleObservation',
+          element_to_update: :status,
+          element_values: ['final', 'amended', 'entered-in-error']
         }
       )
 
@@ -17,6 +19,7 @@ RSpec.describe PacioTestKit::UpdateTest do
   end
   let(:session_data_repo) { Inferno::Repositories::SessionData.new }
   let(:results_repo) { Inferno::Repositories::Results.new }
+  let(:suite_id) { 'pacio_pfe_server' }
   let(:test_session) { repo_create(:test_session, test_suite_id: 'pacio_pfe_server') }
   let(:url) { 'https://example/r4' }
   let(:resource_type) { 'Observation' }
@@ -134,7 +137,7 @@ RSpec.describe PacioTestKit::UpdateTest do
     result = run(runnable, url:)
 
     expect(result.result).to eq('fail')
-    expect(result.result_message).to match(/Update failed: Expected status to be updated/)
+    expect(result.result_message).to match(/Update failed: Expected `status` to change/)
   end
 
   it 'fails if response resource meta.lastUpdated is present and is the same as submitted resource meta.lastUpdated' do

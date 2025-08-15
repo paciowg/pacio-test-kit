@@ -1,6 +1,8 @@
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/validation_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/create_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module ADI
@@ -17,7 +19,7 @@ module PacioTestKit
       The PACIO ADI Composition Header Profile tests verify that the system under test is able to provide
       correct responses for Composition queries. These queries must contain resources conforming to the
       Composition Header Profile as specified in the PACIO Advance Directive Interoperability (ADI) IG
-      v2.1.0 Implementation Guide.
+      v2.0.0-ballot Implementation Guide.
 
       # Testing Methodology
 
@@ -79,6 +81,16 @@ module PacioTestKit
       run_as_group
       input_order :url
 
+      test from: :pacio_resource_create,
+           title: 'Server creates correct Composition resource from Composition create interaction',
+           config: {
+             inputs: {
+               resource_input: {
+                 name: :composition_header_resource_input,
+                 title: 'ADICompositionHeader resource to create on the server'
+               }
+             }
+           }
       test from: :pacio_resource_read,
            title: 'Server returns correct Composition resource from read interaction',
            optional: true,
@@ -99,6 +111,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Composition resources returned'
     end
   end
 end

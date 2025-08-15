@@ -7,8 +7,9 @@ require_relative '../common_tests/observation_diagnostic_report_search/patient_c
 require_relative '../common_tests/observation_diagnostic_report_search/patient_code_date_search_test'
 require_relative '../common_tests/observation_diagnostic_report_search/patient_category_status_search_test'
 require_relative '../common_tests/observation_diagnostic_report_search/patient_code_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_category_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_category_search_test'
+require_relative '../common_tests/patient_search_test'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module PFE
@@ -128,7 +129,14 @@ module PacioTestKit
            title: 'Server returns valid results for Observation search by patient + code + date',
            optional: true
 
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating an existing Observation resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'Observation Resources returned in previous tests conform to the PFEClinicalTestObservation profile',
@@ -138,6 +146,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Observation resources returned'
     end
   end
 end

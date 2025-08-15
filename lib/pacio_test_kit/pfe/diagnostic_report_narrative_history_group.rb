@@ -2,13 +2,14 @@ require_relative '../common_tests/read_test'
 require_relative '../common_tests/create_test'
 require_relative '../common_tests/update_test'
 require_relative '../common_tests/validation_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_category_date_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_code_date_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_category_status_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_code_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_category_search_test'
-require_relative '../common_tests/observation_diagnostic_report_search//patient_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_category_date_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_code_date_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_category_status_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_code_search_test'
+require_relative '../common_tests/observation_diagnostic_report_search/patient_category_search_test'
+require_relative '../common_tests/patient_search_test'
 require_relative '../pacio_profiles'
+require_relative '../common_tests/must_support_test'
 
 module PacioTestKit
   module PFE
@@ -129,7 +130,14 @@ module PacioTestKit
       test from: :patient_code_date_search_test,
            title: 'Server returns valid results for DiagnosticReport search by patient + code + date',
            optional: true
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating a DiagnosticReport resource',
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'DiagnosticReport Resources returned in previous tests conform to the ' \
@@ -140,6 +148,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the DiagnosticReport resources returned'
     end
   end
 end
