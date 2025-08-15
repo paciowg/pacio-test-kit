@@ -1,6 +1,8 @@
 require_relative 'pacio_profiles'
 require_relative 'toc/toc_bundle_group'
-
+require_relative 'toc/toc_composition_group'
+require_relative 'toc/toc_organization_group'
+require_relative 'toc/toc_patient_group'
 
 module PacioTestKit
   class PacioTOCServerSuite < Inferno::TestSuite
@@ -45,6 +47,12 @@ module PacioTestKit
       end
 
       group from: :pacio_toc_bundle_group
+      group from: :pacio_toc_composition_group
+      group from: :pacio_toc_organization_group
+      group from: :pacio_toc_patient_group
+      
+      #QWERTY TODO: uncomment below after completing the appropriate test group files
+      #group from: :pacio_toc_error_handling_group
 
     end
 

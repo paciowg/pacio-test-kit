@@ -9,7 +9,7 @@ module PacioTestKit
     class TOCBundleGroup < Inferno::TestGroup
       include PacioTestKit::PacioProfiles
 
-      title 'TOC Composition Tests'
+      title 'TOC Bundle Tests'
       id :pacio_toc_bundle_group
       short_description %(
         Verify support for the server capabilities required by the PACIO TOC Bundle Profile.

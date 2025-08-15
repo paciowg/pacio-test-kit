@@ -1,9 +1,15 @@
+require_relative '../common_tests/create_test'
+require_relative '../common_tests/read_test'
+require_relative '../common_tests/update_test'
+require_relative '../common_tests/validation_test'
+require_relative '../pacio_profiles'
+
 module PacioTestKit
   module TOC
     class TOCCompositionGroup < Inferno::TestGroup
       include PacioTestKit::PacioProfiles
 
-      title ''
+      title 'TOC Composition Tests'
       id :pacio_toc_composition_group
       short_description %(
         Verify support for the server capabilities required by the PACIO TOC Composition Profile.
