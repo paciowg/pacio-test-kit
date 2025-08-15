@@ -28,7 +28,7 @@ RSpec.describe PacioTestKit::ValidationTest do
 
   def mock_server(body: nil, status: 200, valid_resource: false)
     request = build_read_request(body:, status:)
-    allow_any_instance_of(runnable).to receive(:requests).and_return([request])
+    allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
     allow_any_instance_of(runnable).to receive(:resource_is_valid?).and_return(valid_resource)
     messages = [{ type: 'error', message: 'resource not conformant' }]
     allow_any_instance_of(runnable).to receive(:messages).and_return(messages) unless valid_resource
@@ -63,14 +63,14 @@ RSpec.describe PacioTestKit::ValidationTest do
   it 'skips when no read requests were made in previous tests' do
     result = run(runnable)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/No #{profile} resource read request was made in previous tests/)
+    expect(result.result_message).to match(%r{No #{profile} resource read/search request was made in previous tests})
   end
 
   it 'skips when all read requests were unsuccessful' do
     mock_server(status: 401, valid_resource: true)
     result = run(runnable)
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/read requests were unsuccessful/)
+    expect(result.result_message).to match(%r{read/search requests were unsuccessful})
   end
 
   it 'fails if at least one of the returned resources is not conformant to the given profile' do
