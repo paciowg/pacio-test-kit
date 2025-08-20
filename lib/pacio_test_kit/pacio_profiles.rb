@@ -112,6 +112,5 @@ module PacioTestKit
         'http://hl7.org/fhir/R4/patient-operation-match'
       ].freeze
     }.freeze
-
   end
 end

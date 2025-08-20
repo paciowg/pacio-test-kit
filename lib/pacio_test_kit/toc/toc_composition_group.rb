@@ -59,9 +59,9 @@ module PacioTestKit
                resource_input: {
                  name: :narrative_history_diagnostic_report_resource_input,
                  title: 'TOC Composition resource to create on the server'
-          }
-        }
-      }
+               }
+             }
+           }
 
       test from: :pacio_resource_read,
            title: 'Server returns correct TOC Composition resource from TOC Composition read interaction',
@@ -86,7 +86,6 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
-      
     end
   end
 end
