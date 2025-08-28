@@ -28,12 +28,17 @@ The quickest way to run this test kit locally is with [Docker](https://www.docke
 * Run `./run.sh` within the test kit directory to start the application
 * Navigate to `http://localhost`
 * Choose Test Suite to run and click "START TESTING" button
-* (optional) Select a preset configuration from the "Preset" dropdown list
+* (optional) Select a preset configuration from the "Preset" dropdown list from the top left corner.
 * Click "RUN ALL TESTS" button on the top right corner
 * Provide test configuration values in the pop-up dialog
-* Click "SUMBIT" button at the bottom
+* Click "SUMBIT" button at the bottom of the pop-up dialog
+* Wait for the tests to complete.
 
 See the [Inferno Documentation](https://inferno-framework.github.io/docs/getting-started-users.html#running-an-existing-test-kit) for more information on running Inferno locally.
+
+## Interpret Test Results
+
+Inferno test execution can result in several outcomes, with the four most common being **pass**, **fail**, **skip**, and **omit**. A quick FAQ explaining these outcomes can be found [here](https://github.com/onc-healthit/onc-certification-g10-test-kit/wiki/FAQ#q-what-is-the-difference-between-skipped-test-and-omitted-test).
 
 ## Repository and Resources
 
