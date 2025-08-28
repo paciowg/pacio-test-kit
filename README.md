@@ -1,4 +1,4 @@
-# Inferno Template Test Kit
+# PACIO Test Kit
 
 The PACIO Test Kit validates the conformance of systems to the following PACIO Implementation Guides:
 * [PACIO Advance Healthcare Directive Interoperability IG v2.0.0-ballot](https://hl7.org/fhir/us/pacio-adi/2025Sep/)
