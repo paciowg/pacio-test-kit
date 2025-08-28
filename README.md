@@ -38,7 +38,7 @@ See the [Inferno Documentation](https://inferno-framework.github.io/docs/getting
 
 ## Interpret Test Results
 
-Inferno test execution can result in several outcomes, with the four most common being **pass**, **fail**, **skip**, and **omit**. A quick FAQ explaining these outcomes can be found [here](https://github.com/onc-healthit/onc-certification-g10-test-kit/wiki/FAQ#q-what-is-the-difference-between-skipped-test-and-omitted-test).
+Inferno test execution can result in several outcomes, with the four most common being **Pass**, **Fail**, **Skip**, and **Omit**. A quick FAQ explaining these outcomes can be found [here](https://github.com/onc-healthit/onc-certification-g10-test-kit/wiki/FAQ#q-what-is-the-difference-between-skipped-test-and-omitted-test).
 
 ## Repository and Resources
 
