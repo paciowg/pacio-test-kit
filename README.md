@@ -6,32 +6,32 @@ The PACIO Test Kit validates the conformance of systems to the following PACIO I
 * [PACIO Re-Assessment Timepoints IG v1.0.0](https://hl7.org/fhir/us/pacio-rt/) (To Be Implemented)
 * [PACIO Transition of Care IG v1.0.0-ballot](https://hl7.org/fhir/us/pacio-toc/2025May/) (To Be Impelemented)
 
-This test kit currently contains suites that verify the conformation of system plyaing these following roles:
-* **PACIO ADI Data Source and/or Server**: Verifies that the ADI Data Source and/or Server System can reponod to Data Consumer's requests of Creating, Reading, Searching, and Updating PACIO ADI FHIR resources.
-* **PACIO PFE Data Source**: Verifies that the PFE Data Source System can reponod to Data Consumer's requests of Creating, Reading, Searching, and Updating PACIO ADI FHIR resources.
+This test kit currently contains suites that verify the conformation of system playing these following roles:
+* **PACIO ADI Data Source and/or Server**: Verifies that the ADI Data Source and/or Server System can responod to Data Consumer's requests of Creating, Reading, Searching, and Updating PACIO ADI FHIR resources.
+* **PACIO PFE Data Source**: Verifies that the PFE Data Source System can responod to Data Consumer's requests of Creating, Reading, Searching, and Updating PACIO PFE FHIR resources.
 
 ## Status
 
-These tests are in low maturity, and intended to allow PACIO Implementation Guides implementers to performance prelimiary checks of their implementations against PACIO IGs' requirements and provide feedback on the tests. Future versions of these tests may validate other requirements and may change how these are tested.
+These tests are in low maturity, and intended to allow PACIO Implementation Guides implementers to performance preliminary checks of their implementations against PACIO IGs' requirements and provide feedback on the tests. Future versions of these tests may validate other requirements and may change how these are tested.
 
 ## Known Limitation
 
-This test kit does not currently include test suites for all actors and all capabilities defined by the each PACIO Implementation Guides.
+This test kit does not currently include test suites for all actors and all capabilities defined by the each PACIO Implementation Guide.
 
 ## Getting Started
 
 The quickest way to run this test kit locally is with [Docker](https://www.docker.com/).
 
 * Install Docker
-* Clone this [repository]((https://github.com/paciowg/pacio-test-kit)) from GitHub.
+* Clone this [repository](https://github.com/paciowg/pacio-test-kit) from GitHub.
 * Run `./setup.sh` within the test kit directory to download necessary dependencies
 * Run `./run.sh` within the test kit directory to start the application
-* Navigate to `http://localhost`
+* Open web browser and navigate to `http://localhost`
 * Choose Test Suite to run and click "START TESTING" button
 * (optional) Select a preset configuration from the "Preset" dropdown list from the top left corner.
 * Click "RUN ALL TESTS" button on the top right corner
 * Provide test configuration values in the pop-up dialog
-* Click "SUMBIT" button at the bottom of the pop-up dialog
+* Click "SUBMIT" button at the bottom of the pop-up dialog
 * Wait for the tests to complete.
 
 See the [Inferno Documentation](https://inferno-framework.github.io/docs/getting-started-users.html#running-an-existing-test-kit) for more information on running Inferno locally.
