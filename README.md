@@ -4,15 +4,16 @@ The PACIO Test Kit validates the conformance of systems to the following PACIO I
 * [PACIO Advance Healthcare Directive Interoperability IG v2.0.0-ballot](https://hl7.org/fhir/us/pacio-adi/2025Sep/)
 * [PACIO Personal Functioning and Engagement IG v2.0.0](https://hl7.org/fhir/us/pacio-pfe/)
 * [PACIO Re-Assessment Timepoints IG v1.0.0](https://hl7.org/fhir/us/pacio-rt/) (To Be Implemented)
+* [PACIO Standardized Medication Profile IG v1.0.0](https://hl7.org/fhir/us/smp/) (To Be Implemented)
 * [PACIO Transition of Care IG v1.0.0-ballot](https://hl7.org/fhir/us/pacio-toc/2025May/) (To Be Implemented)
 
-This test kit currently contains suites that verify the conformation of system playing these following roles:
-* **PACIO ADI Data Source and/or Server**: Verifies that the ADI Data Source and/or Server System can responod to Data Consumer's requests of Creating, Reading, Searching, and Updating PACIO ADI FHIR resources.
-* **PACIO PFE Data Source**: Verifies that the PFE Data Source System can responod to Data Consumer's requests of Creating, Reading, Searching, and Updating PACIO PFE FHIR resources.
+This test kit currently contains suites that verify the conformation of systems playing these following roles:
+* **PACIO ADI Data Source and/or Server**: Verifies that the ADI Data Source and/or Server System can respond to Data Consumer's requests for Creating, Reading, Searching, and Updating PACIO ADI FHIR resources.
+* **PACIO PFE Data Source**: Verifies that the PFE Data Source System can respond to Data Consumer's requests for Creating, Reading, Searching, and Updating PACIO PFE FHIR resources.
 
 ## Status
 
-These tests are in low maturity, and intended to allow PACIO Implementation Guides implementers to performance preliminary checks of their implementations against PACIO IGs' requirements and provide feedback on the tests. Future versions of these tests may validate other requirements and may change how these are tested.
+These tests are in low maturity, and intended to allow PACIO Implementation Guides implementers to perform preliminary checks of their implementations against PACIO IGs' requirements and provide feedback on the tests. Future versions of these tests may validate other requirements and may change how these are tested.
 
 ## Known Limitation
 
