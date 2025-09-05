@@ -1,6 +1,6 @@
 {
   "title": "HAPI FHIR Server RI",
-  "id": "adi-hapi-fhir-server-ri",
+  "id": "adi-hapi-fhir-server",
   "test_suite_id": "pacio_adi_server",
   "inputs": [
     {
@@ -15,6 +15,12 @@
       "title": "ID(s) for Bundle resources present on the server",
       "type": "text",
       "value": "51241bd8-11be-4844-97c8-33b48b68d146"
+    },
+    {
+      "name": "bundle_resource_input",
+      "title": "Bundle resources to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"Bundle\", \"type\": \"document\" }"
     },
     {
       "name": "document_reference_resource_ids",

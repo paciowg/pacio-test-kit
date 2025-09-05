@@ -57,7 +57,7 @@ module PacioTestKit
            config: {
              inputs: {
                resource_input: {
-                 name: :narrative_history_diagnostic_report_resource_input,
+                 name: :bundle_resource_input,
                  title: 'Bundle resource to create on the server'
                }
              }

@@ -11,6 +11,10 @@ module PacioTestKit
     id :pacio_toc_server
     title 'PACIO TOC Server Suite v1.0.0-ballot'
     description 'PACIO Transitions of Care Server Test Suite'
+    ig_url 'http://hl7.org/fhir/us/pacio-toc'
+    source_code_url 'https://github.com/paciowg/pacio-test-kit'
+    download_url 'https://github.com/paciowg/pacio-test-kit'
+    report_issue_url 'https://github.com/paciowg/pacio-test-kit/issues'
 
     input :url,
           title: 'FHIR Server Base URL'

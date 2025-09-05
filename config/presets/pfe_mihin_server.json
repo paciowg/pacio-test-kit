@@ -1,0 +1,104 @@
+{
+  "title": "MiHIN Server RI",
+  "id": "pfe-mihin-server",
+  "test_suite_id": "pacio_pfe_server",
+  "inputs": [
+    {
+      "name": "url",
+      "title": "FHIR Server Base URL",
+      "type": "text",
+      "value": "https://gw.interop.community/MiHIN/open"
+    },
+    {
+      "name": "clinical_test_observation_resource_input",
+      "description": "Provide a json resource to create on the server.",
+      "title": "PFEClinicalTestObservation resource to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"Observation\", \"id\": \"PFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250\", \"meta\": { \"profile\": [ \"http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-observation-clinicaltest\" ] }, \"text\": { \"status\": \"generated\", \"div\": \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p class=\\\"res-header-id\\\"><b>Generated Narrative: Observation PFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250</b></p><a name=\\\"PFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250\\\"> </a><a name=\\\"hcPFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250\\\"> </a><a name=\\\"hcPFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250-en\\\"> </a><p><b>status</b>: final</p><p><b>category</b>: <span title=\\\"Codes:{http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-functioning-cs functioning}\\\">Functioning</span>, <span title=\\\"Codes:{http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-category-cs BlockL2-b21}\\\">Sensory functions and pain</span></p><p><b>code</b>: <span title=\\\"Codes:{http://loinc.org 91375-6}\\\">Hearing threshold Ear - left --250 Hz</span></p><p><b>subject</b>: <a href=\\\"Patient-PFEIG-patientBSJ1.html\\\">Betsy Smith-Johnson female, DoB Unknown ( http://example.org/identifiers/patient#10A3D58WH1600)</a></p><p><b>effective</b>: 2020-11-06 10:45:00-0500</p><p><b>performer</b>: <a href=\\\"PractitionerRole-PFEIG-Role-Audio-JillBradley.html\\\">PractitionerRole Audiologist</a></p><p><b>value</b>: 45 dB<span style=\\\"background: LightGoldenRodYellow\\\"> (Details: UCUM  codedB = 'dB')</span></p></div>\" }, \"status\": \"final\", \"category\": [ { \"coding\": [ { \"system\": \"http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-functioning-cs\", \"code\": \"functioning\", \"display\": \"Functioning\" } ] }, { \"coding\": [ { \"system\": \"http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-category-cs\", \"code\": \"BlockL2-b21\", \"display\": \"Sensory functions and pain\" } ] } ], \"code\": { \"coding\": [ { \"system\": \"http://loinc.org\", \"code\": \"91375-6\", \"display\": \"Hearing threshold Ear - left --250 Hz\" } ] }, \"subject\": { \"reference\": \"Patient/PFEIG-patientBSJ1\" }, \"effectiveDateTime\": \"2020-11-06T10:45:00-05:00\", \"performer\": [ { \"reference\": \"PractitionerRole/PFEIG-Role-Audio-JillBradley\" } ], \"valueQuantity\": { \"value\": 45, \"system\": \"http://unitsofmeasure.org\", \"code\": \"dB\" } }"
+    },
+    {
+      "name": "clinical_test_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEClinicalTestObservation resources present on the server",
+      "type": "text",
+      "value": "PFEIG-SPLASCH-Hearingtonethresh-01-Obs-L250"
+    },
+    {
+      "name": "single_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFESingleObservation resources present on the server",
+      "type": "text",
+      "value": "PFEIG-CSC-SNF-BIMS-1-Ob-Question-3, PFEIG-CSC-SNF-BIMS-1-Ob-Question-4, PFEIG-CSC-SNF-BIMS-1-Ob-Question-5"
+    },
+    {
+      "name": "collection_observation_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFECollection resources present on the server",
+      "type": "text",
+      "value": "PFEIG-CSC-Hospital-MMSE-1, PFEIG-CSC-SNF-BIMS-1, PFEIG-FSC-Hospital-Admission-Mobility-1"
+    },
+    {
+      "name": "condition_encounter_diagnosis_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEConditionEncounterDiagnosis resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Condition-Encounter-Diagnosis-1, PFEIG-Condition-Encounter-Diagnosis-2"
+    },
+    {
+      "name": "condition_problems_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEConditionProblemsHealthConcerns resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Condition-Problems-Health-Concerns-1, PFEIG-Condition-Problems-Health-Concerns-2"
+    },
+    {
+      "name": "narrative_history_diagnostic_report_resource_input",
+      "description": "Provide a json resource to create on the server.",
+      "title": "PFENarrativeHistoryOfStatus resource to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"DiagnosticReport\", \"id\": \"PFEIG-Narrative-History-Cognitive-Status-1\", \"meta\": { \"profile\": [ \"http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-narrative-history-of-status\" ] }, \"text\": { \"status\": \"generated\", \"div\": \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p class=\\\"res-header-id\\\"><b>Generated Narrative: DiagnosticReport PFEIG-Narrative-History-Cognitive-Status-1</b></p><a name=\\\"PFEIG-Narrative-History-Cognitive-Status-1\\\"> </a><a name=\\\"hcPFEIG-Narrative-History-Cognitive-Status-1\\\"> </a><a name=\\\"hcPFEIG-Narrative-History-Cognitive-Status-1-en\\\"> </a><h2><span title=\\\"Codes:{http://loinc.org 11332-4}\\\">History of Cognitive Function Narrative</span> (<span title=\\\"Codes:{http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-functioning-cs functioning}\\\">Functioning</span>, <span title=\\\"Codes:{http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-category-cs BlockL2-b11}\\\">Mental functions</span>) </h2><table class=\\\"grid\\\"><tr><td>Subject</td><td>No display for Patient </td></tr><tr><td>When For</td><td>2019-07-01 --&gt; 2020-11-30</td></tr><tr><td>Performer</td><td> <a href=\\\"PractitionerRole-PFEIG-provider-role-pcp.html\\\">PractitionerRole Primary Care Clinic/Center</a></td></tr></table><p><b>Report Details</b></p></div>\" }, \"extension\": [ { \"url\": \"http://hl7.org/fhir/StructureDefinition/event-location\", \"valueReference\": { \"reference\": \"Location/PFEIG-provider-org-loc-01\" } }, { \"url\": \"http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/assistance-required\", \"valueCodeableConcept\": { \"coding\": [ { \"system\": \"http://loinc.org\", \"code\": \"LA11539-6\", \"display\": \"Independent - Patient completed all the activities by themself, with or without an assistive device, with no assistance from a helper.\" } ] } } ], \"status\": \"final\", \"category\": [ { \"coding\": [ { \"system\": \"http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-functioning-cs\", \"code\": \"functioning\", \"display\": \"Functioning\" } ] }, { \"coding\": [ { \"system\": \"http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-category-cs\", \"code\": \"BlockL2-b11\", \"display\": \"Mental functions\" } ] } ], \"code\": { \"coding\": [ { \"system\": \"http://loinc.org\", \"code\": \"11332-4\", \"display\": \"History of Cognitive Function Narrative\" } ] }, \"subject\": { \"reference\": \"Patient/PFEIG-patientBSJ1\" }, \"effectivePeriod\": { \"start\": \"2019-07-01\", \"end\": \"2020-11-30\" }, \"performer\": [ { \"reference\": \"PractitionerRole/PFEIG-provider-role-pcp\" } ], \"presentedForm\": [ { \"contentType\": \"text/plain\", \"data\": \"UHJpb3IgdG8gdGhlIGN1cnJlbnQgYWRtaXNzaW9uLCBwYXRpZW50IHdhcyBhbGVydCBhbmQgb3JpZW50ZWQgeCAzLiBTaGUgd2FzIGluZGVwZW5kZW50IGluIGhvdXNlaG9sZCBmaW5hbmNlcywgc29jaWFsIGFuZCBjb21tdW5pdHkgYWN0aXZpdGllcywgY29laGVyZW50IGFuZCBhcHByb3ByaWF0ZSBjb21tdW5pY2F0aW9uLiBTaGUgd2FzIGFibGUgdG8gaW5kZXBlbmRlbnRseSBzZWxlY3QgYXBwcm9wcmlhdGUgYXR0aXJlIGZvciBsb2NhdGlvbiBhbmQgd2VhdGhlci4=\" } ] }"
+    },
+    {
+      "name": "diagnostic_report_narrative_history_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFENarrativeHistoryOfStatus resources present on the server",
+      "type": "text",
+      "value": " PFEIG-Narrative-History-Cognitive-Status-1, PFEIG-Narrative-History-Functional-Status-1"
+    },
+    {
+      "name": "diagnostic_report_note_exchange_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEDiagnosticReportNoteExchange resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Diagnostic-Report-Note-Exchange-1, PFEIG-Diagnostic-Report-Note-Exchange-2"
+    },
+    {
+      "name": "device_use_statement_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEUseOfDevice resources present on the server",
+      "type": "text",
+      "value": "PFEIG-FSC-Hospital-Discharge-Mobility-1-UseOfDevice-1, PFEIG-FSC-Hospital-Discharge-Mobility-1-UseOfDevice-2, PFEIG-FSC-Hospital-Discharge-Mobility-1-UseOfDevice-3"
+    },
+    {
+      "name": "goal_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEGoal resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Goal-1, PFEIG-Goal-2"
+    },
+    {
+      "name": "nutrition_order_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFENutritionOrder resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Nutrition-Order-1, PFEIG-Nutrition-Order-2"
+    },
+    {
+      "name": "service_request_resource_ids",
+      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
+      "title": "ID(s) for PFEServiceRequest resources present on the server",
+      "type": "text",
+      "value": "PFEIG-Service-Request-1, PFEIG-Service-Request-2"
+    }
+  ]
+}

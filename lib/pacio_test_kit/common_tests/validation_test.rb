@@ -28,6 +28,8 @@ module PacioTestKit
     end
 
     run do
+      # require 'debug/open_nonstop'
+      # debugger
       read_requests = load_tagged_requests(tag)
       search_requests = load_tagged_requests("#{tag}_Search")
       all_requests = read_requests + search_requests

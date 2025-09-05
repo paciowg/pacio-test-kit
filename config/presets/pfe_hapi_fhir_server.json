@@ -1,6 +1,6 @@
 {
   "title": "HAPI FHIR Server RI",
-  "id": "hapi-fhir-server-ri",
+  "id": "pfe-hapi-fhir-server",
   "test_suite_id": "pacio_pfe_server",
   "inputs": [
     {

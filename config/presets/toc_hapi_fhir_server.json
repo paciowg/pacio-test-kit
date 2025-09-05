@@ -1,13 +1,19 @@
 {
-  "title": "MiHIN Server RI",
-  "id": "mihin-server-ri",
-  "test_suite_id": "pacio_pfe_server",
+  "title": "HAPI FHIR Server RI",
+  "id": "toc-hapi-fhir-server",
+  "test_suite_id": "pacio_toc_server",
   "inputs": [
     {
       "name": "url",
       "title": "FHIR Server Base URL",
       "type": "text",
-      "value": "https://gw.interop.community/MiHIN/open"
+      "value": "http://hapi.fhir.org/baseR4"
+    },
+    {
+      "name": "bundle_resource_input",
+      "title": "Bundle resources to create on the server",
+      "type": "text",
+      "value": "{ \"resourceType\": \"Bundle\", \"type\": \"document\" }"
     },
     {
       "name": "clinical_test_observation_resource_input",
