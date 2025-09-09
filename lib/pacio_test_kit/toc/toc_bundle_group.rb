@@ -59,20 +59,20 @@ module PacioTestKit
                resource_input: {
                  name: :bundle_resource_input,
                  type: 'textarea',
-                 title: 'Bundle resource to create on the server'
+                 title: 'Bundle resource to create on the server.'
                }
              }
            }
 
       test from: :pacio_resource_read,
            title: 'Server returns correct Bundle resource from Bundle read interaction',
-           optional: true,
            config: {
              inputs: {
                resource_ids: {
-                 name: :goal_resource_ids,
+                 name: :bundle_resource_ids,
                  optional: true,
-                 title: 'ID(s) for TOC Bundle resources present on the server'
+                 title: 'ID(s) for Bundle resources present on the server.',
+                 description: 'If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3. If leaving blank, test will use the resource id from Bundle resource created by previous test.'
                }
              }
            }

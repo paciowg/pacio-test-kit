@@ -54,11 +54,13 @@ module PacioTestKit
 
       test from: :pacio_resource_create,
            title: 'Server creates correct TOC Composition resource from TOC Composition create interaction',
+           optional: true,
            config: {
              inputs: {
                resource_input: {
-                 name: :narrative_history_diagnostic_report_resource_input,
-                 title: 'TOC Composition resource to create on the server'
+                 name: :composition_resource_input,
+                 title: 'TOC Composition resource to create on the server.',
+                 description: 'If leave blank, this test will be skipped.'
                }
              }
            }
@@ -69,14 +71,23 @@ module PacioTestKit
            config: {
              inputs: {
                resource_ids: {
-                 name: :goal_resource_ids,
+                 name: :composition_resource_ids,
                  optional: true,
-                 title: 'ID(s) for TOC Composition resources present on the server'
+                 title: 'ID(s) for TOC Composition resources present on the server',
+                 description: 'If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3. If leaving blank, test will use the Composition resource id from Bundle resource created in the Bundle test group.'
                }
              }
            }
 
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating Composition resource',
+           optional: true,
+           config: {
+             options: {
+               element_to_update: :status,
+               element_values: ['final', 'amended', 'entered-in-error']
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'TOC Composition Resources returned in previous tests conform to the TOC Composition profile',
@@ -86,6 +97,9 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Composition resources returned'
     end
   end
 end

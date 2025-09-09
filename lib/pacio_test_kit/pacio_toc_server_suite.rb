@@ -23,11 +23,17 @@ module PacioTestKit
       url :url
     end
 
+    GENERAL_MESSAGE_FILTERS = [
+      /\A\S+: \S+: URL value '.*' does not resolve/,
+      /\A\S+: Bundle.meta.source: No definition could be found for URL value/
+    ].freeze
+
     fhir_resource_validator do
       igs 'hl7.fhir.us.pacio-toc#1.0.0-ballot'
+      message_filters = GENERAL_MESSAGE_FILTERS
 
       exclude_message do |message|
-        message.message.match?(/\A\S+: \S+: URL value '.*' does not resolve/)
+        message_filters.any? { |filter| filter.match? message.message }
       end
     end
 

@@ -70,7 +70,7 @@ module PacioTestKit
                resource_ids: {
                  name: :goal_resource_ids,
                  optional: true,
-                 title: 'ID(s) for TOC Organization resources present on the server'
+                 title: 'ID(s) for TOC Organization resources present on the server.'
                }
              }
            }
