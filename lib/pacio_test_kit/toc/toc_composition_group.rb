@@ -47,7 +47,8 @@ module PacioTestKit
 
       config options: {
         resource_type: 'Composition',
-        profile: 'TOCComposition'
+        profile: 'TOCComposition',
+        use_id_from_bundle: 'Bundle'
       }
       run_as_group
       input_order :url
@@ -74,7 +75,9 @@ module PacioTestKit
                  name: :composition_resource_ids,
                  optional: true,
                  title: 'ID(s) for TOC Composition resources present on the server',
-                 description: 'If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3. If leaving blank, test will use the Composition resource id from Bundle resource created in the Bundle test group.'
+                 description: 'If providing multiple IDs, separate them by a comma and a space. ' \
+                              'e.g. id_1, id_2, id_3. If leaving blank, test will use the Composition resource id ' \
+                              'from Bundle resource created in the Bundle test group.'
                }
              }
            }

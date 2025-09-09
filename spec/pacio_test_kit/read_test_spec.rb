@@ -28,12 +28,19 @@ RSpec.describe PacioTestKit::ReadTest do
       File.read(File.join(__dir__, '..', 'fixtures', 'pfe_single_observation.json'))
     )
   end
+  let(:bundle) do
+    FHIR::Bundle.new(
+      entry: [
+        { resource: observation }
+      ]
+    )
+  end
 
-  def build_create_request(body: nil, status: 201, headers: nil)
+  def build_server_request(url: nil, body: nil, status: 201, headers: nil)
     repo_create(
       :request,
       direction: 'outgoing',
-      url: "#{url}/#{resource_type}",
+      url:,
       test_session_id: test_session.id,
       response_body: body.is_a?(Hash) ? body.to_json : body,
       status:,
@@ -112,7 +119,10 @@ RSpec.describe PacioTestKit::ReadTest do
   end
 
   it 'uses resource id returned by create request if resource_ids is empty' do
-    request = build_create_request(body: observation, status: 201, headers: [{ type: 'response', name: 'location', value: "#{url}/#{resource_type}/#{resource_id}" }])
+    request = build_server_request(url: "#{url}/#{resource_type}", body: observation, status: 201,
+                                   headers: [{
+                                     type: 'response', name: 'location', value: "#{url}/#{resource_type}/#{resource_id}"
+                                   }])
     allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
 
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
@@ -123,9 +133,32 @@ RSpec.describe PacioTestKit::ReadTest do
   end
 
   it 'uses resource id returned by create request if resource_ids is not specified' do
-    request = build_create_request(body: observation, status: 201, headers: [{ type: 'response', name: 'location', value: "#{url}/#{resource_type}/#{resource_id}" }])
+    request = build_server_request(url: "#{url}/#{resource_type}", body: observation, status: 201,
+                                   headers: [{
+                                     type: 'response', name: 'location', value: "#{url}/#{resource_type}/#{resource_id}"
+                                   }])
     allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
 
+    stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
+      .to_return(status: 200, body: observation.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('pass')
+  end
+
+  it 'uses resource returned in Bundle read test if resource_ids is not specified and use_id_from_bundle is set' do
+    allow_any_instance_of(runnable).to receive(:config).and_return(
+      OpenStruct.new(
+        options: {
+          resource_type: 'Observation',
+          profile: 'PFESingleObservation',
+          use_id_from_bundle: 'Bundle'
+        }
+      )
+    )
+
+    request = build_server_request(url: "#{url}/#{resource_type}/1", body: bundle.to_json, status: 200)
+    allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
     stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
       .to_return(status: 200, body: observation.to_json)
 

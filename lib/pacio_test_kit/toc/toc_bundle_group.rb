@@ -72,7 +72,9 @@ module PacioTestKit
                  name: :bundle_resource_ids,
                  optional: true,
                  title: 'ID(s) for Bundle resources present on the server.',
-                 description: 'If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3. If leaving blank, test will use the resource id from Bundle resource created by previous test.'
+                 description: 'If providing multiple IDs, separate them by a comma and a space. ' \
+                              'e.g. id_1, id_2, id_3. If leaving blank, test will use the resource id from ' \
+                              'Bundle resource created by previous test.'
                }
              }
            }

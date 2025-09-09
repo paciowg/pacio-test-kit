@@ -26,11 +26,33 @@ module PacioTestKit
     def merged_resource_ids
       return resource_ids unless resource_ids.blank?
 
+      use_id_from_bundle = config.options[:use_id_from_bundle]
+      if use_id_from_bundle.present?
+        resource_ids_from_bundle_resource(use_id_from_bundle)
+      else
+        resource_ids_from_create_request
+      end
+    end
+
+    def resource_ids_from_bundle_resource(bundle_tag)
+      successful_requests = load_tagged_requests(bundle_tag).select { |request| request.status == 200 }
+      skip_if successful_requests.empty?, "All #{bundle_tag} resource read requests were unsuccessful."
+
+      base_resources = successful_requests.map(&:resource).compact
+      resources_to_read = extract_target_resources(base_resources, resource_type)
+
+      skip_if resources_to_read.blank?,
+              "Unable to perform read test: No #{tag} resource was returned in previous Bundle tests as expected."
+
+      resources_to_read.map(&:id).join(', ')
+    end
+
+    def resource_ids_from_create_request
       successful_request = load_tagged_requests("#{tag}_Create").find { |request| request.status == 201 }
-      return '' unless successful_request
+      skip_if successful_request.nil?, "All #{tag} create requests were unsuccessful."
 
       location_header = successful_request.headers.find { |header| header.name.downcase == 'location' }
-      return '' unless location_header
+      skip_if location_header.nil?, "No location header was presented in #{tag} create response."
 
       # Extract resource ID using regex for better performance
       match = location_header.value.match(%r{/#{resource_type}/([A-Za-z0-9\-\.]{1,64})})
