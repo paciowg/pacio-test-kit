@@ -26,18 +26,12 @@
       "value": "3a1b9f4e-2c0d-4b1a-9f6a-6c1f9e3a7b01"
     },
     {
-      "name": "collection_observation_resource_ids",
-      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
-      "title": "ID(s) for PFECollection resources present on the server",
-      "type": "text",
-      "value": "PFEIG-CSC-Hospital-MMSE-1, PFEIG-CSC-SNF-BIMS-1, PFEIG-FSC-Hospital-Admission-Mobility-1"
+      "name": "organization_resource_input",
+      "value": "{ \"resourceType\": \"Organization\"}"
     },
     {
-      "name": "condition_encounter_diagnosis_resource_ids",
-      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
-      "title": "ID(s) for PFEConditionEncounterDiagnosis resources present on the server",
-      "type": "text",
-      "value": "PFEIG-Condition-Encounter-Diagnosis-1, PFEIG-Condition-Encounter-Diagnosis-2"
+      "name": "organization_resource_ids",
+      "value": "d9ea0b1c-2d3e-4f30-d345-90123456789a"
     },
     {
       "name": "condition_problems_resource_ids",

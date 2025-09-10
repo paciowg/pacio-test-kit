@@ -42,11 +42,10 @@ module PacioTestKit
 
       )
       # description adapted from US-Core-Test-Kit groups: https://github.com/inferno-framework/us-core-test-kit
-      optional
 
       config options: {
         resource_type: 'Organization',
-        profile: 'TOC Organization'
+        profile: 'USCoreOrganization'
       }
       run_as_group
       input_order :url
@@ -56,7 +55,8 @@ module PacioTestKit
            config: {
              inputs: {
                resource_input: {
-                 name: :narrative_history_diagnostic_report_resource_input,
+                 name: :organization_resource_input,
+                 type: 'textarea',
                  title: 'Organization resource to create on the server'
                }
              }
@@ -68,14 +68,24 @@ module PacioTestKit
            config: {
              inputs: {
                resource_ids: {
-                 name: :goal_resource_ids,
+                 name: :organization_resource_ids,
                  optional: true,
-                 title: 'ID(s) for TOC Organization resources present on the server.'
+                 description: 'If providing multiple IDs, separate them by a comma and a space. ' \
+                              'e.g. id_1, id_2, id_3. If leaving blank, test will use the resource id from ' \
+                              'Organization resource created by previous test.'
                }
              }
            }
 
-      test from: :pacio_resource_update
+      test from: :pacio_resource_update,
+           title: 'Server supports updating Composition resource',
+           optional: true,
+           config: {
+             options: {
+               element_to_update: :name,
+               element_values: ['Test Organization', 'Test Organization 2']
+             }
+           }
 
       test from: :pacio_resource_validation,
            title: 'Organization Resources returned in previous tests conform to the TOC Organization profile',
@@ -85,6 +95,8 @@ module PacioTestKit
                                             config:,
                                             pacio_profiles: PACIO_PROFILES
                                           )
+      test from: :pacio_resource_must_support,
+           title: 'All must support elements are provided in the Composition resources returned'
     end
   end
 end

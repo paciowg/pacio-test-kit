@@ -29,7 +29,8 @@ module PacioTestKit
     ].freeze
 
     fhir_resource_validator do
-      igs 'hl7.fhir.us.pacio-toc#1.0.0-ballot'
+      igs 'hl7.fhir.us.pacio-toc#1.0.0-ballot', 'hl7.fhir.us.core#6.1.0'
+
       message_filters = GENERAL_MESSAGE_FILTERS
 
       exclude_message do |message|
