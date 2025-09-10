@@ -25,7 +25,7 @@ module PacioTestKit
 
     GENERAL_MESSAGE_FILTERS = [
       /\A\S+: \S+: URL value '.*' does not resolve/,
-      /\A\S+: Bundle.meta.source: No definition could be found for URL value/
+      /\A\S+: \S+.meta.source: No definition could be found for URL value/
     ].freeze
 
     fhir_resource_validator do

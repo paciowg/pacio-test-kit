@@ -14,15 +14,16 @@
       "value": "{ \"resourceType\": \"Bundle\", \"type\": \"document\" }"
     },
     {
+      "name": "bundle_resource_ids",
+      "value": "4ef73fd4-51d6-44eb-b6f6-de5b3ec0fd85"
+    },
+    {
       "name": "composition_resource_input",
       "value": "{ \"resourceType\": \"Composition\"}"
     },
     {
-      "name": "single_observation_resource_ids",
-      "description": "If providing multiple IDs, separate them by a comma and a space. e.g. id_1, id_2, id_3",
-      "title": "ID(s) for PFESingleObservation resources present on the server",
-      "type": "text",
-      "value": "PFEIG-CSC-SNF-BIMS-1-Ob-Question-3, PFEIG-CSC-SNF-BIMS-1-Ob-Question-4, PFEIG-CSC-SNF-BIMS-1-Ob-Question-5"
+      "name": "composition_resource_ids",
+      "value": "3a1b9f4e-2c0d-4b1a-9f6a-6c1f9e3a7b01"
     },
     {
       "name": "collection_observation_resource_ids",

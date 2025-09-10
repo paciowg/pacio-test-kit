@@ -47,8 +47,7 @@ module PacioTestKit
 
       config options: {
         resource_type: 'Composition',
-        profile: 'TOCComposition',
-        use_id_from_bundle: 'Bundle'
+        profile: 'TOCComposition'
       }
       run_as_group
       input_order :url
@@ -60,6 +59,7 @@ module PacioTestKit
              inputs: {
                resource_input: {
                  name: :composition_resource_input,
+                 type: 'textarea',
                  title: 'TOC Composition resource to create on the server.',
                  description: 'If leave blank, this test will be skipped.'
                }
