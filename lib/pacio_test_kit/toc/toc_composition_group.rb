@@ -76,8 +76,8 @@ module PacioTestKit
                  optional: true,
                  title: 'ID(s) for TOC Composition resources present on the server',
                  description: 'If providing multiple IDs, separate them by a comma and a space. ' \
-                              'e.g. id_1, id_2, id_3. If leaving blank, test will use the Composition resource id ' \
-                              'from Bundle resource created in the Bundle test group.'
+                              'e.g. id_1, id_2, id_3. If leaving blank, test will use the resource id from ' \
+                              'Composition resource created by previous test.'
                }
              }
            }
