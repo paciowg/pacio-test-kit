@@ -64,7 +64,6 @@ module PacioTestKit
 
       # QWERTY TODO: uncomment below after completing the appropriate test group files
       # group from: :pacio_toc_error_handling_group
-      # group from: :pacio_toc_must_support_group
     end
   end
 end

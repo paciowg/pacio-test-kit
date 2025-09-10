@@ -8,26 +8,41 @@ module PacioTestKit
     class TOCOrganizationGroup < Inferno::TestGroup
       include PacioTestKit::PacioProfiles
 
-      title 'TOC Organization Tests'
+      title 'Organization Tests'
       id :pacio_toc_organization_group
       short_description %(
-        Verify support for the server capabilities required by the PACIO TOC Organization Profile.
+        Verify support for the server capabilities required by the US Core Organization Profile.
       )
       description %(
 
       # Background
 
-      The PACIO PFE Organization Profile tests verify that the system under test is able to provide
+      The US Core Organization Profile tests verify that the system under test is able to provide
       correct responses for Organization queries. These queries must contain resources conforming to the
-      Organization Profile as specified in the PACIO Transitions of Care (TOC) IG
-      v2.0.0 Implementation Guide.
+      Organization Profile as specified in the US Core IG v6.1.0 Implementation Guide.
 
       # Testing Methodology
+
+      ## Creating
+      The create test will perform a required create interaction associated with this resource, where the
+      user supplies the JSON resource. The test first validates the user's inputted resource, and skips
+      the test if there is no resource provided or if it is the incorrect type. Once the resource is created, the
+      resource type, expected resource metadata, and response headers are validated in the response.
 
       ## Reading
       The read interaction will perform required read associated with ID(s) provided by a user for Organization
       resources present on the server. The resources returned from the read requests are validated on status,
       resource JSON structure, resource type, and matching ID values to the user provided ID(s).
+
+      ## Updating
+      The update interaction uses the previously read resource(s) retrieved from the read interaction. The test first
+      validates that a successful read request was made in previous tests, and the first
+      resource from the successful read requests is selected for the update test. If the resource can not be found from
+      a previous successful read request, the update test will skip. Update is applied to the resource by changing
+      the name field of the resource, which can be values of "Test Organization", or "Test Organization 2".
+      The updated name is determined by which name value can produce a change in name for the output resource.
+      The updated resource is validated for resource type, consistent id value of input resource and updated resource,
+      changing name, and correct metadata.
 
       ## Profile Validation
       Each resource returned from the first read is expected to conform to the Organization Profile. Each

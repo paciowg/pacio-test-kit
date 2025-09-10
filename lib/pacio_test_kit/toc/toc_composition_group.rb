@@ -20,15 +20,30 @@ module PacioTestKit
 
       The PACIO TOC Composition Profile tests verify that the system under test is able to provide
       correct responses for TOC Composition queries. These queries must contain resources conforming to the
-      TOC Composition Profile as specified in the PACIO Transitions of Care (TOC) IG
-      v2.0.0 Implementation Guide.
+      TOC Composition Profile as specified in the PACIO Transitions of Care (TOC) IG v1.0.0-ballot Implementation Guide.
 
       # Testing Methodology
+
+      ## Creating
+      The create test will perform a required create interaction associated with this resource, where the
+      user supplies the JSON resource. The test first validates the user's inputted resource, and skips
+      the test if there is no resource provided or if it is the incorrect type. Once the resource is created, the
+      resource type, expected resource metadata, and response headers are validated in the response.
 
       ## Reading
       The read interaction will perform required read associated with ID(s) provided by a user for TOC Composition
       resources present on the server. The resources returned from the read requests are validated on status,
       resource JSON structure, resource type, and matching ID values to the user provided ID(s).
+
+      ## Updating
+      The update interaction uses the previously read resource(s) retrieved from the read interaction. The test first
+      validates that a successful read request was made in previous tests, and the first
+      resource from the successful read requests is selected for the update test. If the resource can not be found from
+      a previous successful read request, the update test will skip. Update is applied to the resource by changing
+      the status field of the resource, which can be values of "final", "amended", or "entered-in-error".
+      The updated status is determined by which status value can produce a change in status for the output resource.
+      The updated resource is validated for resource type, consistent id value of input resource and updated resource,
+      changing status, and correct metadata.
 
       ## Profile Validation
       Each resource returned from the first read is expected to conform to the TOC Composition Profile. Each
