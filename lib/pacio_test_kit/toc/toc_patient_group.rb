@@ -2,6 +2,7 @@ require_relative '../common_tests/create_test'
 require_relative '../common_tests/read_test'
 require_relative '../common_tests/update_test'
 require_relative '../common_tests/validation_test'
+require_relative '../common_tests/patient_match_test'
 require_relative '../pacio_profiles'
 
 module PacioTestKit
@@ -152,6 +153,8 @@ module PacioTestKit
 
       test from: :pacio_resource_must_support,
            title: 'All must support elements are provided in the Patient resources returned'
+
+      test from: :patient_match_test
     end
   end
 end

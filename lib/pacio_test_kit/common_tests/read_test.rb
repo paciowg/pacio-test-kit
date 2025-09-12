@@ -24,19 +24,26 @@ module PacioTestKit
     end
 
     def resource_ids_from_create_request
+      successful_request = find_successful_create_request
+      location_header = find_location_header(successful_request)
+      extract_resource_id(location_header)
+    end
+
+    def find_successful_create_request
       successful_request = load_tagged_requests("#{tag}_Create").find { |request| request.status == 201 }
       skip_if successful_request.nil?, "All #{tag} create requests were unsuccessful."
+      successful_request
+    end
 
-      location_header = successful_request.headers.find { |header| header.name.downcase == 'location' }
+    def find_location_header(request)
+      location_header = request.headers.find { |header| header.name.downcase == 'location' }
       skip_if location_header.nil?, "No location header was presented in #{tag} create response."
+      location_header
+    end
 
-      # Extract resource ID using regex for better performance
+    def extract_resource_id(location_header)
       match = location_header.value.match(%r{/#{resource_type}/([A-Za-z0-9\-\.]{1,64})})
-
-      return nil unless match
-
-      extracted_id = match[1]
-      extracted_id.blank? ? nil : extracted_id
+      match.present? ? match[1] : nil
     end
 
     run do
