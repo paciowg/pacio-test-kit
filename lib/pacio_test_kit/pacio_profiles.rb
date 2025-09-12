@@ -106,7 +106,7 @@ module PacioTestKit
       ].freeze,
       'Organization' => [].freeze,
       'Patient' => [
-        'http://hl7.org/fhir/us/core/StructureDefinition-us-core-patient'
+        'http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'
       ].freeze,
       'OperationDefinition' => [
         'http://hl7.org/fhir/R4/patient-operation-match'

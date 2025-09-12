@@ -32,17 +32,21 @@ module PacioTestKit
 
       # Extract resource ID using regex for better performance
       match = location_header.value.match(%r{/#{resource_type}/([A-Za-z0-9\-\.]{1,64})})
-      match ? match[1] : ''
+
+      return nil unless match
+
+      extracted_id = match[1]
+      extracted_id.blank? ? nil : extracted_id
     end
 
     run do
-      merged_resource_ids = resource_ids.blank? ? resource_ids_from_create_request : resource_ids
-      skip_if merged_resource_ids.blank?, 'No resource id provided for the read interaction'
+      resource_ids_to_use = resource_ids.blank? ? resource_ids_from_create_request : resource_ids
+      skip_if resource_ids_to_use.blank?, 'No resource id provided for the read interaction'
 
-      id_list = merged_resource_ids.split(',').map(&:strip)
+      id_list = resource_ids_to_use.split(',').map(&:strip).reject(&:blank?)
       read_and_validate_resources(id_list, tag)
 
-      no_error_validation("Fail to read #{resource_type} resource(s). See error messages for details.")
+      no_error_validation("Failed to read #{resource_type} resource(s). See error messages for details.")
     end
   end
 end
