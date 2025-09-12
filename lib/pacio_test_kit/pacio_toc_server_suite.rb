@@ -62,8 +62,7 @@ module PacioTestKit
       group from: :pacio_toc_organization_group
       group from: :pacio_toc_patient_group
 
-      # QWERTY TODO: uncomment below after completing the appropriate test group files
-      # group from: :pacio_toc_error_handling_group
+      group from: :pacio_error_handling
     end
   end
 end
