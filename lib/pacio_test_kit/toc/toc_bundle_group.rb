@@ -15,41 +15,46 @@ module PacioTestKit
         Verify support for the server capabilities required by the FHIR Bundle resource type.
       )
       description %(
-
       # Background
 
-      The FHIR Bundle tests verify that the system under test is able to provide
-      correct responses for Bundle queries. These queries must contain resources conforming to the
-      Bundle Profile as specified in the FHIR Specification v4.0.1.
+      The FHIR Bundle tests verify that the system under test can provide correct responses to Bundle queries.
+      These queries must contain resources conforming to the Bundle Profile as specified in the
+      FHIR Specification v4.0.1.
 
       # Testing Methodology
 
       ## Creating
-      The create test will perform a required create interaction associated with this resource, where the
-      user supplies the JSON resource. The test first validates the user's inputted resource, and skips
-      the test if there is no resource provided or if it is the incorrect type. Once the resource is created, the
-      resource type, expected resource metadata, and response headers are validated in the response.
+      The create test performs a required create interaction associated with this resource, where the user supplies the
+      JSON resource.
+      The test first validates the user-provided resource and skips the test if no resource is provided
+      or if it is of the incorrect type.
+      Once the resource is created, the response is validated for resource type, expected metadata,
+      and response headers.
 
       ## Reading
-      The read interaction will perform required read associated with ID(s) provided by a user for Bundle
-      resources present on the server. The resources returned from the read requests are validated on status,
-      resource JSON structure, resource type, and matching ID values to the user provided ID(s).
+      The read interaction performs a required read operation using ID(s) provided by the user for Bundle resources
+      present on the server. Multiple IDs can be provided.
+      If no ID is provided, the read test uses the resource created in the create test.
+      The response returned from the read request is validated for HTTP status, JSON structure, resource type,
+      and matching ID values with the user-provided ID(s).
 
       ## Updating
-      The update interaction uses the previously read resource(s) retrieved from the read interaction. The test first
-      validates that a successful read request was made in previous tests, and the first
-      resource from the successful read requests is selected for the update test. If the resource can not be found from
-      a previous successful read request, the update test will skip. Update is applied to the resource by changing
-      the status field of the resource, which can be values of "final", "amended", or "entered-in-error".
-      The updated status is determined by which status value can produce a change in status for the output resource.
-      The updated resource is validated for resource type, consistent id value of input resource and updated resource,
-      changing status, and correct metadata.
+      The update interaction uses the previously read resource(s) retrieved from the read test.
+      The test first validates that a successful read request was made in previous tests,
+      and the first resource from those requests is selected for the update test.
+      If the resource cannot be found from a previous successful read, the update test will be skipped.
+      The update is applied by changing the status field of the resource, which may take the values "final," "amended,"
+      or "entered-in-error".
+      The updated status is chosen based on which value can produce a valid change for the output resource.
+      This updated resource is then sent to the server to perform the update.
+      The response is validated for HTTP status, resource type, consistent resource ID with the input, updated status,
+      and correct metadata.
 
       ## Profile Validation
-      Each resource returned from the first read is expected to conform to the Bundle Profile. Each
-      element is checked against terminology binding and cardinality requirements. Elements with a required binding
-      are validated against their bound ValueSet. If a code/system in the element is not part of the ValueSet, then
-      the test will fail.
+      Each resource returned from the initial read is expected to conform to the Bundle Profile.
+      Each element is checked against terminology binding and cardinality requirements.
+      Elements with a required binding are validated against their bound ValueSet.
+      If a code/system in an element is not part of the ValueSet, the test will fail.
       )
       # description adapted from US-Core-Test-Kit groups: https://github.com/inferno-framework/us-core-test-kit
       optional

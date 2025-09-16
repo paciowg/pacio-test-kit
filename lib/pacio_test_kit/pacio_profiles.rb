@@ -104,12 +104,11 @@ module PacioTestKit
       'Composition' => [
         'http://hl7.org/fhir/us/pacio-toc/StructureDefinition/TOC-Composition'
       ].freeze,
-      'Organization' => [].freeze,
+      'Organization' => [
+        'http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization'
+      ].freeze,
       'Patient' => [
         'http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'
-      ].freeze,
-      'OperationDefinition' => [
-        'http://hl7.org/fhir/R4/patient-operation-match'
       ].freeze
     }.freeze
   end
