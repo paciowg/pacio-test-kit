@@ -20,9 +20,9 @@ module PacioTestKit
 
     def read_resources
       @read_resources ||= begin
-        load_tagged_requests(tag)
-        skip_if requests.blank?, "No #{tag} resource read request was made in previous tests."
-        successful_requests = requests.select { |req| req.status == 200 }
+        read_requests = load_tagged_requests(tag)
+        skip_if read_requests.blank?, "No #{tag} resource read request was made in previous tests."
+        successful_requests = read_requests.select { |req| req.status == 200 }
         skip_if successful_requests.empty?, "All #{tag} resource read requests failed."
         successful_requests.map(&:resource).uniq.compact
       end
@@ -35,16 +35,18 @@ module PacioTestKit
     end
 
     def verify_match_result(input_patient)
-      all_resources = fetch_all_bundled_resources
+      all_resources = fetch_all_bundled_resources(resource_type:)
+      assert all_resources.any?, 'Patient $match operation does not return any Patient resource.'
+
       input_identifier = input_patient.identifier.first
 
       first_unmatched = all_resources.find do |resource|
-        resource.identifier&.none do |identifier|
+        resource.identifier&.none? do |identifier|
           identifier.system == input_identifier.system && identifier.value == input_identifier.value
         end
       end
 
-      assert first_unmatched.nil?, "Patient #{first_unmatched.id} returned from $match operation does not have. " \
+      assert first_unmatched.nil?, "Patient #{first_unmatched&.id} returned from $match operation does not have " \
                                    "matched identifier value #{input_identifier.system}##{input_identifier.value}."
     end
 
@@ -69,11 +71,9 @@ module PacioTestKit
         ]
       )
 
-      fhir_operation('Patient/$', body:, tags: ["#{tag}_match"])
-
+      fhir_operation('Patient/$match', body:, tags: ["#{tag}_match"])
       check_match_response
-
-      verify_match_result(body)
+      verify_match_result(input_resource)
     end
   end
 end

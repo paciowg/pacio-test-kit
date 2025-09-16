@@ -23,7 +23,7 @@ RSpec.describe PacioTestKit::PatientMatchTest do
   let(:resource_type) { 'Patient' }
   let(:resource_id) { '123' }
   let(:profile) { 'USCorePatient' }
-  let(:observation) do
+  let(:patient) do
     FHIR::Patient.new(
       id: resource_id,
       identifier: [
@@ -38,8 +38,36 @@ RSpec.describe PacioTestKit::PatientMatchTest do
       ]
     )
   end
+  let(:input_parameter) do
+    FHIR::Parameters.new(
+      parameter: [
+        {
+          name: 'resource',
+          resource: FHIR::Patient.new(
+            identifier: [
+              patient.identifier.first
+            ]
+          )
+        },
+        {
+          name: 'count',
+          valueInteger: 2
+        }
+      ]
+    )
+  end
+  let(:output_bundle) do
+    FHIR::Bundle.new(
+      type: 'searchset',
+      entry: [
+        {
+          resource: patient
+        }
+      ]
+    )
+  end
 
-  def build_read_request(body: nil, status: 200)
+  def build_read_request(body: nil, status: 200, headers: nil)
     repo_create(
       :request,
       direction: 'outgoing',
@@ -76,35 +104,55 @@ RSpec.describe PacioTestKit::PatientMatchTest do
     allow_any_instance_of(runnable).to receive(:resource_type).and_return(resource_type)
     allow_any_instance_of(runnable).to receive(:tag).and_return(profile)
 
-    request = build_create_request
+    request = build_read_request(body: patient.to_json)
     allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
   end
 
-  # it 'passes when match returns matched patient' do
-  #   stub_request(:get, "#{url}/#{resource_type}/$match")
-  #     .to_return(status: 200, body: observation.to_json)
+  it 'passes when match returns matched patient' do
+    stub_request(:post, "#{url}/#{resource_type}/$match")
+      .with(body: input_parameter.to_json)
+      .to_return(status: 200, body: output_bundle.to_json)
 
-  #   result = run(runnable, resource_ids: resource_id, url:)
-  #   expect(result.result).to eq('pass')
-  # end
+    result = run(runnable, url:)
+    expect(result.result).to eq('pass')
+  end
 
-  # it 'fails when response status is not 200' do
-  #   stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
-  #     .to_return(status: 500, body: {}.to_json)
+  it 'fails when match does not return expected patient' do
+    unmatched_output_bundle = FHIR::Bundle.new(
+      type: 'searchset',
+      entry: [
+        {
+          resource: FHIR::Patient.new(
+            id: patient.id,
+            identifier: [
+              patient.identifier[1]
+            ]
+          )
+        }
+      ]
+    )
 
-  #   result = run(runnable, resource_ids: resource_id, url:)
-  #   expect(result.result).to eq('fail')
-  #   expect(entity_result_message.message).to match(/Unexpected response status: expected 200/)
-  # end
+    stub_request(:post, "#{url}/#{resource_type}/$match")
+      .with(body: input_parameter.to_json)
+      .to_return(status: 200, body: unmatched_output_bundle.to_json)
 
-  # it 'fails when the response body is not valid json' do
-  #   stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
-  #     .to_return(status: 200, body: '[[')
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+  end
 
-  #   result = run(runnable, resource_ids: resource_id, url:)
-  #   expect(result.result).to eq('fail')
-  #   expect(entity_result_message.message).to match(/not a valid JSON/)
-  # end
+  it 'fails when match return empty bundle' do
+    empty_output_bundle = FHIR::Bundle.new(
+      type: 'searchset',
+      entry: []
+    )
+
+    stub_request(:post, "#{url}/#{resource_type}/$match")
+      .with(body: input_parameter.to_json)
+      .to_return(status: 200, body: empty_output_bundle.to_json)
+
+    result = run(runnable, url:)
+    expect(result.result).to eq('fail')
+  end
 
   # it 'fails when the resource type returned is different from the requested one' do
   #   stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
