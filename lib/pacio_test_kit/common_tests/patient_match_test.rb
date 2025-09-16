@@ -66,7 +66,7 @@ module PacioTestKit
           },
           {
             name: 'count',
-            valueInteger: 2
+            valueInteger: 20
           }
         ]
       )

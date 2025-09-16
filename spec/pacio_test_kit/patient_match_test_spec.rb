@@ -51,7 +51,7 @@ RSpec.describe PacioTestKit::PatientMatchTest do
         },
         {
           name: 'count',
-          valueInteger: 2
+          valueInteger: 20
         }
       ]
     )
