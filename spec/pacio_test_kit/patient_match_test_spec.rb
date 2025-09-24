@@ -140,7 +140,7 @@ RSpec.describe PacioTestKit::PatientMatchTest do
     expect(result.result).to eq('fail')
   end
 
-  it 'fails when match return empty bundle' do
+  it 'fails when match return an empty bundle' do
     empty_output_bundle = FHIR::Bundle.new(
       type: 'searchset',
       entry: []
@@ -153,44 +153,4 @@ RSpec.describe PacioTestKit::PatientMatchTest do
     result = run(runnable, url:)
     expect(result.result).to eq('fail')
   end
-
-  # it 'fails when the resource type returned is different from the requested one' do
-  #   stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
-  #     .to_return(status: 200, body: { resourceType: 'Encounter' }.to_json)
-
-  #   result = run(runnable, resource_ids: resource_id, url:)
-  #   expect(result.result).to eq('fail')
-  #   expect(entity_result_message.message).to match(/Expected resource type to be: `"Observation"`/)
-  # end
-
-  # it 'fails when the returned resource id is not the requested one' do
-  #   stub_request(:get, "#{url}/#{resource_type}/abc")
-  #     .to_return(status: 200, body: observation.to_json)
-
-  #   result = run(runnable, resource_ids: 'abc', url:)
-  #   expect(result.result).to eq('fail')
-  #   expect(entity_result_message.message).to match(/Expected resource to have id `"abc"`/)
-  # end
-
-  # it 'uses resource id returned by create request if resource_ids is empty' do
-  #   request = build_create_request
-  #   allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
-
-  #   stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
-  #     .to_return(status: 200, body: observation.to_json)
-
-  #   result = run(runnable, resource_ids: '', url:)
-  #   expect(result.result).to eq('pass')
-  # end
-
-  # it 'uses resource id returned by create request if resource_ids is not specified' do
-  #   request = build_create_request
-  #   allow_any_instance_of(runnable).to receive(:load_tagged_requests).and_return([request])
-
-  #   stub_request(:get, "#{url}/#{resource_type}/#{resource_id}")
-  #     .to_return(status: 200, body: observation.to_json)
-
-  #   result = run(runnable, url:)
-  #   expect(result.result).to eq('pass')
-  # end
 end

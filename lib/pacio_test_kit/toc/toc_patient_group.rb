@@ -134,7 +134,14 @@ module PacioTestKit
            title: 'Server returns valid results for Patient search by name'
       test from: :patient_birthdate_name_search_test,
            title: 'Server returns valid results for Patient search by birthdate + name'
-      # these tests do not make sense
+      # These following tests are currently mandatory in the TOC ballot, but I believe
+      # the requirements are not appropriate.
+      # - Patient gender and birthdate searches return an excessively large number of patients,
+      # which burdens both the server (in generating results) and the client (in processing them).
+      # - Patient family name and given name searches are already covered by the more general patient name search.
+      # I raised these concerns with the TOC author, who agreed to reconsider the requirements in the next release.
+      # To maintain a clear mapping between this test suite and the TOC IG requirements, the tests are retained
+      # here but commented out, so readers understand why these requirements appear absent.
       # test from: :patient_birthdate_search_test,
       #      title: 'Server returns valid results for Patient search by birthdate'
       # test from: :patient_family_search_test,

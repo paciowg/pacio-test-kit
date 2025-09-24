@@ -82,7 +82,7 @@ module PacioTestKit
                  name: :composition_resource_input,
                  type: 'textarea',
                  title: 'TOC Composition resource to create on the server.',
-                 description: 'If leave blank, this test will be skipped.'
+                 description: 'If left blank, this test will be skipped.'
                }
              }
            }
