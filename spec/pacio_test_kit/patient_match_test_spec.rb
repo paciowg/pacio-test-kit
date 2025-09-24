@@ -140,7 +140,7 @@ RSpec.describe PacioTestKit::PatientMatchTest do
     expect(result.result).to eq('fail')
   end
 
-  it 'fails when match return an empty bundle' do
+  it 'fails when match returns an empty bundle' do
     empty_output_bundle = FHIR::Bundle.new(
       type: 'searchset',
       entry: []
