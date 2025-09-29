@@ -4,14 +4,15 @@ The PACIO Test Kit validates the conformance of systems to the following PACIO I
 
 * [PACIO Advance Healthcare Directive Interoperability IG v2.0.0-ballot](https://hl7.org/fhir/us/pacio-adi/2025Sep/)
 * [PACIO Personal Functioning and Engagement IG v2.0.0](https://hl7.org/fhir/us/pacio-pfe/)
+* [PACIO Transition of Care IG v1.0.0-ballot](https://hl7.org/fhir/us/pacio-toc/2025May/)
 * [PACIO Re-Assessment Timepoints IG v1.0.0](https://hl7.org/fhir/us/pacio-rt/) (To Be Implemented)
 * [PACIO Standardized Medication Profile IG v1.0.0](https://hl7.org/fhir/us/smp/) (To Be Implemented)
-* [PACIO Transition of Care IG v1.0.0-ballot](https://hl7.org/fhir/us/pacio-toc/2025May/) (To Be Implemented)
 
 This test kit currently contains suites that verify the **conformance** of systems playing the following roles:
 
 * **PACIO ADI Data Source and/or Server**: Verifies that the ADI Data Source and/or Server system can respond to Data Consumer requests for creating, reading, searching, and updating PACIO ADI FHIR resources.
 * **PACIO PFE Data Source**: Verifies that the PFE Data Source system can respond to Data Consumer requests for creating, reading, searching, and updating PACIO PFE FHIR resources.
+* **PACIO TOC Server**: Verifies that the TOC Server can respond to client requests for creating, reading, searching, and updating PACIO TOC FHIR resources.
 
 ## Status
 

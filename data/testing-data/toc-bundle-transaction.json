@@ -1,0 +1,1386 @@
+{
+  "resourceType": "Bundle",
+  "id": "Example-Smith-Johnson-Bundle",
+  "identifier":
+  {
+    "system": "http://www.pacioproject.org/pacio-toc",
+    "value": "4ef73fd4-51d6-44eb-b6f6-de5b3ec0fd85"
+  },
+  "type": "transaction",
+  "timestamp": "2024-05-10T14:25:34.001-05:00",
+  "entry":
+  [
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Composition/3a1b9f4e-2c0d-4b1a-9f6a-6c1f9e3a7b01",
+      "resource":
+      {
+        "resourceType": "Composition",
+        "id": "3a1b9f4e-2c0d-4b1a-9f6a-6c1f9e3a7b01",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/pacio-toc/StructureDefinition/TOC-Composition"
+          ]
+        },
+        "language": "en-US",
+        "identifier":
+        {
+          "system": "urn:oid:2.16.840.1.113883.4.823.1.7125",
+          "value": "20130607100315-CCDA-CCD"
+        },
+        "status": "final",
+        "type":
+        {
+          "coding":
+          [
+            {
+              "system": "http://loinc.org",
+              "code": "11490-0",
+              "display": "Physician Discharge summary"
+            }
+          ]
+        },
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "date": "2024-05-10T08:49:58.313-04:00",
+        "author":
+        [
+          {
+            "reference": "Practitioner/fbfbc2d3-4e5f-6071-f567-b123456789ac"
+          }
+        ],
+        "title": "Transitions of Care Document for Betsy Smith-Johnson",
+        "custodian":
+        {
+          "reference": "Organization/d9ea0b1c-2d3e-4f30-d345-90123456789a"
+        },
+        "section":
+        [
+          {
+            "title": "List of allergies for Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48765-2",
+                  "display": "Allergies and adverse reactions Document"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Allergies for Betsy Smith-Johnson</div>"
+            },
+            "entry":
+            [
+              {
+                "reference": "AllergyIntolerance/a3b2c1d4-5e6f-4a7b-9c8d-0e1f2a3b4c5d"
+              }
+            ]
+          },
+          {
+            "title": "Functional status of Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "54522-8",
+                  "display": "Functional status"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Functional status of Betsy Smith-Johnson</div>"
+            },
+            "entry":
+            [
+              {
+                "reference": "Observation/c2d3e4f5-a6b7-48c9-8d0e-2f3a4b5c6d7e"
+              }
+            ]
+          },
+          {
+            "title": "List of medications prescribed for Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "52471-0",
+                  "display": "Medications"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">List of medications prescribed for Betsy Smith-Johnson</div>"
+            },
+            "entry":
+            [
+              {
+                "reference": "List/d3e4f5a6-b7c8-49da-9e0f-3a4b5c6d7e8f"
+              }
+            ]
+          },
+          {
+            "title": "Discharge care plan for Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "74449-0",
+                  "display": "Patient plan of care - recommended IHE set"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Discharge care plan for Betsy Smith-Johnson</div>"
+            },
+            "entry":
+            [
+              {
+                "reference": "CarePlan/a6b7c8d9-ea0b-4c0d-a012-6d7e8f901234"
+              }
+            ]
+          },
+          {
+            "title": "List of problem conditions and observations for Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "46019-6",
+                  "display": "Diseases or conditions Set"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">List of problem conditions and observations for Betsy Smith-Johnson</div>"
+            },
+            "entry":
+            [
+              {
+                "reference": "Condition/b1c2d3e4-f5a6-47b8-9c0d-1e2f3a4b5c6d"
+              }
+            ]
+          },
+          {
+            "title": "Reason for referring Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "42349-1",
+                  "display": "Reason for referral (narrative)"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Reason for referring Betsy Smith-Johnson</div>"
+            },
+            "entry":
+            [
+              {
+                "reference": "Encounter/7c9e6679-7425-40de-944b-e07fc1f90ae7"
+              }
+            ]
+          },
+          {
+            "title": "List of test results for Betsy Smith-Johnson",
+            "code":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://loinc.org",
+                  "code": "19146-0",
+                  "display": "Referral lab test results"
+                }
+              ]
+            },
+            "text":
+            {
+              "status": "additional",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">List of test results for Betsy Smith-Johnson</div>"
+            }
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Composition/3a1b9f4e-2c0d-4b1a-9f6a-6c1f9e3a7b01"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Patient/0f8fad5b-d9cb-469f-a165-70867728950e",
+      "resource":
+      {
+        "resourceType": "Patient",
+        "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+        "meta":
+        {
+          "lastUpdated": "2021-03-29T14:25:34.001-05:00",
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|6.1.0"
+          ]
+        },
+        "language": "en-US",
+        "extension":
+        [
+          {
+            "extension":
+            [
+              {
+                "url": "ombCategory",
+                "valueCoding":
+                {
+                  "system": "urn:oid:2.16.840.1.113883.6.238",
+                  "code": "2106-3",
+                  "display": "White"
+                }
+              },
+              {
+                "url": "text",
+                "valueString": "White"
+              }
+            ],
+            "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
+          }
+        ],
+        "identifier":
+        [
+          {
+            "use": "usual",
+            "type":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR",
+                  "display": "Medical Record Number"
+                }
+              ],
+              "text": "Medical Record Number"
+            },
+            "system": "http://hospital.smarthealthit.org",
+            "value": "1032702"
+          },
+          {
+            "system": "http://hl7.org/fhir/sid/us-medicare",
+            "value": "10A3D58WH1600"
+          }
+        ],
+        "active": true,
+        "name":
+        [
+          {
+            "use": "usual",
+            "text": "Smith-Johnson, Betsy",
+            "family": "Smith-Johnson",
+            "given":
+            [
+              "Betsy"
+            ]
+          }
+        ],
+        "telecom":
+        [
+          {
+            "system": "phone",
+            "value": "555-555-5555",
+            "use": "home"
+          },
+          {
+            "system": "phone",
+            "value": "(410) 444-5555"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1958-11-01",
+        "address":
+        [
+          {
+            "text": "111 Maple Ct, Grand Rapids, MI 49503",
+            "line":
+            [
+              "111 Maple Ct"
+            ],
+            "city": "Grand Rapids",
+            "state": "MI",
+            "postalCode": "49503",
+            "country": "US",
+            "period":
+            {
+              "start": "2016-12-06"
+            }
+          }
+        ],
+        "maritalStatus":
+        {
+          "coding":
+          [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+              "code": "UNK"
+            }
+          ]
+        },
+        "contact":
+        [
+          {
+            "relationship":
+            [
+              {
+                "coding":
+                [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                    "code": "SONC"
+                  }
+                ]
+              }
+            ],
+            "name":
+            {
+              "text": "Charles Johnson"
+            },
+            "telecom":
+            [
+              {
+                "system": "phone",
+                "value": "(210) 222-3333"
+              }
+            ],
+            "address":
+            {
+              "text": "111 Maple Ct, Grand Rapids, MI 49503"
+            }
+          },
+          {
+            "relationship":
+            [
+              {
+                "coding":
+                [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                    "code": "DAUC"
+                  }
+                ]
+              }
+            ],
+            "name":
+            {
+              "text": "Debra Johnson"
+            },
+            "telecom":
+            [
+              {
+                "system": "phone",
+                "value": "(410) 444-5555"
+              }
+            ],
+            "address":
+            {
+              "text": "333 W. Camden St., Baltimore, MD 21201"
+            }
+          }
+        ],
+        "communication":
+        [
+          {
+            "language":
+            {
+              "coding":
+              [
+                {
+                  "system": "urn:ietf:bcp:47",
+                  "code": "en",
+                  "display": "English"
+                }
+              ]
+            },
+            "preferred": true
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Encounter/7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "resource":
+      {
+        "resourceType": "Encounter",
+        "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-encounter|6.1.0"
+          ]
+        },
+        "status": "finished",
+        "class":
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "HH",
+          "display": "Home Health"
+        },
+        "type":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "50357006",
+                "display": "Evaluation and management of patient at home (procedure)"
+              }
+            ]
+          }
+        ],
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "participant":
+        [
+          {
+            "individual":
+            {
+              "reference": "PractitionerRole/0b1c2d3e-4f50-4142-f567-123456789abc"
+            }
+          }
+        ],
+        "period":
+        {
+          "start": "2024-01-18"
+        }
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Encounter/7c9e6679-7425-40de-944b-e07fc1f90ae7"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/AllergyIntolerance/a3b2c1d4-5e6f-4a7b-9c8d-0e1f2a3b4c5d",
+      "resource":
+      {
+        "resourceType": "AllergyIntolerance",
+        "id": "a3b2c1d4-5e6f-4a7b-9c8d-0e1f2a3b4c5d",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-allergyintolerance|6.1.0"
+          ]
+        },
+        "clinicalStatus":
+        {
+          "coding":
+          [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus":
+        {
+          "coding":
+          [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "category":
+        [
+          "medication"
+        ],
+        "criticality": "high",
+        "code":
+        {
+          "coding":
+          [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "372733002",
+              "display": "Substance with angiotensin-converting enzyme inhibitor mechanism of action (substance)"
+            }
+          ]
+        },
+        "patient":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "asserter":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "lastOccurrence": "2011-10",
+        "reaction":
+        [
+          {
+            "substance":
+            {
+              "coding":
+              [
+                {
+                  "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+                  "code": "308963",
+                  "display": "captopril 12.5 MG Oral Tablet"
+                }
+              ]
+            },
+            "manifestation":
+            [
+              {
+                "coding":
+                [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "427195008",
+                    "display": "Hyperkalemia caused by angiotensin-converting enzyme inhibitor (disorder)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "AllergyIntolerance/a3b2c1d4-5e6f-4a7b-9c8d-0e1f2a3b4c5d"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Condition/b1c2d3e4-f5a6-47b8-9c0d-1e2f3a4b5c6d",
+      "resource":
+      {
+        "resourceType": "Condition",
+        "id": "b1c2d3e4-f5a6-47b8-9c0d-1e2f3a4b5c6d",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition-encounter-diagnosis|6.1.0"
+          ]
+        },
+        "extension":
+        [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+            "valueDateTime": "2024-04-23T13:15:00-04:00"
+          }
+        ],
+        "clinicalStatus":
+        {
+          "coding":
+          [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus":
+        {
+          "coding":
+          [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "category":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code":
+        {
+          "coding":
+          [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "691421000119108",
+              "display": "Anemia co-occurrent and due to chronic kidney disease stage 3 (disorder)"
+            }
+          ]
+        },
+        "bodySite":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "113257007",
+                "display": "Structure of cardiovascular system (body structure)"
+              }
+            ]
+          }
+        ],
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "recordedDate": "2024-04-23T13:15:00-04:00",
+        "note":
+        [
+          {
+            "text": "See lab"
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Condition/b1c2d3e4-f5a6-47b8-9c0d-1e2f3a4b5c6d"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Observation/c2d3e4f5-a6b7-48c9-8d0e-2f3a4b5c6d7e",
+      "resource":
+      {
+        "resourceType": "Observation",
+        "id": "c2d3e4f5-a6b7-48c9-8d0e-2f3a4b5c6d7e",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/pacio-pfe/StructureDefinition/pfe-observation-single"
+          ]
+        },
+        "extension":
+        [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/event-location",
+            "valueReference":
+            {
+              "reference": "Location/c8d9ea0b-1c2d-4e0f-c234-8f9012345678"
+            }
+          }
+        ],
+        "status": "final",
+        "category":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "survey",
+                "display": "Survey"
+              }
+            ]
+          },
+          {
+            "coding":
+            [
+              {
+                "system": "http://hl7.org/fhir/us/core/CodeSystem/us-core-category",
+                "code": "functional-status",
+                "display": "Functional Status"
+              }
+            ]
+          },
+          {
+            "coding":
+            [
+              {
+                "system": "http://hl7.org/fhir/us/pacio-pfe/CodeSystem/pfe-category-cs",
+                "code": "d4600",
+                "display": "Moving Around Within the Home"
+              }
+            ]
+          }
+        ],
+        "code":
+        {
+          "coding":
+          [
+            {
+              "system": "http://loinc.org",
+              "code": "89381-8",
+              "display": "Walk 50 feet with two turns - functional goal during assessment period [CMS Assessment]"
+            }
+          ]
+        },
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "effectiveDateTime": "2024-05-16T14:30:00-04:00",
+        "performer":
+        [
+          {
+            "reference": "PractitionerRole/0b1c2d3e-4f50-4142-f567-123456789abc"
+          }
+        ],
+        "valueCodeableConcept":
+        {
+          "coding":
+          [
+            {
+              "system": "http://loinc.org",
+              "code": "LA10055-4"
+            }
+          ],
+          "text": "Partial/moderate assistance - helper does less than half the effort. Helper lifts, holds or supports trunk or limbs, but provides less than half the effort."
+        }
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Observation/c2d3e4f5-a6b7-48c9-8d0e-2f3a4b5c6d7e"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/List/d3e4f5a6-b7c8-49da-9e0f-3a4b5c6d7e8f",
+      "resource":
+      {
+        "resourceType": "List",
+        "id": "d3e4f5a6-b7c8-49da-9e0f-3a4b5c6d7e8f",
+        "status": "current",
+        "mode": "working",
+        "title": "Home Medication List",
+        "code":
+        {
+          "coding":
+          [
+            {
+              "system": "http://loinc.org",
+              "code": "104205-0",
+              "display": "Patient generated medication list [Identifier] Episode Pharmacy"
+            }
+          ]
+        },
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e",
+          "display": "Betsy Smith-Johnson"
+        },
+        "date": "2024-08-11",
+        "entry":
+        [
+          {
+            "date": "2024-08-11",
+            "item":
+            {
+              "reference": "MedicationStatement/e4f5a6b7-c8d9-4ade-9f01-4b5c6d7e8f90",
+              "display": "atorvastatin 40 MG Oral Tablet"
+            }
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "List/d3e4f5a6-b7c8-49da-9e0f-3a4b5c6d7e8f"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/MedicationStatement/e4f5a6b7-c8d9-4ade-9f01-4b5c6d7e8f90",
+      "resource":
+      {
+        "resourceType": "MedicationStatement",
+        "id": "e4f5a6b7-c8d9-4ade-9f01-4b5c6d7e8f90",
+        "basedOn":
+        [
+          {
+            "reference": "MedicationRequest/f5a6b7c8-d9ea-45ef-9012-5c6d7e8f9012"
+          }
+        ],
+        "status": "active",
+        "medicationCodeableConcept":
+        {
+          "coding":
+          [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "617311",
+              "display": "atorvastatin 40 MG Oral Tablet"
+            }
+          ]
+        },
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e",
+          "display": "Betsy Smith-Johnson"
+        },
+        "dateAsserted": "2024-08-11",
+        "informationSource":
+        {
+          "reference": "Organization/d9ea0b1c-2d3e-4f30-d345-90123456789a",
+          "display": "Happy Nursing Facility"
+        },
+        "reasonCode":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "55822004",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "dosage":
+        [
+          {
+            "sequence": 1,
+            "text": "po nightly"
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "MedicationStatement/e4f5a6b7-c8d9-4ade-9f01-4b5c6d7e8f90"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/MedicationRequest/f5a6b7c8-d9ea-45ef-9012-5c6d7e8f9012",
+      "resource":
+      {
+        "resourceType": "MedicationRequest",
+        "id": "f5a6b7c8-d9ea-45ef-9012-5c6d7e8f9012",
+        "text":
+        {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><a name=\"MedicationRequest_BSJ-SMPMedReq1\"> </a><p class=\"res-header-id\"><b>Generated Narrative: MedicationRequest BSJ-SMPMedReq1</b></p><a name=\"BSJ-SMPMedReq1\"> </a><a name=\"hcBSJ-SMPMedReq1\"> </a><p><b>status</b>: Active</p><p><b>intent</b>: Order</p><p><b>medication</b>: <span title=\"Codes:{http://www.nlm.nih.gov/research/umls/rxnorm 617311}\">atorvastatin 40 MG Oral Tablet</span></p><p><b>subject</b>: <a href=\"Patient-Example-Smith-Johnson-Patient1.html\">Betsy Smith-Johnson</a></p><p><b>authoredOn</b>: 2024-08-11</p><p><b>reasonCode</b>: <span title=\"Codes:{http://snomed.info/sct 55822004}\">Hyperlipidemia</span></p><h3>DosageInstructions</h3><table class=\"grid\"><tr><td style=\"display: none\">-</td><td><b>Sequence</b></td><td><b>Text</b></td></tr><tr><td style=\"display: none\">*</td><td>1</td><td>po nightly</td></tr></table></div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept":
+        {
+          "coding":
+          [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "617311",
+              "display": "atorvastatin 40 MG Oral Tablet"
+            }
+          ]
+        },
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e",
+          "display": "Betsy Smith-Johnson"
+        },
+        "authoredOn": "2024-08-11",
+        "reasonCode":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "55822004",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "dosageInstruction":
+        [
+          {
+            "sequence": 1,
+            "text": "po nightly"
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "MedicationRequest/f5a6b7c8-d9ea-45ef-9012-5c6d7e8f9012"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/CarePlan/a6b7c8d9-ea0b-4c0d-a012-6d7e8f901234",
+      "resource":
+      {
+        "resourceType": "CarePlan",
+        "id": "a6b7c8d9-ea0b-4c0d-a012-6d7e8f901234",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-careplan|6.1.0"
+          ]
+        },
+        "status": "active",
+        "intent": "plan",
+        "category":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
+                "code": "assess-plan",
+                "display": "Assessment and Plan of Treatment"
+              }
+            ]
+          }
+        ],
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "activity":
+        [
+          {
+            "reference":
+            {
+              "reference": "ServiceRequest/b7c8d9ea-0b1c-4d0e-b123-7e8f90123456"
+            }
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "CarePlan/a6b7c8d9-ea0b-4c0d-a012-6d7e8f901234"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/ServiceRequest/b7c8d9ea-0b1c-4d0e-b123-7e8f90123456",
+      "resource":
+      {
+        "resourceType": "ServiceRequest",
+        "id": "b7c8d9ea-0b1c-4d0e-b123-7e8f90123456",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-servicerequest|6.1.0"
+          ]
+        },
+        "status": "active",
+        "intent": "order",
+        "category":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "386053000",
+                "display": "Evaluation procedure (procedure)"
+              }
+            ]
+          }
+        ],
+        "priority": "routine",
+        "code":
+        {
+          "coding":
+          [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "185389009",
+              "display": "Follow-up visit (procedure)"
+            }
+          ]
+        },
+        "subject":
+        {
+          "reference": "Patient/0f8fad5b-d9cb-469f-a165-70867728950e"
+        },
+        "occurrenceDateTime": "2024-05-28",
+        "authoredOn": "2024-05-18",
+        "requester":
+        {
+          "reference": "PractitionerRole/1c2d3e4f-5061-4253-0678-23456789abcd"
+        }
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "ServiceRequest/b7c8d9ea-0b1c-4d0e-b123-7e8f90123456"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Location/c8d9ea0b-1c2d-4e0f-c234-8f9012345678",
+      "resource":
+      {
+        "resourceType": "Location",
+        "id": "c8d9ea0b-1c2d-4e0f-c234-8f9012345678",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location|6.1.0"
+          ]
+        },
+        "text":
+        {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><a name=\"Location_org-Loc-SNF-Happy-Nursing-Facility\"> </a><p class=\"res-header-id\"><b>Generated Narrative: Location org-Loc-SNF-Happy-Nursing-Facility</b></p><a name=\"org-Loc-SNF-Happy-Nursing-Facility\"> </a><a name=\"hcorg-Loc-SNF-Happy-Nursing-Facility\"> </a><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profile: <a href=\"http://hl7.org/fhir/us/core/STU6.1/StructureDefinition-us-core-location.html\">US Core Location Profileversion: null6.1.0)</a></p></div><p><b>status</b>: Active</p><p><b>name</b>: Happy Nursing Facility</p><p><b>address</b>: 8100 Pinebrook Dr, Grand Rapids, MI 49504</p></div>"
+        },
+        "status": "active",
+        "name": "Happy Nursing Facility",
+        "address":
+        {
+          "text": "8100 Pinebrook Dr, Grand Rapids, MI 49504",
+          "line":
+          [
+            "8100 Pinebrook Dr"
+          ],
+          "city": "Grand Rapids",
+          "state": "MI",
+          "postalCode": "49504",
+          "country": "US"
+        }
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Location/c8d9ea0b-1c2d-4e0f-c234-8f9012345678"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Organization/d9ea0b1c-2d3e-4f30-d345-90123456789a",
+      "resource":
+      {
+        "resourceType": "Organization",
+        "id": "d9ea0b1c-2d3e-4f30-d345-90123456789a",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization|6.1.0"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "1144221847"
+          }
+        ],
+        "active": true,
+        "name": "Happy Nursing Facility",
+        "telecom":
+        [
+          {
+            "system": "phone",
+            "value": "(210) 555 1871"
+          }
+        ],
+        "address":
+        [
+          {
+            "text": "8100 Pinebrook Dr, Grand Rapids, MI 49504",
+            "line":
+            [
+              "8100 Pinebrook Dr"
+            ],
+            "city": "Grand Rapids",
+            "state": "MI",
+            "postalCode": "49504",
+            "country": "US"
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Organization/d9ea0b1c-2d3e-4f30-d345-90123456789a"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Practitioner/eaeab1c2-3d4e-5f60-e456-a0123456789b",
+      "resource":
+      {
+        "resourceType": "Practitioner",
+        "id": "eaeab1c2-3d4e-5f60-e456-a0123456789b",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner|6.1.0"
+          ]
+        },
+        "text":
+        {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><a name=\"Practitioner_Example-GeraldPark\"> </a><p class=\"res-header-id\"><b>Generated Narrative: Practitioner Example-GeraldPark</b></p><a name=\"Example-GeraldPark\"> </a><a name=\"hcExample-GeraldPark\"> </a><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profile: <a href=\"http://hl7.org/fhir/us/core/STU6.1/StructureDefinition-us-core-practitioner.html\">US Core Practitioner Profileversion: null6.1.0)</a></p></div><p><b>identifier</b>: <a href=\"http://terminology.hl7.org/6.1.0/NamingSystem-npi.html\" title=\"National Provider Identifier\">United States National Provider Identifier</a>/8554084011</p><p><b>active</b>: true</p><p><b>name</b>: Gerald Park</p><p><b>telecom</b>: ph: (555) 566 3494</p><p><b>address</b>: 8100 Pinebrook Dr, Grand Rapids, MI 49504</p><p><b>gender</b>: Male</p></div>"
+        },
+        "identifier":
+        [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "8554084011"
+          }
+        ],
+        "active": true,
+        "name":
+        [
+          {
+            "text": "Gerald Park",
+            "family": "Park",
+            "given":
+            [
+              "Gerald"
+            ]
+          }
+        ],
+        "telecom":
+        [
+          {
+            "system": "phone",
+            "value": "(555) 566 3494"
+          }
+        ],
+        "address":
+        [
+          {
+            "text": "8100 Pinebrook Dr, Grand Rapids, MI 49504",
+            "line":
+            [
+              "8100 Pinebrook Dr"
+            ],
+            "city": "Grand Rapids",
+            "state": "MI",
+            "postalCode": "49504",
+            "country": "US"
+          }
+        ],
+        "gender": "male"
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Practitioner/eaeab1c2-3d4e-5f60-e456-a0123456789b"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/Practitioner/fbfbc2d3-4e5f-6071-f567-b123456789ac",
+      "resource":
+      {
+        "resourceType": "Practitioner",
+        "id": "fbfbc2d3-4e5f-6071-f567-b123456789ac",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner|6.1.0"
+          ]
+        },
+        "text":
+        {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><a name=\"Practitioner_Example-JenCadbury\"> </a><p class=\"res-header-id\"><b>Generated Narrative: Practitioner Example-JenCadbury</b></p><a name=\"Example-JenCadbury\"> </a><a name=\"hcExample-JenCadbury\"> </a><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\"/><p style=\"margin-bottom: 0px\">Profile: <a href=\"http://hl7.org/fhir/us/core/STU6.1/StructureDefinition-us-core-practitioner.html\">US Core Practitioner Profileversion: null6.1.0)</a></p></div><p><b>identifier</b>: <a href=\"http://terminology.hl7.org/6.1.0/NamingSystem-npi.html\" title=\"National Provider Identifier\">United States National Provider Identifier</a>/9635749481</p><p><b>active</b>: true</p><p><b>name</b>: Jen Cadbury</p><p><b>telecom</b>: ph: (210) 555 1871</p><p><b>address</b>: 8100 Pinebrook Dr, Grand Rapids, MI 49504</p><p><b>gender</b>: Female</p></div>"
+        },
+        "identifier":
+        [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9635749481"
+          }
+        ],
+        "active": true,
+        "name":
+        [
+          {
+            "text": "Jen Cadbury",
+            "family": "Cadbury",
+            "given":
+            [
+              "Jen"
+            ]
+          }
+        ],
+        "telecom":
+        [
+          {
+            "system": "phone",
+            "value": "(210) 555 1871"
+          }
+        ],
+        "address":
+        [
+          {
+            "text": "8100 Pinebrook Dr, Grand Rapids, MI 49504",
+            "line":
+            [
+              "8100 Pinebrook Dr"
+            ],
+            "city": "Grand Rapids",
+            "state": "MI",
+            "postalCode": "49504",
+            "country": "US"
+          }
+        ],
+        "gender": "female"
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "Practitioner/fbfbc2d3-4e5f-6071-f567-b123456789ac"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/PractitionerRole/0b1c2d3e-4f50-4142-f567-123456789abc",
+      "resource":
+      {
+        "resourceType": "PractitionerRole",
+        "id": "0b1c2d3e-4f50-4142-f567-123456789abc",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitionerrole|6.1.0"
+          ]
+        },
+        "active": true,
+        "practitioner":
+        {
+          "reference": "Practitioner/fbfbc2d3-4e5f-6071-f567-b123456789ac",
+          "display": "Jen Cadbury"
+        },
+        "organization":
+        {
+          "reference": "Organization/d9ea0b1c-2d3e-4f30-d345-90123456789a",
+          "display": "Happy Nursing Facility"
+        },
+        "code":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://nucc.org/provider-taxonomy",
+                "code": "225X00000X",
+                "display": "Occupational Therapist"
+              }
+            ]
+          }
+        ],
+        "location":
+        [
+          {
+            "reference": "Location/c8d9ea0b-1c2d-4e0f-c234-8f9012345678"
+          }
+        ],
+        "telecom":
+        [
+          {
+            "system": "phone",
+            "value": "(210) 555 1871"
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "PractitionerRole/0b1c2d3e-4f50-4142-f567-123456789abc"
+      }
+    },
+    {
+      "fullUrl": "http://www.pacioproject.org/pacio-toc/PractitionerRole/1c2d3e4f-5061-4253-0678-23456789abcd",
+      "resource":
+      {
+        "resourceType": "PractitionerRole",
+        "id": "1c2d3e4f-5061-4253-0678-23456789abcd",
+        "meta":
+        {
+          "profile":
+          [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitionerrole|6.1.0"
+          ]
+        },
+        "active": true,
+        "practitioner":
+        {
+          "reference": "Practitioner/eaeab1c2-3d4e-5f60-e456-a0123456789b",
+          "display": "Gerald Park"
+        },
+        "organization":
+        {
+          "reference": "Organization/d9ea0b1c-2d3e-4f30-d345-90123456789a",
+          "display": "Happy Nursing Facility"
+        },
+        "code":
+        [
+          {
+            "coding":
+            [
+              {
+                "system": "http://nucc.org/provider-taxonomy",
+                "code": "207QG0300X",
+                "display": "Geriatric Medicine (Family Medicine) Physician"
+              }
+            ]
+          }
+        ],
+        "location":
+        [
+          {
+            "reference": "Location/c8d9ea0b-1c2d-4e0f-c234-8f9012345678"
+          }
+        ],
+        "telecom":
+        [
+          {
+            "system": "phone",
+            "value": "(555) 566 3494"
+          }
+        ]
+      },
+      "request":
+      {
+        "method": "PUT",
+        "url": "PractitionerRole/1c2d3e4f-5061-4253-0678-23456789abcd"
+      }
+    }
+  ]
+}

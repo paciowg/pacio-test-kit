@@ -1,0 +1,45 @@
+{
+  "title": "HAPI FHIR Server RI",
+  "id": "toc-hapi-fhir-server",
+  "test_suite_id": "pacio_toc_server",
+  "inputs": [
+    {
+      "name": "url",
+      "title": "FHIR Server Base URL",
+      "type": "text",
+      "value": "http://hapi.fhir.org/baseR4"
+    },
+    {
+      "name": "bundle_resource_input",
+      "value": "{ \"resourceType\": \"Bundle\", \"type\": \"document\" }"
+    },
+    {
+      "name": "bundle_resource_ids",
+      "value": "4ef73fd4-51d6-44eb-b6f6-de5b3ec0fd85"
+    },
+    {
+      "name": "composition_resource_input",
+      "value": "{ \"resourceType\": \"Composition\" }"
+    },
+    {
+      "name": "composition_resource_ids",
+      "value": "3a1b9f4e-2c0d-4b1a-9f6a-6c1f9e3a7b01"
+    },
+    {
+      "name": "organization_resource_input",
+      "value": "{ \"resourceType\": \"Organization\" }"
+    },
+    {
+      "name": "organization_resource_ids",
+      "value": "d9ea0b1c-2d3e-4f30-d345-90123456789a"
+    },
+    {
+      "name": "patient_resource_input",
+      "value": "{ \"resourceType\": \"Patient\" }"
+    },
+    {
+      "name": "patient_resource_ids",
+      "value": "0f8fad5b-d9cb-469f-a165-70867728950e"
+    }
+  ]
+}

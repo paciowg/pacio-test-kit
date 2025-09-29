@@ -1,13 +1,13 @@
 {
-  "title": "HAPI FHIR Server RI",
-  "id": "hapi-fhir-server-ri",
+  "title": "MiHIN Server RI",
+  "id": "pfe-mihin-server",
   "test_suite_id": "pacio_pfe_server",
   "inputs": [
     {
       "name": "url",
       "title": "FHIR Server Base URL",
       "type": "text",
-      "value": "http://hapi.fhir.org/baseR4"
+      "value": "https://gw.interop.community/MiHIN/open"
     },
     {
       "name": "clinical_test_observation_resource_input",

@@ -24,6 +24,8 @@ module PacioTestKit
     end
 
     def profile_url
+      return nil unless PACIO_PROFILES[tag]
+
       tag&.include?('USCore') ? PACIO_PROFILES[tag] : "#{PACIO_PROFILES[tag]}|#{ig_version}"
     end
 
@@ -46,8 +48,15 @@ module PacioTestKit
         resource_is_valid?(resource:, profile_url:)
       end
 
+      conformance_target = if profile_url.nil?
+                             "FHIR base #{resource_type} resource type"
+                           else
+                             "profile #{profile_url}"
+                           end
+
       error_msg = "One or more of the #{tag} resources returned in previous tests do not " \
-                  "conform to the profile #{profile_url}"
+                  "conform to the #{conformance_target}"
+
       no_error_validation(error_msg)
     end
   end

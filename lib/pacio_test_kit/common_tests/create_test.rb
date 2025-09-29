@@ -20,9 +20,13 @@ module PacioTestKit
       config.options[:resource_type]
     end
 
+    def tag
+      config.options[:profile]
+    end
+
     run do
       assert_valid_json(resource_input)
-      create_and_validate_resource(JSON.parse(resource_input))
+      create_and_validate_resource(JSON.parse(resource_input), tag)
       no_error_validation("Failed to create #{resource_type} resource. See error messages for details.")
     end
   end

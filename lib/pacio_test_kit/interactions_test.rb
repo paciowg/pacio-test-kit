@@ -46,10 +46,10 @@ module PacioTestKit
       assert(expected_value == actual_value, msg)
     end
 
-    def create_and_validate_resource(resource_to_create)
+    def create_and_validate_resource(resource_to_create, tag = '')
       fhir_resource = validate_resource_input(resource_to_create)
 
-      fhir_create(fhir_resource.deep_dup)
+      fhir_create(fhir_resource.deep_dup, tags: ["#{tag}_Create"])
 
       assert_response_status(201)
       assert_valid_json(request.response_body, 'create interaction response must be a valid JSON')
