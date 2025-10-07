@@ -39,6 +39,8 @@ The quickest way to run this test kit locally is with [Docker](https://www.docke
 
 See the [Inferno Documentation](https://inferno-framework.github.io/docs/getting-started-users.html#running-an-existing-test-kit) for more information on running Inferno locally.
 
+See the [TOC Instructions](/TOC_INSTRUCTIONS.md) for step-by-step instructions for how to use the PACIO TOC Server Suite
+
 ## Interpreting Test Results
 
 Inferno test execution can result in several outcomes, with the four most common being **Pass**, **Fail**, **Skip**, and **Omit**. A quick FAQ explaining these outcomes can be found [here](https://github.com/onc-healthit/onc-certification-g10-test-kit/wiki/FAQ#q-what-is-the-difference-between-skipped-test-and-omitted-test).
