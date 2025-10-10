@@ -1,11 +1,15 @@
 # Step-by-Step Instructions for Using the PACIO TOC Server Suite
 
-Users can start by selecting the "RUN ALL TESTS" button in the upper right. This
-will bring up a form with a number of inputs that need to be filled out to run
-all test groups in the test suite. Alternatively, users can run each group one
-at a time by selecting them and then clicking the "RUN TESTS" button, in which
-case the form will be limited to the inputs necessary to run that group. The
-test groups can be run in any order.
+
+
+1. Start the PACIO test kit as instructed by the [README.md](../../../README.md)
+1. Select "PACIO TOC Server Suite v1.0.0-ballot" and click "START TESTING"
+1. Select the "RUN ALL TESTS" button in the upper right to run the entire TOC
+test suite. This will bring up a form with a number of inputs that need to be
+filled out to run all test groups in the test suite. Alternatively, users can
+run each group one at a time by selecting them and then clicking the "RUN TESTS"
+button, in which case the form will be limited to the inputs necessary to run
+that group. The test groups can be run in any order.
 
 Below is a list of all of the inputs for the Test Suite, grouped by Test Group,
 along with explanation and guidance for filling them out.
@@ -34,7 +38,8 @@ TOC Bundle Tests group. The input should be a comma separated list of IDs for
 any TOC Bundles already on the server that should be included in the tests. For
 example, if a Bundle the user wants to test is at the URL
 `https://example.com/fhir/r4/Bundle/234`, they should enter `234` into the
-input.
+input. If the user does not specify any IDs, Inferno will just use the Bundle
+created in the create test.
 
 ## TOC Composition Tests
 
@@ -51,7 +56,8 @@ Used by the TOC Composition Tests group. The input should be a comma separated
 list of IDs for any other TOC Compositions already on the server that the user
 wishes to include in the tests, if any. For example, if the user wants to
 include a Composition at the URL `https://example.com/fhir/r4/Composition/345`,
-they should enter `345` into the input.
+they should enter `345` into the input. If the user does not specify any IDs,
+Inferno will just use the Composition created in the create test.
 
 ## Organization Tests
 
@@ -69,7 +75,8 @@ list of IDs for any other Organizations already on the server that the user
 wishes to include in the tests, if any. For example, if the user wants to
 include an Organization at the URL
 `https://example.com/fhir/r4/Organization/456`, they should enter `456` into the
-input.
+input. If the user does not specify any IDs, Inferno will just use the
+Organization created in the create test.
 
 ## Patient Tests
 
@@ -86,7 +93,8 @@ Patient Tests group. The input should be a comma separated list of IDs for any
 other Patients already on the server that the user wishes to test, if any. For
 example, if the user wants to include a Patient at the URL
 `https://example.com/fhir/r4/Patient/567`, they should enter `567` into the
-input.
+input. If the user does not specify any IDs, Inferno will just use the Patient
+created in the create test.
 
 ## Error Handling Tests
 

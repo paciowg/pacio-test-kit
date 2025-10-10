@@ -39,7 +39,7 @@ The quickest way to run this test kit locally is with [Docker](https://www.docke
 
 See the [Inferno Documentation](https://inferno-framework.github.io/docs/getting-started-users.html#running-an-existing-test-kit) for more information on running Inferno locally.
 
-See the [TOC Instructions](/TOC_INSTRUCTIONS.md) for step-by-step instructions for how to use the PACIO TOC Server Suite
+See the [TOC Instructions](/lib/pacio_test_kit/toc/TOC_INSTRUCTIONS.md) for step-by-step instructions for how to use the PACIO TOC Server Suite
 
 ## Interpreting Test Results
 
