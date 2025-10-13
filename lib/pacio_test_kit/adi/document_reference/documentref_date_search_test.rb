@@ -1,17 +1,17 @@
-require_relative '../../../search_test'
+require_relative '../../common_tests/search_test'
 
 module PacioTestKit
-  class PatientGivenSearchTest < Inferno::Test
+  class DocumentReferenceDateSearchTest < Inferno::Test
     include PacioTestKit::SearchTest
 
-    title 'Server returns valid results for search by given'
+    title 'Server returns valid results for search by date'
     description %(
-      A server SHALL support searching by given.
+      A server SHALL support searching by date.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
 
-    id :patient_given_search_test
+    id :document_ref_date_search_test
 
     def tag
       config.options[:profile]
@@ -21,7 +21,7 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'given', paths: ['name.given'] }
+          { name: 'date', paths: ['date'] }
         ]
       )
     end

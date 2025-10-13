@@ -1,7 +1,7 @@
-require_relative '../pacio_test_kit/custom_groups/error_tests/invalid_parameter_error_test'
-require_relative '../pacio_test_kit/custom_groups/error_tests/unknown_resource_error_test'
-require_relative '../pacio_test_kit/custom_groups/error_tests/deleted_resource_error_test'
-require_relative '../pacio_test_kit/custom_groups/error_tests/unauthorized_request_error_test'
+require_relative 'error_tests/invalid_parameter_error_test'
+require_relative 'error_tests/unknown_resource_error_test'
+require_relative 'error_tests/deleted_resource_error_test'
+require_relative 'error_tests/unauthorized_request_error_test'
 
 module PacioTestKit
   class ErrorHandlingGroup < Inferno::TestGroup

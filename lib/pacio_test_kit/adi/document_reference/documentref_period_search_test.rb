@@ -1,17 +1,17 @@
-require_relative 'search_test'
+require_relative '../../common_tests/search_test'
 
 module PacioTestKit
-  class IdentifierSearchTest < Inferno::Test
+  class DocumentReferencePeriodSearchTest < Inferno::Test
     include PacioTestKit::SearchTest
 
-    title 'Server returns valid results for search by identifier'
+    title 'Server returns valid results for search by period'
     description %(
-      A server SHALL support searching by identifier.
+      A server SHALL support searching by period.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
 
-    id :identifier_search_test
+    id :document_ref_period_search_test
 
     def tag
       config.options[:profile]
@@ -21,9 +21,8 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'identifier', paths: ['identifier'] }
-        ],
-        token_search_params: [{ name: 'identifier', paths: ['identifier'] }]
+          { name: 'period', paths: ['context.period'] }
+        ]
       )
     end
 

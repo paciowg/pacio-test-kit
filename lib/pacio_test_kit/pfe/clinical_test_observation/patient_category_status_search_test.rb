@@ -1,4 +1,4 @@
-require_relative '../../search_test'
+require_relative '../common_tests/search_test'
 
 module PacioTestKit
   class PatientCategoryStatusSearchTest < Inferno::Test

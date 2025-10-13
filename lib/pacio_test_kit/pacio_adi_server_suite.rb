@@ -1,4 +1,4 @@
-require_relative 'error_handling_group'
+require_relative 'custom_groups/error_handling_group'
 require_relative 'pacio_profiles'
 require_relative 'custom_groups/capability_statement_group'
 require_relative 'adi/bundle_group'

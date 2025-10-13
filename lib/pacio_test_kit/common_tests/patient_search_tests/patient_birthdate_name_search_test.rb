@@ -1,4 +1,4 @@
-require_relative '../../../search_test'
+require_relative '../search_test'
 
 module PacioTestKit
   class PatientBirthdateNameSearchTest < Inferno::Test

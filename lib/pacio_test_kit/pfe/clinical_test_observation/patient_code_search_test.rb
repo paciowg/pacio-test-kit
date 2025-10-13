@@ -1,17 +1,17 @@
-require_relative '../../../search_test'
+require_relative '../common_tests/search_test'
 
 module PacioTestKit
-  class DocumentReferenceCustodianSearchTest < Inferno::Test
+  class PatientCodeSearchTest < Inferno::Test
     include PacioTestKit::SearchTest
 
-    title 'Server returns valid results for search by custodian'
+    title 'Server returns valid results for search by patient + code'
     description %(
-      A server SHALL support searching by custodian.
+      A server SHALL support searching by patient + code.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
 
-    id :document_ref_custodian_search_test
+    id :patient_code_search_test
 
     def tag
       config.options[:profile]
@@ -21,8 +21,10 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'custodian', paths: ['custodian'] }
-        ]
+          { name: 'patient', paths: ['subject'] },
+          { name: 'code', paths: ['code'] }
+        ],
+        token_search_params: [{ name: 'code', paths: ['code'] }]
       )
     end
 

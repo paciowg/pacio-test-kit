@@ -1,4 +1,4 @@
-require_relative '../interactions_test'
+require_relative 'interactions_test'
 require_relative '../test_helpers'
 
 module PacioTestKit

@@ -1,18 +1,17 @@
-require_relative '../../../search_test'
+require_relative '../search_test'
 
 module PacioTestKit
-  class PatientFamilyGenderSearchTest < Inferno::Test
+  class PatientGenderSearchTest < Inferno::Test
     include PacioTestKit::SearchTest
 
-    title 'Server returns valid results for search by family + gender'
+    title 'Server returns valid results for search by gender'
     description %(
-      A server SHOULD support searching by family + gender.
+      A server SHALL support searching by gender.
       This test will pass if resources are returned and match the search criteria. If
       none are returned, the test is skipped.
     )
-    optional
 
-    id :patient_family_gender_search_test
+    id :patient_gender_search_test
 
     def tag
       config.options[:profile]
@@ -22,7 +21,6 @@ module PacioTestKit
       @properties ||= SearchTestProperties.new(
         resource_type: config.options[:resource_type],
         search_params: [
-          { name: 'family', paths: ['name.family'] },
           { name: 'gender', paths: ['gender'] }
         ],
         token_search_params: [{ name: 'gender', paths: ['gender'] }]
