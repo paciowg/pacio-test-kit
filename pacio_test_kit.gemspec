@@ -3,7 +3,7 @@ require_relative 'lib/pacio_test_kit/version'
 Gem::Specification.new do |spec|
   spec.name          = 'pacio_test_kit'
   spec.version       = PacioTestKit::VERSION
-  spec.authors       = ['Vanessa Fotso', 'Kaelyn Jefferson', 'Brian Meshell']
+  spec.authors       = ['Vanessa Fotso', 'Kaelyn Jefferson', 'Brian Meshell', 'Tom Strassner']
   # spec.email         = ['TODO']
   spec.summary       = 'PACIO Use Cases Test Kit'
   spec.description   = 'PACIO Use Cases Test Kit'

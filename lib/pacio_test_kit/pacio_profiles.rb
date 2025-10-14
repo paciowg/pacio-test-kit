@@ -34,7 +34,17 @@ module PacioTestKit
       'ADIParticipant' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Participant',
       'ADINotary' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-Notary',
       'ADIPMOServiceRequest' => 'http://hl7.org/fhir/us/pacio-adi/StructureDefinition/ADI-PMOServiceRequest',
-      'TOCComposition' => 'http://hl7.org/fhir/us/pacio-toc/StructureDefinition/TOC-Composition'
+      'TOCComposition' => 'http://hl7.org/fhir/us/pacio-toc/StructureDefinition/TOC-Composition',
+      'SMPBundle' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-bundle',
+      'SMPBundleTransaction' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-bundle-transaction',
+      'SMPMedication' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medication',
+      'SMPMedicationList' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medication-list',
+      'SMPMedicationAdministration' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medicationadministration',
+      'SMPMedicationStatement' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medicationstatement',
+      'SMPParametersQuery' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-parameters-query',
+      'SMPParametersResponse' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-parameters-response',
+      'SMPParametersSubmit' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-parameters-submit',
+      'SMPParametersOutcome' => 'http://hl7.org/fhir/us/smp/StructureDefinition/smp-parameters-outcome'
     }.freeze
 
     PFE_RESOURCES = {
@@ -109,6 +119,25 @@ module PacioTestKit
       ].freeze,
       'Patient' => [
         'http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient'
+      ].freeze
+    }.freeze
+
+    SMP_RESOURCES = {
+      'Bundle' => [
+        'http://hl7.org/fhir/us/smp/StructureDefinition/smp-bundle',
+        'http://hl7.org/fhir/us/smp/StructureDefinition/smp-bundle-transaction'
+      ].freeze,
+      'Medication' => [
+        'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medication'
+      ].freeze,
+      'List' => [
+        'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medication-list'
+      ].freeze,
+      'MedicationAdministration' => [
+        'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medicationadministration'
+      ].freeze,
+      'MedicationStatement' => [
+        'http://hl7.org/fhir/us/smp/StructureDefinition/smp-medicationstatement'
       ].freeze
     }.freeze
   end

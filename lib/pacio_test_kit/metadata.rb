@@ -25,12 +25,12 @@ module PacioTestKit
 
       (Add Scope and Limitations here)
     DESCRIPTION
-    suite_ids [:pacio_adi_server, :pacio_pfe_server, :pacio_toc_server]
-    tags ['PACIO', 'PFE', 'ADI', 'TOC']
+    suite_ids [:pacio_adi_server, :pacio_pfe_server, :pacio_toc_server, :pacio_smp_server]
+    tags ['PACIO', 'PFE', 'ADI', 'TOC', 'SMP']
     last_updated LAST_UPDATED
     version VERSION
     maturity 'Low'
-    authors ['Vanessa Fotso', 'Kaelyn Jefferson', 'Brian Meshell', 'Yunwei Wang']
+    authors ['Vanessa Fotso', 'Kaelyn Jefferson', 'Brian Meshell', 'Yunwei Wang', 'Tom Strassner']
     repo 'https://github.com/paciowg/pacio-test-kit'
   end
 end
