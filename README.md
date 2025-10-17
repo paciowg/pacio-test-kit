@@ -5,7 +5,7 @@ The PACIO Test Kit validates the conformance of systems to the following PACIO I
 * [PACIO Advance Healthcare Directive Interoperability IG v2.0.0-ballot](https://hl7.org/fhir/us/pacio-adi/2025Sep/)
 * [PACIO Personal Functioning and Engagement IG v2.0.0](https://hl7.org/fhir/us/pacio-pfe/)
 * [PACIO Transition of Care IG v1.0.0-ballot](https://hl7.org/fhir/us/pacio-toc/2025May/)
-* [PACIO Standardized Medication Profile IG v1.0.0](https://hl7.org/fhir/us/smp/) (To Be Implemented)
+* [PACIO Standardized Medication Profile IG v1.0.0](https://hl7.org/fhir/us/smp/)
 
 This test kit currently contains suites that verify the **conformance** of systems playing the following roles:
 
