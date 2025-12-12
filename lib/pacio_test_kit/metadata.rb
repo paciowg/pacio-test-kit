@@ -25,7 +25,7 @@ module PacioTestKit
 
       (Add Scope and Limitations here)
     DESCRIPTION
-    suite_ids [:pacio_adi_server, :pacio_pfe_server, :pacio_toc_server, :pacio_smp_server]
+    suite_ids [:pacio_adi_server, :pacio_pfe_server, :toc_v100, :smp_v100]
     tags ['PACIO', 'PFE', 'ADI', 'TOC', 'SMP']
     last_updated LAST_UPDATED
     version VERSION

@@ -10,6 +10,9 @@ group :development, :test do
   gem "rubocop", "~> 1.56"
   gem 'rubocop-rspec', require: false
   gem "rubocop-rake", "~> 0.6.0"
+
+  gem 'pacio_smp_test_kit', git: 'https://github.com/paciowg/pacio-smp-test-kit.git', branch: 'generator'
+  gem 'pacio_toc_test_kit', git: 'https://github.com/paciowg/pacio-toc-test-kit.git', branch: 'generate'
 end
 
 group :test do

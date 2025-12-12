@@ -1,3 +1,23 @@
+GIT
+  remote: https://github.com/paciowg/pacio-smp-test-kit.git
+  revision: 9da517112e0ac453a0859e572ee277a10d26d858
+  branch: generator
+  specs:
+    pacio_smp_test_kit (1.0.0)
+      inferno_core (~> 1.0.6)
+      tls_test_kit (~> 1.0)
+      us_core_test_kit (~> 1.0.0)
+
+GIT
+  remote: https://github.com/paciowg/pacio-toc-test-kit.git
+  revision: 36c304573500ff8ddf30f7df92afb168e1efb654
+  branch: generate
+  specs:
+    pacio_toc_test_kit (1.0.0)
+      inferno_core (~> 1.0.6)
+      tls_test_kit (~> 1.0)
+      us_core_test_kit (~> 1.0.0)
+
 PATH
   remote: .
   specs:
@@ -352,6 +372,10 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
     unicode_utils (1.4.0)
+    us_core_test_kit (1.0.0)
+      inferno_core (~> 1.0, >= 1.0.2)
+      smart_app_launch_test_kit (~> 1.0)
+      tls_test_kit (~> 1.0)
     webmock (3.23.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -370,7 +394,9 @@ DEPENDENCIES
   database_cleaner-sequel (~> 1.8)
   debug
   factory_bot (~> 6.1)
+  pacio_smp_test_kit!
   pacio_test_kit!
+  pacio_toc_test_kit!
   rack-test
   rspec (~> 3.10)
   rubocop (~> 1.56)
